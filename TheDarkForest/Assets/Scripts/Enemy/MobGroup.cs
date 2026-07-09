@@ -1,9 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Enemy;
 
 public class MobGroup : MonoBehaviour
 {
-    [SerializeField] private List<Mob> mobs = new List<Mob>();
+    [SerializeField] private List<EnemyAI> mobs = new List<EnemyAI>();
 
     [SerializeField]private Transform _playerTransform;
     private bool _isActive = false;

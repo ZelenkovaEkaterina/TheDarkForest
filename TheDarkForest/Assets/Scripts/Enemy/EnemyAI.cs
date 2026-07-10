@@ -45,7 +45,7 @@ namespace Enemy
 
             if (agent != null)
             {
-                agent.isStopped = false;
+                agent.isStopped = false; //разрешаем движение
             }
         }
 

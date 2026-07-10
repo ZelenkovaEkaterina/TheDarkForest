@@ -1,16 +1,32 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerMovementComponent : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private NavMeshAgent agent;
+    [SerializeField] private Camera mainCamera;
+
+    private void Start()
     {
-        
+        if (agent == null) agent = GetComponent<NavMeshAgent>();
+        if (mainCamera == null) mainCamera = Camera.main;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 100f))
+            {
+                // Опционально: проверка тега или слоя, чтобы не кликать по стенам/врагам
+                if (hit.collider.CompareTag("Ground"))
+                {
+                    agent.SetDestination(hit.point);
+                }
+            }
+        }
     }
 }

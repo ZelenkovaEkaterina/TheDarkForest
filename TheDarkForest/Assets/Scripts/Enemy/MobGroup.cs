@@ -5,35 +5,27 @@ using Enemy;
 public class MobGroup : MonoBehaviour
 {
     [SerializeField] private List<EnemyAI> mobs = new List<EnemyAI>();
-
-    [SerializeField]private Transform _playerTransform;
+    
     private bool _isActive = false;
 
     /// <summary>
     /// Инициализация группы. Вызывается один раз при создании/спавне.
     /// </summary>
-    public void Initialize(Transform player)
-    {
-        _playerTransform = player;
-        Debug.Log($"[MobGroup] Группа инициализирована. Цель: {player.name}");
-    }
 
-    public void ActivateGroup()
+    public void ActivateGroup(Transform playerTransform)
     {
         // Проверка на наличие игрока обязательна, так как мы больше не ищем его сами
-        if (_isActive || _playerTransform == null)
+        if (_isActive || playerTransform == null)
         {
             Debug.LogWarning("[MobGroup] Активация невозможна: группа активна или нет цели.");
             return;
         }
 
-        
-
         _isActive = true;
         
         foreach (var mob in mobs)
         {
-            mob.SetTarget(_playerTransform);
+            mob.SetTarget(playerTransform);
             mob.StartChase();
         }
     }

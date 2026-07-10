@@ -362,7 +362,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0047697932, y: 0.9296071, z: -0.36832467, w: 0.012038386}
-  m_LocalPosition: {x: 6.94, y: 7.98, z: 11.21}
+  m_LocalPosition: {x: 0.76, y: 12.78, z: 16.52}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -814,7 +814,7 @@ GameObject:
   - component: {fileID: 1310514068}
   m_Layer: 0
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -959,7 +959,7 @@ GameObject:
   - component: {fileID: 1328233370}
   m_Layer: 0
   m_Name: AreaZone
-  m_TagString: Untagged
+  m_TagString: Agro
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -977,9 +977,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MobGroup
   mobs:
-  - {fileID: 2023344725}
+  - {fileID: 2023344731}
   - {fileID: 55587005}
-  _playerTransform: {fileID: 409476927}
 --- !u!114 &1328233371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1042,7 +1041,7 @@ GameObject:
   - component: {fileID: 2023344728}
   - component: {fileID: 2023344727}
   - component: {fileID: 2023344726}
-  - component: {fileID: 2023344725}
+  - component: {fileID: 2023344731}
   m_Layer: 0
   m_Name: Mob
   m_TagString: Untagged
@@ -1050,20 +1049,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2023344725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2023344724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44f04649aaa4d9e4ca89ab69e0cd41c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Enemy.EnemyAI
-  chaseRange: 15
-  attackRange: 2
 --- !u!195 &2023344726
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1181,6 +1166,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2023344731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2023344724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a00615b098032a14b9900aeadf19d328, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PatrolMob
+  chaseRange: 15
+  attackRange: 2
+  patrolPoints: []
+  patrolRadius: 6
+  waitTimeAtPoint: 2
+  patrolSpeedMultiplier: 0.6
+  detectionRange: 4
+  returnToPatrol: 1
+  lostInterestRange: 10
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

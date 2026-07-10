@@ -9,7 +9,7 @@ public class AgroZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             
-            group.ActivateGroup();
+            group.ActivateGroup(other.transform);
         }
     }
 }

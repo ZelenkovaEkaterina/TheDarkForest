@@ -63,7 +63,7 @@ namespace Enemy
             }
         }
 
-        private void Update()
+        protected virtual void Update()
         {
             if (!hasTarget || target == null || !target.gameObject.activeSelf)
             {

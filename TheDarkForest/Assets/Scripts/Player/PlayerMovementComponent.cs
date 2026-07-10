@@ -17,16 +17,19 @@ public class PlayerMovementComponent : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+            //RaycastHit hit;
+            RaycastHit[] hits = Physics.RaycastAll(ray, 100f);
 
-            if (Physics.Raycast(ray, out hit, 100f))
+            foreach (RaycastHit hit in hits)
             {
                 // Опционально: проверка тега или слоя, чтобы не кликать по стенам/врагам
                 if (hit.collider.CompareTag("Ground"))
                 {
                     agent.SetDestination(hit.point);
+                    Debug.Log(hit.collider.name);
                 }
             }
+                
         }
     }
 }

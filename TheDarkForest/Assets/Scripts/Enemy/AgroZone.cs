@@ -3,6 +3,7 @@ using UnityEngine;
 public class AgroZone : MonoBehaviour
 {
     [SerializeField] private MobGroup group;
+    [SerializeField] private SpawnGroup spawn;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -10,6 +11,7 @@ public class AgroZone : MonoBehaviour
         {
             
             group.ActivateGroup(other.transform);
+            //spawn.SpawnObjects(other.transform);
         }
     }
 }

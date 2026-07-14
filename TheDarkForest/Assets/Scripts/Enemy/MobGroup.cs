@@ -5,6 +5,7 @@ using Enemy;
 public class MobGroup : MonoBehaviour
 {
     [SerializeField] private List<EnemyAI> mobs = new List<EnemyAI>();
+    //[SerializeField] private EnemyArray mobs;
     
     private bool _isActive = false;
 

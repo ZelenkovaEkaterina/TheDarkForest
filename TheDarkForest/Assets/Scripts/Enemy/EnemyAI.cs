@@ -13,10 +13,12 @@ namespace Enemy
 
     public class EnemyAI : MonoBehaviour
     {
-        [Header("Settings")] public float chaseRange = 15f;
+        [Header("Settings")] 
+        public float chaseRange = 15f;
         public float attackRange = 2f;
 
-        [Header("References")] protected NavMeshAgent agent;
+        [Header("References")] 
+        protected NavMeshAgent agent;
         protected Transform target;
         protected EnemyState state = EnemyState.Idle;
 
@@ -28,12 +30,13 @@ namespace Enemy
             agent = GetComponent<NavMeshAgent>();
             if (agent == null)
             {
-                //Debug.LogError($"[Mob] На объекте {gameObject.name} отсутствует компонент NavMeshAgent!");
+                Debug.LogError($"[Mob] На объекте {gameObject.name} отсутствует компонент NavMeshAgent!");
             }
         }
 
         public void SetTarget(Transform t)
         {
+            Debug.Log(t.name);
             target = t;
             hasTarget = true;
         }
@@ -42,7 +45,7 @@ namespace Enemy
         {
             if (!hasTarget || target == null) return;
             state = EnemyState.Chase;
-
+            Debug.Log(agent);
             if (agent != null)
             {
                 agent.isStopped = false; //разрешаем движение

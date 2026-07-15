@@ -17,7 +17,7 @@ public class PatrolMob : EnemyAI
     [Tooltip("Время ожидания в точке (сек)")]
     public float waitTimeAtPoint = 2f;
     
-    [Tooltip("Скорость патруля (множитель от базовой скорости)")]
+    [Tooltip("Скорость патруля")]
     public float patrolSpeedMultiplier = 0.6f;
     
     [Tooltip("Дистанция, на которой моб замечает игрока во время патруля")]

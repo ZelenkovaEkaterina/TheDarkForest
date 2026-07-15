@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -5,6 +6,12 @@ public class PlayerMovementComponent : MonoBehaviour
 {
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private Camera mainCamera;
+    [SerializeField] private PlayerDamageComponent playerDamageComponent;
+
+    private void Awake()
+    {
+        playerDamageComponent = GetComponent<PlayerDamageComponent>();
+    }
 
     private void Start()
     {
@@ -26,7 +33,11 @@ public class PlayerMovementComponent : MonoBehaviour
                 if (hit.collider.CompareTag("Ground"))
                 {
                     agent.SetDestination(hit.point);
-                    Debug.Log(hit.collider.name);
+                }
+
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    playerDamageComponent.AttackEnemy(hit.collider.gameObject);
                 }
             }
                 

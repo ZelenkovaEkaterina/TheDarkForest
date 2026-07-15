@@ -11,7 +11,7 @@ public class AgroZone : MonoBehaviour
         {
             
             group.ActivateGroup(other.transform);
-            //spawn.SpawnObjects(other.transform);
+            //spawn.SpawnObjects();
         }
     }
 }

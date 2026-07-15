@@ -12,10 +12,10 @@ public class SpawnGroup : MonoBehaviour
     {
         spawnArea =  GetComponent<SphereCollider>();
         spawnCount = objectList.GetCount();
-        SpawnObjects(playerTarget);
+        SpawnObjects();
     }
     
-    public void SpawnObjects(Transform playerTarget)
+    public void SpawnObjects()
     {
         if (spawnArea == null || objectList == null || objectList.enemyArray.Count == 0)
         {
@@ -31,21 +31,17 @@ public class SpawnGroup : MonoBehaviour
         for (int i = 0; i < spawnCount; i++)
         {
             // Выбираем объект из списка
-            EnemyAI prefab = objectList.enemyArray[i];
-
+            GameObject prefab = objectList.enemyArray[i];
             //EnemyAI enemyAI = prefab.GetComponent<EnemyAI>();
             
             // Создаем случайную позицию внутри сферы
             Vector3 spawnPosition = GetRandomPointInSphere(center, radius);
             
             // Спавним объект
-            //Instantiate(prefab, spawnPosition, Quaternion.identity);
+            Instantiate(prefab, spawnPosition, Quaternion.identity);
             
-            EnemyAI spawnedEnemy = Instantiate(prefab, spawnPosition, Quaternion.identity);
+            //EnemyAI spawnedEnemy = Instantiate(prefab, spawnPosition, Quaternion.identity);
             
-            // Сразу вызываем методы
-            spawnedEnemy.SetTarget(playerTarget);
-            spawnedEnemy.StartChase();
         }
     }
     

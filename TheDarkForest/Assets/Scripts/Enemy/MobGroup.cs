@@ -4,8 +4,8 @@ using Enemy;
 
 public class MobGroup : MonoBehaviour
 {
-    [SerializeField] private List<EnemyAI> mobs = new List<EnemyAI>();
-    //[SerializeField] private EnemyArray mobs;
+    //[SerializeField] private List<EnemyAI> mobs = new List<EnemyAI>();
+    [SerializeField] private EnemyArray mobs;
     
     private bool _isActive = false;
 
@@ -24,10 +24,10 @@ public class MobGroup : MonoBehaviour
 
         _isActive = true;
         
-        foreach (var mob in mobs)
+        foreach (var mob in mobs.enemyArray)
         {
-            mob.SetTarget(playerTransform);
-            mob.StartChase();
+            mob.GetComponent<EnemyAI>().SetTarget(playerTransform);
+            mob.GetComponent<EnemyAI>().StartChase();
         }
     }
 

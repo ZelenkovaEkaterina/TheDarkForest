@@ -9,8 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3b7c5c1b29c4ea48a000a73459c6c73, type: 3}
-  m_Name: EnemyPatrolVariable1
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyArray
-  enemyArray:
-  - {fileID: 2784759067054697619, guid: 116c65c0b59fcb7438d4fb76810d83d7, type: 3}
+  m_Script: {fileID: 11500000, guid: 392f4a119c663c04a92d62ea2d0c63cc, type: 3}
+  m_Name: SettingsAreaZone
+  m_EditorClassIdentifier: Assembly-CSharp::SettingsAreaZone
+  Enemies:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

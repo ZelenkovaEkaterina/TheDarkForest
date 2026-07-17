@@ -3,21 +3,24 @@ using UnityEngine;
 
 public class SpawnGroup : MonoBehaviour
 {
-    private SphereCollider spawnArea;
     [SerializeField] private EnemyArray objectList; // Ваш ScriptableObject со списком
     [SerializeField] private int spawnCount;
     [SerializeField] private Transform playerTarget;
+
+    [SerializeField] private GameObject pr;
     
+    private SphereCollider spawnArea;
+
     void Start()
     {
         spawnArea =  GetComponent<SphereCollider>();
         spawnCount = objectList.GetCount();
-        SpawnObjects();
+        //SpawnObjects();
     }
     
-    public void SpawnObjects()
+    public void SpawnObjects(Transform player)
     {
-        if (spawnArea == null || objectList == null || objectList.enemyArray.Count == 0)
+        if (spawnArea == null || objectList.enemyArray.Count == 0)
         {
             Debug.LogWarning("Не все компоненты настроены!");
             return;
@@ -28,7 +31,10 @@ public class SpawnGroup : MonoBehaviour
             transform.lossyScale.y, 
             transform.lossyScale.z);
         
-        for (int i = 0; i < spawnCount; i++)
+        pr.GetComponent<EnemyAI>().SetTarget(player);
+        pr.GetComponent<EnemyAI>().StartChase();
+        
+        /*for (int i = 0; i < spawnCount; i++)
         {
             // Выбираем объект из списка
             GameObject prefab = objectList.enemyArray[i];
@@ -38,11 +44,16 @@ public class SpawnGroup : MonoBehaviour
             Vector3 spawnPosition = GetRandomPointInSphere(center, radius);
             
             // Спавним объект
-            Instantiate(prefab, spawnPosition, Quaternion.identity);
+            //Instantiate(prefab, spawnPosition, Quaternion.identity);
+            
+            prefab.GetComponent<EnemyAI>().SetTarget(player);
+            prefab.GetComponent<EnemyAI>().StartChase();
             
             //EnemyAI spawnedEnemy = Instantiate(prefab, spawnPosition, Quaternion.identity);
             
-        }
+        }*/
+        
+        
     }
     
     private Vector3 GetRandomPointInSphere(Vector3 center, float radius)

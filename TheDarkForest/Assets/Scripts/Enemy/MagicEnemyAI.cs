@@ -21,6 +21,8 @@ namespace Enemy
         [Tooltip("Как далеко отступать")] public float retreatDistance = 5f;
 
         private float originalSpeed;
+        
+        private NavMeshAgent agent;
 
         protected override void Awake()
         {

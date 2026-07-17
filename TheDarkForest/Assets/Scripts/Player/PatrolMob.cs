@@ -37,6 +37,8 @@ public class PatrolMob : EnemyAI
     private Vector3 lastPatrolPoint;
     private float originalSpeed;
     private bool isReturningToPatrol = false;
+    
+    private NavMeshAgent agent;
 
     protected override void Awake()
     {

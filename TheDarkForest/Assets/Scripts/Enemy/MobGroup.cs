@@ -26,8 +26,8 @@ public class MobGroup : MonoBehaviour
         
         foreach (var mob in mobs.enemyArray)
         {
-            mob.GetComponent<EnemyAI>().SetTarget(playerTransform);
-            mob.GetComponent<EnemyAI>().StartChase();
+           // mob.GetComponent<EnemyAI>().SetTarget(playerTransform);
+          //  mob.GetComponent<EnemyAI>().StartChase();
         }
     }
 

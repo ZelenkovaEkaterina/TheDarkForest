@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,7 +11,7 @@ namespace Enemy
         Attack,
         Dead
     }
-
+    [RequireComponent(typeof(NavMeshAgent))]
     public class EnemyAI : MonoBehaviour
     {
         [Header("Settings")] 
@@ -18,27 +19,29 @@ namespace Enemy
         public float attackRange = 2f;
 
         [Header("References")] 
-        protected NavMeshAgent agent;
-        protected Transform target;
-        protected EnemyState state = EnemyState.Idle;
+        internal NavMeshAgent agent;
+        
+        internal Transform target;
+        internal EnemyState state = EnemyState.Idle;
 
-        protected float attackTimer = 0f;
-        protected bool hasTarget = false;
+        internal float attackTimer = 0f;
+        internal bool hasTarget = false;
 
         protected virtual void Awake()
         {
+            
+        }
+
+        private void Start()
+        {
             agent = GetComponent<NavMeshAgent>();
-            if (agent == null)
-            {
-                Debug.LogError($"[Mob] На объекте {gameObject.name} отсутствует компонент NavMeshAgent!");
-            }
         }
 
         public void SetTarget(Transform t)
         {
-            Debug.Log(t.name);
             target = t;
             hasTarget = true;
+           
         }
 
         public void StartChase()
@@ -48,6 +51,7 @@ namespace Enemy
             Debug.Log(agent);
             if (agent != null)
             {
+                Debug.Log("11");
                 agent.isStopped = false; //разрешаем движение
             }
         }

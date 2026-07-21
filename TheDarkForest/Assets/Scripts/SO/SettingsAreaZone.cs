@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [CreateAssetMenu(fileName = "SettingsAreaZone", menuName = "Scriptable Objects/SettingsAreaZone")]
 public class SettingsAreaZone : ScriptableObject

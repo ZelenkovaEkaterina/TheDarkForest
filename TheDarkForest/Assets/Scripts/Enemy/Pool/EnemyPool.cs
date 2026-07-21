@@ -26,6 +26,16 @@ public class GameObjectPool
         obj.SetActive(true);
         return obj;
     }
+    
+    public List<GameObject> GetEnemy(int count)
+    {
+        List<GameObject> objects = new List<GameObject>(count);
+        for (int i = 0; i < count; i++)
+        {
+            objects.Add(Get());
+        }
+        return objects;
+    }
 
     public void Return(GameObject obj)
     {

@@ -5,7 +5,7 @@ using UnityEngine.AI;
 /// <summary>
 /// Моб, который патрулирует между точками и преследует игрока при обнаружении
 /// </summary>
-public class PatrolMob : EnemyAI
+public class PatrolMob : NearEnemyAI
 {
     [Header("Patrol Settings")]
     [Tooltip("Точки патруля (если не заданы, использует случайные точки в зоне)")]
@@ -60,7 +60,7 @@ public class PatrolMob : EnemyAI
         StartPatrol();
     }
 
-    protected override void Update()
+    /*protected override void Update()
     {
         // Если игрок рядом во время патруля - переключаемся на Chase
         if (state == EnemyState.Idle && hasTarget && target != null)
@@ -83,7 +83,7 @@ public class PatrolMob : EnemyAI
         
         
         base.Update();
-    }
+    }*/
 
     protected override void UpdateIdle(float distanceToTarget)
     {
@@ -338,7 +338,7 @@ public class PatrolMob : EnemyAI
 
     // ===== ВИЗУАЛИЗАЦИЯ =====
 
-    /*private void OnDrawGizmosSelected()
+    private void OnDrawGizmosSelected()
     {
         // Зона обнаружения
         Gizmos.color = new Color(1, 1, 0, 0.2f);
@@ -378,5 +378,5 @@ public class PatrolMob : EnemyAI
                 }
             }
         }
-    }*/
+    }
 }

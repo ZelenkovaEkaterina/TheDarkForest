@@ -12,9 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 392f4a119c663c04a92d62ea2d0c63cc, type: 3}
   m_Name: SettingsAreaZone
   m_EditorClassIdentifier: Assembly-CSharp::SettingsAreaZone
-  Enemies:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  Settings:
+    Items:
+    - Id: 0
+      NearEnemiesCount: 0
+      RangeEnemiesCount: 1
+    - Id: 1
+      NearEnemiesCount: 2
+      RangeEnemiesCount: 1
+    - Id: 2
+      NearEnemiesCount: 2
+      RangeEnemiesCount: 3
+    - Id: 3
+      NearEnemiesCount: 4
+      RangeEnemiesCount: 0

@@ -46,13 +46,13 @@ namespace Enemy
 
         private void OnEnable()
         {
-            _enemyController.OnChase += HandleChase;
+            _enemyController.OnChase += SetTarget;
             StartAI();
         }
 
         private void OnDisable()
         {
-            _enemyController.OnChase -= HandleChase;
+            _enemyController.OnChase -= SetTarget;
             StopAI();
         }
 
@@ -162,7 +162,7 @@ namespace Enemy
             Debug.Log("бьют");
         }
         
-        private void HandleChase(Transform t)
+        private void SetTarget(Transform t)
         {
             target = t;
             hasTarget = true;

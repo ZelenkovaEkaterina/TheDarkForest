@@ -19,7 +19,7 @@ namespace Enemy
        [Header("Settings")]
         public float chaseRange = 15f;
         public float attackRange = 2f;
-        public float updateInterval = 0.1f;
+        public float updateInterval = 1f;
 
         [Header("References")]
         protected NavMeshAgent agent;

@@ -11,7 +11,7 @@ namespace Enemy
         [Header("Ranged Settings")] 
         public float stopRange = 5f; //дистанция, на которой моб останавливается
         public float retreatRange = 3f;//дистанция, на которой моб отступает от игрока
-        public float retreatSpeedMultiplier = 0.8f;//скорость отступления
+        public float retreatSpeed = 0.8f;//скорость отступления
         public float retreatDistance = 3f;//дистанция отступления
 
         private float originalSpeed;
@@ -19,10 +19,7 @@ namespace Enemy
         protected override void Awake()
         {
             base.Awake();
-            if (agent != null)
-            {
-                originalSpeed = agent.speed;
-            }
+            originalSpeed = agent.speed;
         }
 
         protected override void UpdateChase(float distanceToTarget)
@@ -36,7 +33,7 @@ namespace Enemy
                         agent.isStopped = false;
                     }
                     
-                    agent.speed = originalSpeed * retreatSpeedMultiplier;
+                    agent.speed = originalSpeed * retreatSpeed;
                     
                     Vector3 directionAway = (transform.position - target.position).normalized;
                     Vector3 retreatPoint = transform.position + directionAway * retreatDistance;

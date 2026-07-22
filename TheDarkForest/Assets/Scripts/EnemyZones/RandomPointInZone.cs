@@ -6,12 +6,11 @@ using Random = UnityEngine.Random;
 
 public class RandomPointInZone : MonoBehaviour
 {
-    private int _numberOfPoints = 5;
+    [SerializeField] private int _numberOfPoints = 5;
     private float minDistanceBetweenPoints = 1.5f;
     private float _radius;
     private Vector3 _center;
     
-    [SerializeField]private int _countPoint = 5;
     public List<Vector3> _coordinates =  new List<Vector3>();
     
     private void Awake()
@@ -30,7 +29,6 @@ public class RandomPointInZone : MonoBehaviour
         _coordinates.Clear();
 
         int spawnedCount = 0;
-        int maxAttempts = 5000; // Увеличиваем лимит, т.к. поиск стал сложнее
 
         for (int i = 0; i < _numberOfPoints; i++)
         {

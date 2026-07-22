@@ -22,11 +22,11 @@ namespace Enemy
         public float updateInterval = 0.1f;
 
         [Header("References")]
-        internal NavMeshAgent agent;
-        internal Transform target;
-        internal EnemyState state = EnemyState.Idle;
-        internal float attackTimer = 0f;
-        internal bool hasTarget = false;
+        protected NavMeshAgent agent;
+        protected Transform target;
+        protected EnemyState state = EnemyState.Idle;
+        protected float attackTimer = 0f;
+        protected bool hasTarget = false;
 
         private Coroutine _aiCoroutine;
 
@@ -40,9 +40,6 @@ namespace Enemy
 
         private void Start()
         {
-            if (agent == null)
-                agent = GetComponent<NavMeshAgent>();
-            
             if (_aiCoroutine == null)
                 StartAI();
         }

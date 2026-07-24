@@ -5,13 +5,6 @@ using UnityEngine.AI;
 
 namespace Enemy
 {
-    public enum EnemyState
-    {
-        Idle,
-        Chase,
-        Attack,
-        Dead
-    }
     [RequireComponent(typeof(NavMeshAgent))]
     [RequireComponent(typeof(EnemyController))]
     public class NearEnemyAI : MonoBehaviour
@@ -31,6 +24,7 @@ namespace Enemy
         private Coroutine _aiCoroutine;
 
         private EnemyController _enemyController;
+        private EnemyAI _enemyAI;
 
         protected virtual void Awake()
         {
@@ -43,23 +37,54 @@ namespace Enemy
             if (agent == null)
                 agent = GetComponent<NavMeshAgent>();
             
-            if (_aiCoroutine == null)
-                StartAI();
+            /*if (_aiCoroutine == null)
+                StartAI();*/
         }
 
         private void OnEnable()
         {
             _enemyController.OnChase += HandleChase;
-            StartAI();
+            UpdateState();
+            //StartAI();
         }
 
         private void OnDisable()
         {
             _enemyController.OnChase -= HandleChase;
-            StopAI();
+            //StopAI();
         }
 
-        private void StartAI()
+        private void UpdateState()
+        {
+            while (enabled && gameObject.activeInHierarchy)
+            {
+                if (!hasTarget || target == null || !target.gameObject.activeSelf)
+                {
+                    state = EnemyState.Idle;
+                    if (agent != null) agent.isStopped = true;
+                    continue;
+                }
+
+                float distanceToTarget = Vector3.Distance(transform.position, target.position);
+
+                switch (state)
+                {
+                    case EnemyState.Idle:
+                        _enemyAI.UpdateIdle(distanceToTarget, chaseRange, state, agent);
+                        break;
+
+                    case EnemyState.Chase:
+                        _enemyAI.UpdateChase(distanceToTarget, attackRange, agent, state, target);
+                        break;
+
+                    case EnemyState.Attack:
+                        _enemyAI.UpdateAttack(distanceToTarget, attackRange, state, agent);
+                        break;
+                }
+            }
+        }
+
+        /*private void StartAI()
         {
             if (_aiCoroutine != null)
                 StopCoroutine(_aiCoroutine);
@@ -74,9 +99,9 @@ namespace Enemy
                 StopCoroutine(_aiCoroutine);
                 _aiCoroutine = null;
             }
-        }
+        }*/
 
-        private IEnumerator StateUpdate()
+        /*private IEnumerator StateUpdate()
         {
             var wait = new WaitForSeconds(updateInterval);
 
@@ -111,60 +136,8 @@ namespace Enemy
             }
 
             _aiCoroutine = null;
-        }
+        }*/
 
-        protected virtual void UpdateIdle(float distanceToTarget)
-        {
-            if (distanceToTarget <= chaseRange)
-            {
-                state = EnemyState.Chase;
-                if (agent != null)
-                {
-                    agent.isStopped = false;
-                }
-                Debug.Log("иду");
-            }
-        }
-
-        protected virtual void UpdateChase(float distanceToTarget)
-        {
-            if (distanceToTarget <= attackRange)
-            {
-                state = EnemyState.Attack;
-                if (agent != null)
-                {
-                    agent.isStopped = true;
-                    agent.ResetPath();
-                }
-            }
-            else
-            {
-                if (agent != null && !agent.isStopped)
-                {
-                    agent.SetDestination(target.position);
-                }
-                else if (agent != null && agent.isStopped)
-                {
-                    agent.isStopped = false;
-                    agent.SetDestination(target.position);
-                }
-            }
-        }
-
-        protected virtual void UpdateAttack(float distanceToTarget)
-        {
-            if (distanceToTarget > attackRange)
-            {
-                state = EnemyState.Chase;
-                if (agent != null)
-                {
-                    agent.isStopped = false;
-                }
-            }
-
-            Debug.Log("бьют");
-        }
-        
         private void HandleChase(Transform t)
         {
             target = t;

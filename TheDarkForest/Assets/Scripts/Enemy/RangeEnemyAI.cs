@@ -1,4 +1,4 @@
-using Enemy;
+/*using Enemy;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -130,4 +130,4 @@ namespace Enemy
             Debug.Log($"{gameObject.name} стреляет в {target.name}!");
         }
     }
-}
+}*/

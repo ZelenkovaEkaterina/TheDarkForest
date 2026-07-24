@@ -10,14 +10,15 @@ public class EnemiesSpawn : MonoBehaviour
    public List<GameObject> _activeEnemies = new List<GameObject>();
    
    [SerializeField] private SettingsAreaZone settingsAreaZone;
+   [SerializeField] private PoolManager _poolManager;
    private GameObjectPool _pool;
-   
+
    private float _radius;
    private Vector3 _center;
 
    private void Start()
    {
-      _pool = PoolManager.Instance.EnemyPool;
+      _pool = _poolManager.EnemyPool;
       _radius = GetComponent<SphereCollider>().radius;
       _center = GetComponent<SphereCollider>().center;
         
@@ -101,7 +102,7 @@ public class EnemiesSpawn : MonoBehaviour
          }
       }
 
-      for (int i = nearCount; i < rangeCount+nearCount; i++) //скрипт дальних
+      /*for (int i = nearCount; i < rangeCount+nearCount; i++) //скрипт дальних
       {
          GameObject enemy = enemies[i];
          RangeEnemyAI enemyScript = enemy.GetComponent<RangeEnemyAI>();
@@ -111,7 +112,7 @@ public class EnemiesSpawn : MonoBehaviour
             enemyScript = enemy.AddComponent<RangeEnemyAI>();
             Debug.Log($"Добавлен скрипт MagicEnemyAI на {enemy.name}");
          }
-      }
+      }*/
    }
 
    public void ReturnAllEnemies()

@@ -1,4 +1,4 @@
-using Enemy;
+/*using Enemy;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -83,7 +83,7 @@ public class PatrolMob : NearEnemyAI
         
         
         base.Update();
-    }*/
+    }#1#
 
     protected override void UpdateIdle(float distanceToTarget)
     {
@@ -332,7 +332,7 @@ public class PatrolMob : NearEnemyAI
             if (damageable != null)
             {
                 damageable.TakeDamage(10f);
-            }*/
+            }#1#
         }
     }
 
@@ -379,4 +379,4 @@ public class PatrolMob : NearEnemyAI
             }
         }
     }
-}
+}*/

@@ -12,6 +12,7 @@ public class EnemiesSpawn : MonoBehaviour
    [SerializeField] private SettingsAreaZone settingsAreaZone;
    [SerializeField] private PoolManager _poolManager;
    private GameObjectPool _pool;
+   private RandomPointInZone _waypoints;
 
    private float _radius;
    private Vector3 _center;
@@ -21,6 +22,8 @@ public class EnemiesSpawn : MonoBehaviour
       _pool = _poolManager.EnemyPool;
       _radius = GetComponent<SphereCollider>().radius;
       _center = GetComponent<SphereCollider>().center;
+      
+      _waypoints = GetComponent<RandomPointInZone>();
         
       SpawnEnemies();
    }
@@ -43,12 +46,12 @@ public class EnemiesSpawn : MonoBehaviour
       List<GameObject> enemies = _pool.GetEnemy(totalEnemies);
       _activeEnemies.AddRange(enemies);
       
+      // Получаем точки патрулирования
+      List<Vector3> patrolPoints = _waypoints.GetPatrolPoints();
+        
+      ConfigureEnemies(enemies, near, patrolPoints);
       
-        
-      ConfigureEnemies(enemies, near);
-      AddScripts(enemies, near, range);
-        
-      Debug.Log($"Зона {Id}: Спавнено {totalEnemies} врагов (Ближних: {near}, Дальних: {range})");
+      //Debug.Log($"Зона {Id}: Спавнено {totalEnemies} врагов (Ближних: {near}, Дальних: {range})");
    }
 
    private ZoneSettings GetZoneById(int id)
@@ -61,20 +64,34 @@ public class EnemiesSpawn : MonoBehaviour
       return null;
    }
 
-   private void ConfigureEnemies(List<GameObject> enemies, int nearCount)
+   private void ConfigureEnemies(List<GameObject> enemies, int nearCount, List<Vector3> patrolPoints)
    {
       for (int i = 0; i < enemies.Count; i++)
       {
          GameObject enemy = enemies[i];
-            
-         /*float angle = (i / (float)enemies.Count) * 360f;
-         enemy.transform.position = transform.position + 
-                                    new Vector3(
-                                       Mathf.Sin(angle * Mathf.Deg2Rad) * _radius, 
-                                       transform.position.y, 
-                                       Mathf.Cos(angle * Mathf.Deg2Rad) * _radius
-                                    );*/
          enemy.transform.position = transform.position + GetRandomPointInSphere(_center, _radius);
+      }
+      
+      for (int i = 0; i < nearCount; i++) //добавляем скрипт ближних врагов
+      {
+         GameObject enemy = enemies[i];
+         MiliEnemyAI miliEnemyScript = enemy.AddComponent<MiliEnemyAI>();
+         EnemyAI enemyAI = enemy.AddComponent<EnemyAI>();
+         if (miliEnemyScript != null && patrolPoints.Count > 0)
+         {
+            enemyAI.SetPatrolPoints(patrolPoints);
+         }
+      }
+
+      for (int i = nearCount; i < enemies.Count; i++) //скрипт дальних
+      {
+         GameObject enemy = enemies[i];
+         RangeEnemyAI rangeEnemyScript = enemy.AddComponent<RangeEnemyAI>();
+         EnemyAI enemyAI = enemy.AddComponent<EnemyAI>();
+         if (rangeEnemyScript != null && patrolPoints.Count > 0)
+         {
+            enemyAI.SetPatrolPoints(patrolPoints);
+         }
       }
       
    }
@@ -84,35 +101,6 @@ public class EnemiesSpawn : MonoBehaviour
       Vector3 randomDirection = Random.insideUnitSphere;
       float randomDistance = Random.Range(0f, radius);
       return center + randomDirection * randomDistance;
-   }
-
-   private void AddScripts(List<GameObject> enemies, int nearCount, int rangeCount)
-   {
-      for (int i = 0; i < nearCount; i++) //добавляем скрипт ближних врагов
-      {
-        GameObject enemy = enemies[i];
-        //EnemyEventsHandler enemyEventsHandler = enemy.GetComponent<EnemyEventsHandler>();
-        NearEnemyAI nearEnemyScript = enemy.GetComponent<NearEnemyAI>();
-
-        if (nearEnemyScript == null)
-         {
-            //enemyEventsHandler = enemy.AddComponent<EnemyEventsHandler>();
-            nearEnemyScript = enemy.AddComponent<NearEnemyAI>();
-            Debug.Log($"Добавлен скрипт EnemyAI на {enemy.name}");
-         }
-      }
-
-      /*for (int i = nearCount; i < rangeCount+nearCount; i++) //скрипт дальних
-      {
-         GameObject enemy = enemies[i];
-         RangeEnemyAI enemyScript = enemy.GetComponent<RangeEnemyAI>();
-         
-         if (enemyScript == null)
-         {
-            enemyScript = enemy.AddComponent<RangeEnemyAI>();
-            Debug.Log($"Добавлен скрипт MagicEnemyAI на {enemy.name}");
-         }
-      }*/
    }
 
    public void ReturnAllEnemies()

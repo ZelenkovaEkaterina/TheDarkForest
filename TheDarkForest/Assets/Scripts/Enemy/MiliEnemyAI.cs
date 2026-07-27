@@ -1,4 +1,6 @@
-using Enemy;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,31 +8,35 @@ namespace Enemy
 {
     [RequireComponent(typeof(EnemyController))]
     [RequireComponent(typeof(EnemyAI))]
-    public class RangeEnemyAI : MonoBehaviour
+    
+    public class MiliEnemyAI : MonoBehaviour
     {
-        [Header("Settings")] public float chaseRange = 10f;
-        public float attackRange = 6f;
+       [Header("Settings")]
+        public float chaseRange = 10f;
+        public float attackRange = 2f;
 
-        [Header("References")] 
-        internal NavMeshAgent agent;
-        internal Transform target;
-        internal EnemyState state = EnemyState.Idle;
-        internal float attackTimer = 0f;
-        internal bool hasTarget = false;
-
+        [Header("References")]
+        private NavMeshAgent agent;
+        private Transform target;
+        private EnemyState state = EnemyState.Idle;
+        private float attackTimer = 0f;
+        private bool hasTarget = false;
+        
 
         private EnemyController _enemyController;
         private EnemyAI _enemyAI;
+        
 
-        protected virtual void Awake()
+        protected void Awake()
         {
-            agent = GetComponent<NavMeshAgent>();
+            //agent = _enemyAI.agent;
             _enemyController = GetComponent<EnemyController>();
             _enemyAI = GetComponent<EnemyAI>();
         }
 
         private void Start()
         {
+            agent = _enemyAI.agent;
             if (agent == null)
                 agent = GetComponent<NavMeshAgent>();
         }
@@ -44,7 +50,7 @@ namespace Enemy
         {
             _enemyController.OnChase -= HandleChase;
         }
-
+        
         private void FixedUpdate()
         {
             if (!hasTarget || target == null || !target.gameObject.activeSelf)
@@ -53,10 +59,10 @@ namespace Enemy
                 if (agent != null) agent.isStopped = true;
                 return;
             }
-
+            
             float distanceToTarget = Vector3.Distance(transform.position, target.position);
             Debug.DrawLine(transform.position, target.position, Color.red);
-
+            
             switch (state)
             {
                 case EnemyState.Idle:
@@ -78,13 +84,13 @@ namespace Enemy
             target = t;
             hasTarget = true;
             state = EnemyState.Chase;
-
-            Debug.Log(target);
+            
             if (agent != null)
             {
                 agent.isStopped = false;
             }
         }
 
+        
     }
 }

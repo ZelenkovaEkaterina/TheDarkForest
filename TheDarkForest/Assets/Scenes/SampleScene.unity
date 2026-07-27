@@ -136,7 +136,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d381481a9b3c78d43b16660a1e5deec2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RandomPointInZone
-  _countPoint: 5
   _coordinates: []
 --- !u!114 &146130901
 MonoBehaviour:
@@ -664,6 +663,10 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 6.099373
       objectReference: {fileID: 0}
+    - target: {fileID: 5234137993107540166, guid: 1b21ff14cda357c4386053b542dc032a, type: 3}
+      propertyPath: _poolManager
+      value: 
+      objectReference: {fileID: 1118336975}
     - target: {fileID: 8204914218140769132, guid: 1b21ff14cda357c4386053b542dc032a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7.5
@@ -980,6 +983,10 @@ PrefabInstance:
       propertyPath: m_Center.z
       value: 6.099373
       objectReference: {fileID: 0}
+    - target: {fileID: 5234137993107540166, guid: 1b21ff14cda357c4386053b542dc032a, type: 3}
+      propertyPath: _poolManager
+      value: 
+      objectReference: {fileID: 1118336975}
     - target: {fileID: 8204914218140769132, guid: 1b21ff14cda357c4386053b542dc032a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -18.5
@@ -1048,7 +1055,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d381481a9b3c78d43b16660a1e5deec2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RandomPointInZone
-  _countPoint: 5
   _coordinates: []
 --- !u!114 &1842152724
 MonoBehaviour:

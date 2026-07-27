@@ -11,6 +11,6 @@ public class PoolManager : MonoBehaviour
     private void Awake()
     {
         _enemyPool = new GameObjectPool(enemyPrefab, poolInitialSize, transform);
-        Debug.Log($"Пул создан с {poolInitialSize} объектами");
+        //Debug.Log($"Пул создан с {poolInitialSize} объектами");
     }
 }

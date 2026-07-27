@@ -12,9 +12,14 @@ public class GameObjectPool
         _prefab = prefab;
         _parent = parent;
 
-        for (int i = 0; i < initialSize; i++)
+        InstantiatePool(initialSize, prefab,  parent);
+    }
+
+    private void InstantiatePool(int  poolInitialSize, GameObject poolPrefab, Transform poolParent)
+    {
+        for (int i = 0; i < poolInitialSize; i++)
         {
-            GameObject obj = Object.Instantiate(prefab, parent);
+            GameObject obj = Object.Instantiate(poolPrefab, poolParent);
             obj.SetActive(false);
             _available.Enqueue(obj);
         }

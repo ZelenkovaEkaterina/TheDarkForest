@@ -71,8 +71,38 @@ public class EnemiesSpawn : MonoBehaviour
          GameObject enemy = enemies[i];
          enemy.transform.position = transform.position + GetRandomPointInSphere(_center, _radius);
       }
-      
-      for (int i = 0; i < nearCount; i++) //добавляем скрипт ближних врагов
+
+      int miliCounter = 0;
+
+      for (int i = 0; i < enemies.Count; i++)
+      {
+         if (miliCounter <= nearCount-1 && nearCount != 0)
+         {
+            GameObject enemy = enemies[i];
+            MiliEnemyAI miliEnemyScript = enemy.AddComponent<MiliEnemyAI>();
+            EnemyAI enemyAI = enemy.AddComponent<EnemyAI>();
+            if (miliEnemyScript != null && patrolPoints.Count > 0)
+            {
+               enemyAI.SetPatrolPoints(patrolPoints);
+            }
+
+            miliCounter++;
+         }
+         else
+         {
+            GameObject enemy = enemies[i];
+            RangeEnemyAI rangeEnemyScript = enemy.AddComponent<RangeEnemyAI>();
+            EnemyAI enemyAI = enemy.AddComponent<EnemyAI>();
+            if (rangeEnemyScript != null && patrolPoints.Count > 0)
+            {
+               enemyAI.SetPatrolPoints(patrolPoints);
+            }
+         }
+
+         
+      }
+
+      /*for (int i = 0; i < nearCount; i++) //добавляем скрипт ближних врагов
       {
          GameObject enemy = enemies[i];
          MiliEnemyAI miliEnemyScript = enemy.AddComponent<MiliEnemyAI>();
@@ -92,8 +122,8 @@ public class EnemiesSpawn : MonoBehaviour
          {
             enemyAI.SetPatrolPoints(patrolPoints);
          }
-      }
-      
+      }*/
+
    }
    
    private Vector3 GetRandomPointInSphere(Vector3 center, float radius)

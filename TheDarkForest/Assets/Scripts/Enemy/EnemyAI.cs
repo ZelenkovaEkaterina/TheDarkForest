@@ -19,6 +19,7 @@ public class EnemyAI : MonoBehaviour
     internal NavMeshAgent agent;
     
     private int _currentPatrolIndex = 0;
+    
 
     private void Awake()
     {
@@ -27,11 +28,13 @@ public class EnemyAI : MonoBehaviour
         
         _enemyPatrol.SetAgent(agent);
     }
-    
+
     private void Start()
     {
         if (agent == null)
             agent = GetComponent<NavMeshAgent>();
+        
+        
     }
 
     public EnemyState UpdateIdle(float distanceToTarget, float chaseRange, EnemyState state, NavMeshAgent agent)
@@ -72,12 +75,12 @@ public class EnemyAI : MonoBehaviour
         {
             if (agent != null && !agent.isStopped)
             {
-                Debug.Log("иду");
+                //Debug.Log("иду");
                 agent.SetDestination(target.position);
             }
             else if (agent != null && agent.isStopped)
             {
-                Debug.Log("тоже иду");
+                //Debug.Log("тоже иду");
                 agent.isStopped = false;
                 agent.SetDestination(target.position);
             }
@@ -88,28 +91,21 @@ public class EnemyAI : MonoBehaviour
 
     public EnemyState UpdateAttack(float distanceToTarget,float attackRange, EnemyState state, NavMeshAgent agent)
     {
-        Debug.Log("бьют");
+       // Debug.Log("бьют");
         if (distanceToTarget > attackRange)
         {
             state = EnemyState.Chase;
             if (agent != null)
             {
-                Debug.Log("снова иду");
+               //Debug.Log("снова иду");
                 agent.isStopped = false;
             }
         }
         return state;
     }
-
-    public EnemyState UpdateDead(EnemyState state)
-    {
-        state = EnemyState.Dead;
-        return state;
-    }
     
     public void SetPatrolPoints(List<Vector3> points)
     {
-        
         _enemyPatrol.SetPoints(points);
     }
 }

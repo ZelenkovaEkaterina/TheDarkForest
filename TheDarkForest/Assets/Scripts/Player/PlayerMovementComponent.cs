@@ -37,6 +37,7 @@ public class PlayerMovementComponent : MonoBehaviour
 
                 if (hit.collider.CompareTag("Enemy"))
                 {
+                    Debug.Log("popal");
                     playerDamageComponent.AttackEnemy(hit.collider.gameObject);
                 }
             }

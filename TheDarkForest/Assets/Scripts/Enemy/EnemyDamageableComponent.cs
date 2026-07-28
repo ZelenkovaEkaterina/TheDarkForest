@@ -19,11 +19,16 @@ public class EnemyDamageableComponent : MonoBehaviour, IDamageble
     {
         currentHealth = maxHealth;
         EnemyDamageable = this.gameObject;
+        
     }
 
     public void TakeDamage(int damage, GameObject source)
     {
-        if (IsDead()) return;
+        if (IsDead())
+        {
+            
+            return;
+        }
         
         currentHealth -= damage;
         OnDamageTaken?.Invoke(damage, source);

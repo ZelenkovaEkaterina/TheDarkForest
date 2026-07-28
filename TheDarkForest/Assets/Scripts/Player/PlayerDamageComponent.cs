@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 
 public class PlayerDamageComponent : MonoBehaviour
 {
+    public event Action<EnemyState> OnDead;
     public void AttackEnemy(GameObject enemy)
     {
         // Находим компонент врага
@@ -15,8 +17,10 @@ public class PlayerDamageComponent : MonoBehaviour
             // Проверяем, умер ли враг
             if (enemyHealth.IsDead())
             {
-                Destroy(enemy);  // удаляем врага
+                //Destroy(enemy);  // удаляем врага
                 // или проигрываем анимацию смерти
+                OnDead?.Invoke(EnemyState.Dead);
+                enemy.SetActive(false);
             }
         }
     }

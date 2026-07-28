@@ -50,7 +50,7 @@ namespace Enemy
             if (!hasTarget || target == null || !target.gameObject.activeSelf)
             {
                 state = EnemyState.Idle;
-                if (agent != null) agent.isStopped = true;
+                //if (agent != null) agent.isStopped = true;
                 return;
             }
 

@@ -6,8 +6,8 @@ using Random = UnityEngine.Random;
 
 public class RandomPointInZone : MonoBehaviour
 {
-    private int _countOfPoints = 5;
-    private float minDistanceBetweenPoints = 1.5f;
+    private int _countOfPoints = 6;
+    private float minDistanceBetweenPoints = 2f;
     private float _radius;
     private Vector3 _center;
     
@@ -16,7 +16,7 @@ public class RandomPointInZone : MonoBehaviour
     private void Awake()
     {
         _radius = GetComponent<SphereCollider>().radius;
-        _center = GetComponent<Transform>().position;
+        _center = GetComponent<SphereCollider>().center;
         
         GenerateRandomPointInSphere();
     }
@@ -72,8 +72,8 @@ public class RandomPointInZone : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(transform.position, _radius);
-
+        //Gizmos.DrawWireSphere(_center, _radius);
+        //Debug.Log(_center);
         Gizmos.color = Color.blue;
         foreach (Vector3 pos in _coordinates)
         {

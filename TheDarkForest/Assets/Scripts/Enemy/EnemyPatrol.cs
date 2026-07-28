@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class EnemyPatrol : MonoBehaviour
 {
     [Header("Settings")]
     public float speed = 2f;
-    public float waitTime = 2f;
+    public float waitTime = 5f;
     public float arrivalDistance = 0.5f;
     
     private List<Vector3> _points = new List<Vector3>();
@@ -17,7 +18,13 @@ public class EnemyPatrol : MonoBehaviour
     private NavMeshAgent _agent;
     
     public bool IsActive { get; private set; }
-    
+
+    private void Start()
+    {
+        //_agent.isStopped =false;
+        Debug.Log(_agent.isStopped);
+    }
+
     private void Update()
     {
         if (!IsActive || _points.Count == 0) return;
@@ -36,12 +43,28 @@ public class EnemyPatrol : MonoBehaviour
         
         if (_agent.remainingDistance <= arrivalDistance && !_agent.pathPending)
         {
-            _isWaiting = true;
-            _waitTimer = waitTime;
-            _agent.isStopped = true;
-            
-            // Переход к следующей точке
-            _currentIndex = (_currentIndex + 1) % _points.Count;
+            // Если точка занята другим врагом, выбираем другую
+            if (IsPointOccupied(_points[_currentIndex]))
+            {
+                Debug.Log("занято");
+                _points.RemoveAt(_currentIndex);
+                _currentIndex = 0;
+                if (_points.Count == 0)
+                {
+                    StopPatrol();
+                    return;
+                }
+                GoToNextPoint();
+            }
+            else
+            {
+                _isWaiting = true;
+                _waitTimer = waitTime;
+                _agent.isStopped = true;
+
+                // Переход к следующей точке
+                _currentIndex = (_currentIndex + 1) % _points.Count;
+            }
         }
     }
 
@@ -49,10 +72,35 @@ public class EnemyPatrol : MonoBehaviour
     {
         
         if (_points.Count == 0) return;
+    
+        // Получаем все свободные точки
+        List<Vector3> freePoints = new List<Vector3>();
+        foreach (var point in _points)
+        {
+            if (IsPointOccupied(point) == false) 
+            {
+                freePoints.Add(point);
+            }
+        }
         
-        _agent.speed = speed;
-        _agent.SetDestination(_points[_currentIndex]);
-        _agent.isStopped = false;
+    
+        // Если есть свободные точки - выбираем случайную
+        if (freePoints.Count > 0)
+        {
+            int randomIndex = Random.Range(0, freePoints.Count);
+            Vector3 targetPoint = freePoints[randomIndex];
+        
+            _agent.speed = speed;
+            _agent.SetDestination(targetPoint);
+            _agent.isStopped = false;
+        }
+        else
+        {
+            // Все точки заняты - ждем
+            _isWaiting = true;
+            _waitTimer = waitTime;
+            _agent.isStopped = true;
+        }
     }
 
     public void SetPoints(List<Vector3> points)
@@ -70,7 +118,6 @@ public class EnemyPatrol : MonoBehaviour
 
     public void StartPatrol()
     {
-        Debug.Log("Starting patrol");
         if (_points.Count == 0) return;
         
         IsActive = true;
@@ -93,5 +140,17 @@ public class EnemyPatrol : MonoBehaviour
     public void SetAgent(NavMeshAgent agent)
     {
         _agent = agent;
+    }
+    
+    private bool IsPointOccupied(Vector3 point)
+    {
+        // Проверяем, есть ли другие враги на этой точке
+        Collider[] colliders = Physics.OverlapSphere(point, 0.5f);
+        foreach (var collider in colliders)
+        {
+            if (collider.gameObject != gameObject && collider.CompareTag("Enemy"))
+                return true;
+        }
+        return false;
     }
 }

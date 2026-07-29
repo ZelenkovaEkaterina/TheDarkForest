@@ -2,46 +2,55 @@ using System;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class PlayerMovementComponent : MonoBehaviour
+namespace Player
 {
-    [SerializeField] private NavMeshAgent agent;
-    [SerializeField] private Camera mainCamera;
-    [SerializeField] private PlayerDamageComponent playerDamageComponent;
-
-    private void Awake()
+    public class PlayerMovementComponent : MonoBehaviour
     {
-        playerDamageComponent = GetComponent<PlayerDamageComponent>();
-    }
+        [SerializeField] internal NavMeshAgent agent;
+        internal EnemyState statePlayer;
+        [SerializeField] private Camera mainCamera;
+        [SerializeField] private PlayerDamageComponent playerDamageComponent;
 
-    private void Start()
-    {
-        if (agent == null) agent = GetComponent<NavMeshAgent>();
-        if (mainCamera == null) mainCamera = Camera.main;
-    }
-
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
+        private void Awake()
         {
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            //RaycastHit hit;
-            RaycastHit[] hits = Physics.RaycastAll(ray, 100f);
+            playerDamageComponent = GetComponent<PlayerDamageComponent>();
+        }
 
-            foreach (RaycastHit hit in hits)
+        private void Start()
+        {
+            if (agent == null) agent = GetComponent<NavMeshAgent>();
+            if (mainCamera == null) mainCamera = Camera.main;
+        }
+
+        private void Update()
+        {
+            if (Input.GetMouseButtonDown(0))
             {
-                // Опционально: проверка тега или слоя, чтобы не кликать по стенам/врагам
-                if (hit.collider.CompareTag("Ground"))
-                {
-                    agent.SetDestination(hit.point);
-                }
+                Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+                //RaycastHit hit;
+                RaycastHit[] hits = Physics.RaycastAll(ray, 100f);
 
-                if (hit.collider.CompareTag("Enemy"))
+                foreach (RaycastHit hit in hits)
                 {
-                    Debug.Log("popal");
-                    playerDamageComponent.AttackEnemy(hit.collider.gameObject);
+                    // Опционально: проверка тега или слоя, чтобы не кликать по стенам/врагам
+                    if (hits[0].collider.CompareTag("Ground") ||  hits[0].collider.CompareTag("Agro"))
+                    {
+                        //statePlayer = PlayerState.Idle;
+                        agent.isStopped = false;
+                        agent.SetDestination(hit.point);
+                    }
+
+                    if (hits[0].collider.CompareTag("Enemy"))
+                    {
+                        //statePlayer = PlayerState.Attack;
+                        agent.isStopped = true;
+                        playerDamageComponent.AttackEnemy(hit.collider.gameObject);
+                    }
+                    Debug.Log(hits[0].collider.name);
                 }
-            }
                 
+            }
         }
     }
 }
+

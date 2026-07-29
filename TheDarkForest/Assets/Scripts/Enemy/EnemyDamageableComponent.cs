@@ -26,7 +26,8 @@ public class EnemyDamageableComponent : MonoBehaviour, IDamageble
     {
         if (IsDead())
         {
-            
+            Debug.Log("сдох");
+            this.gameObject.SetActive(false);
             return;
         }
         

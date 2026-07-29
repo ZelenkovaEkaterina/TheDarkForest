@@ -19,12 +19,6 @@ public class EnemyPatrol : MonoBehaviour
     
     public bool IsActive { get; private set; }
 
-    private void Start()
-    {
-        //_agent.isStopped =false;
-        Debug.Log(_agent.isStopped);
-    }
-
     private void FixedUpdate()
     {
         if (!IsActive || _points.Count == 0) return;

@@ -8,7 +8,7 @@ public class EnemyPatrol : MonoBehaviour
 {
     [Header("Settings")]
     public float speed = 2f;
-    public float waitTime = 5f;
+    public float waitTime = 7f;
     public float arrivalDistance = 0.5f;
     
     private List<Vector3> _points = new List<Vector3>();
@@ -25,7 +25,7 @@ public class EnemyPatrol : MonoBehaviour
         Debug.Log(_agent.isStopped);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (!IsActive || _points.Count == 0) return;
         
@@ -64,6 +64,7 @@ public class EnemyPatrol : MonoBehaviour
 
                 // Переход к следующей точке
                 _currentIndex = (_currentIndex + 1) % _points.Count;
+                //_currentIndex = Random.Range(0, _points.Count);
             }
         }
     }
@@ -132,11 +133,6 @@ public class EnemyPatrol : MonoBehaviour
         _agent.ResetPath();
     }
 
-    public bool HasPoints()
-    {
-        return _points.Count > 0;
-    }
-
     public void SetAgent(NavMeshAgent agent)
     {
         _agent = agent;
@@ -145,7 +141,7 @@ public class EnemyPatrol : MonoBehaviour
     private bool IsPointOccupied(Vector3 point)
     {
         // Проверяем, есть ли другие враги на этой точке
-        Collider[] colliders = Physics.OverlapSphere(point, 0.5f);
+        Collider[] colliders = Physics.OverlapSphere(point, 1.5f);
         foreach (var collider in colliders)
         {
             if (collider.gameObject != gameObject && collider.CompareTag("Enemy"))

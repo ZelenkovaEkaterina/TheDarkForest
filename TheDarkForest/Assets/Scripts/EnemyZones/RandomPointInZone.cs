@@ -6,8 +6,8 @@ using Random = UnityEngine.Random;
 
 public class RandomPointInZone : MonoBehaviour
 {
-    private int _countOfPoints = 6;
-    private float minDistanceBetweenPoints = 2f;
+    private int _countOfPoints = 10;
+    private float minDistanceBetweenPoints = 3f;
     private float _radius;
     private Vector3 _center;
     

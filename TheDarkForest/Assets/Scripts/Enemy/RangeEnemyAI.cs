@@ -1,90 +1,85 @@
-using Enemy;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace Enemy
 {
     [RequireComponent(typeof(EnemyController))]
-    [RequireComponent(typeof(EnemyAI))]
-    public class RangeEnemyAI : MonoBehaviour
+   
+    public class RangeEnemyAI : EnemyAI
     {
-        [Header("Settings")] public float chaseRange = 10f;
-        public float attackRange = 6f;
+       [Header("Settings")]
+        [SerializeField] private float chaseRange = 10f;
+        [SerializeField] private float attackRange = 6f;
 
-        [Header("References")] 
-        internal NavMeshAgent agent;
-        internal Transform target;
-        internal EnemyState state = EnemyState.Idle;
-        internal float attackTimer = 0f;
-        internal bool hasTarget = false;
-
-
+        private Transform _target;
+        private bool _hasTarget = false;
         private EnemyController _enemyController;
-        private EnemyAI _enemyAI;
 
-        protected virtual void Awake()
+        protected override void Awake()
         {
-            agent = GetComponent<NavMeshAgent>();
+            base.Awake();
             _enemyController = GetComponent<EnemyController>();
-            _enemyAI = GetComponent<EnemyAI>();
-        }
-
-        private void Start()
-        {
-            if (agent == null)
-                agent = GetComponent<NavMeshAgent>();
+            
+            if (_enemyController == null)
+                Debug.LogError($"EnemyController не найден на {gameObject.name}");
         }
 
         private void OnEnable()
         {
-            _enemyController.OnChase += HandleChase;
+            if (_enemyController != null)
+                _enemyController.OnChase += HandleChase;
         }
 
         private void OnDisable()
         {
-            _enemyController.OnChase -= HandleChase;
+            if (_enemyController != null)
+                _enemyController.OnChase -= HandleChase;
         }
 
         private void FixedUpdate()
         {
-            if (!hasTarget || target == null || !target.gameObject.activeSelf)
+            if (!_isInitialized) return;
+
+            // Проверяем цель
+            if (!_hasTarget || _target == null || !_target.gameObject.activeSelf)
             {
-                state = EnemyState.Idle;
-                //if (agent != null) agent.isStopped = true;
+                if (_currentState != EnemyState.Idle)
+                {
+                    _currentState = EnemyState.Idle;
+                    StopMovement();
+                }
                 return;
             }
 
-            float distanceToTarget = Vector3.Distance(transform.position, target.position);
-            Debug.DrawLine(transform.position, target.position, Color.red);
+            float distanceToTarget = Vector3.Distance(transform.position, _target.position);
+            Debug.DrawLine(transform.position, _target.position, Color.red);
 
-            switch (state)
+            // Обновляем состояние
+            switch (_currentState)
             {
                 case EnemyState.Idle:
-                    state = _enemyAI.UpdateIdle(distanceToTarget, chaseRange, state, agent);
+                    UpdateIdle(distanceToTarget, chaseRange);
                     break;
 
                 case EnemyState.Chase:
-                    state = _enemyAI.UpdateChase(distanceToTarget, attackRange, chaseRange, agent, state, target);
+                    UpdateChase(distanceToTarget, attackRange, chaseRange, _target);
                     break;
 
                 case EnemyState.Attack:
-                    state = _enemyAI.UpdateAttack(distanceToTarget, attackRange, state, agent);
+                    UpdateAttack(distanceToTarget, attackRange);
                     break;
             }
         }
 
-        private void HandleChase(Transform t)
+        private void HandleChase(Transform target)
         {
-            target = t;
-            hasTarget = true;
-            state = EnemyState.Chase;
-
-            Debug.Log(target);
-            if (agent != null)
-            {
-                agent.isStopped = false;
-            }
+            _target = target;
+            _hasTarget = true;
+            _currentState = EnemyState.Chase;
+            ResumeMovement();
         }
-
     }
 }

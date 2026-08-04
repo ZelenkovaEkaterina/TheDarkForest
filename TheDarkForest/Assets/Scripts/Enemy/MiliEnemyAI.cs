@@ -7,90 +7,74 @@ using UnityEngine.AI;
 namespace Enemy
 {
     [RequireComponent(typeof(EnemyController))]
-    [RequireComponent(typeof(EnemyAI))]
-    
-    public class MiliEnemyAI : MonoBehaviour
+   
+    public class MiliEnemyAI : EnemyAI
     {
        [Header("Settings")]
-        public float chaseRange = 10f;
-        public float attackRange = 2f;
+        [SerializeField] private float chaseRange = 10f;
+        [SerializeField] private float attackRange = 2f;
 
-        [Header("References")]
-        private NavMeshAgent agent;
-        private Transform target;
-        private EnemyState state = EnemyState.Idle;
-        private float attackTimer = 0f;
-        private bool hasTarget = false;
-        
-
+        private Transform _target;
+        private bool _hasTarget = false;
         private EnemyController _enemyController;
-        private EnemyAI _enemyAI;
-        
 
-        protected void Awake()
+        protected override void Awake()
         {
-            //agent = _enemyAI.agent;
+            base.Awake();
             _enemyController = GetComponent<EnemyController>();
-            _enemyAI = GetComponent<EnemyAI>();
-        }
-
-        private void Start()
-        {
-            agent = _enemyAI.agent;
-            if (agent == null)
-                agent = GetComponent<NavMeshAgent>();
         }
 
         private void OnEnable()
         {
-            _enemyController.OnChase += HandleChase;
+            if (_enemyController != null)
+                _enemyController.OnChase += HandleChase;
         }
 
         private void OnDisable()
         {
-            _enemyController.OnChase -= HandleChase;
+            if (_enemyController != null)
+                _enemyController.OnChase -= HandleChase;
         }
-        
+
         private void FixedUpdate()
         {
-            if (!hasTarget || target == null || !target.gameObject.activeSelf)
+            if (!_isInitialized) return;
+            
+            if (!_hasTarget || _target == null || !_target.gameObject.activeSelf)
             {
-                state = EnemyState.Idle;
-                //if (agent != null) agent.isStopped = true;
+                if (_currentState != EnemyState.Idle)
+                {
+                    _currentState = EnemyState.Idle;
+                    StopMovement();
+                }
                 return;
             }
+
+            float distanceToTarget = Vector3.Distance(transform.position, _target.position);
+            Debug.DrawLine(transform.position, _target.position, Color.red);
             
-            float distanceToTarget = Vector3.Distance(transform.position, target.position);
-            Debug.DrawLine(transform.position, target.position, Color.red);
-            
-            switch (state)
+            switch (_currentState)
             {
                 case EnemyState.Idle:
-                    state = _enemyAI.UpdateIdle(distanceToTarget, chaseRange, state, agent);
+                    UpdateIdle(distanceToTarget, chaseRange);
                     break;
 
                 case EnemyState.Chase:
-                    state = _enemyAI.UpdateChase(distanceToTarget, attackRange, chaseRange, agent, state, target);
+                    UpdateChase(distanceToTarget, attackRange, chaseRange, _target);
                     break;
 
                 case EnemyState.Attack:
-                    state = _enemyAI.UpdateAttack(distanceToTarget, attackRange, state, agent);
+                    UpdateAttack(distanceToTarget, attackRange);
                     break;
             }
         }
 
-        private void HandleChase(Transform t)
+        private void HandleChase(Transform target)
         {
-            target = t;
-            hasTarget = true;
-            state = EnemyState.Chase;
-            
-            if (agent != null)
-            {
-                agent.isStopped = false;
-            }
+            _target = target;
+            _hasTarget = true;
+            _currentState = EnemyState.Chase;
+            ResumeMovement();
         }
-
-        
     }
 }

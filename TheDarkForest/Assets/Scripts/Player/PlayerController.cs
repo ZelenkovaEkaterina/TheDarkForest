@@ -14,14 +14,14 @@ namespace Player
     }
     public class PlayerController : MonoBehaviour
     {
-        private NavMeshAgent _agent;
+        /*private NavMeshAgent _agent;
         private PlayerMovementComponent playerMovementComponent;
         private PlayerState state = PlayerState.Idle;
 
         private void Awake()
         {
             _agent = playerMovementComponent.agent;
-        }
+        }*/
 
         /*private void FixedUpdate()
         {

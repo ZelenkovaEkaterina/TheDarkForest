@@ -15,97 +15,100 @@ public enum EnemyState
 [RequireComponent(typeof(EnemyPatrol))]
 public class EnemyAI : MonoBehaviour
 {
-    private EnemyPatrol  _enemyPatrol;
-    internal NavMeshAgent agent;
-    
-    private int _currentPatrolIndex = 0;
-    
+    private EnemyPatrol _enemyPatrol;
+    private NavMeshAgent _agent;
+    protected EnemyState _currentState = EnemyState.Idle;
+    protected bool _isInitialized = false;
 
-    private void Awake()
+    /*public NavMeshAgent Agent => _agent;
+    public EnemyState CurrentState => _currentState;*/
+
+    protected virtual void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
+        _agent = GetComponent<NavMeshAgent>();
         _enemyPatrol = GetComponent<EnemyPatrol>();
         
-        _enemyPatrol.SetAgent(agent);
+        if (_enemyPatrol != null)
+            _enemyPatrol.SetAgent(_agent);
+            
+        _isInitialized = true;
     }
 
-    private void Start()
+    protected void Update()
     {
-        if (agent == null)
-            agent = GetComponent<NavMeshAgent>();
+        if (!_isInitialized) return;
         
-        
+        // Если мы в состоянии Idle, обновляем патрулирование
+        if (_currentState == EnemyState.Idle && _enemyPatrol != null)
+        {
+            // _enemyPatrol.UpdatePatrol();
+        }
     }
 
-    public EnemyState UpdateIdle(float distanceToTarget, float chaseRange, EnemyState state, NavMeshAgent agent)
+    protected void UpdateIdle(float distanceToTarget, float chaseRange)
     {
         if (distanceToTarget <= chaseRange)
         {
-            state = EnemyState.Chase;
-            if (agent != null)
-            {
-                agent.isStopped = false;
-            }
+            _currentState = EnemyState.Chase;
+            ResumeMovement();
         }
-        return state;
     }
 
-    public EnemyState UpdateChase(float distanceToTarget,float attackRange, float chaseRange, NavMeshAgent agent, EnemyState state, Transform target)
+    protected void UpdateChase(float distanceToTarget, float attackRange, 
+                                       float chaseRange, Transform target)
     {
-        
+        if (target == null)
+        {
+            _currentState = EnemyState.Idle;
+            StopMovement();
+            return;
+        }
+
         if (distanceToTarget <= attackRange)
         {
-            state = EnemyState.Attack;
-            if (agent != null)
-            {
-                agent.isStopped = true;
-                agent.ResetPath();
-            }
+            _currentState = EnemyState.Attack;
+            StopMovement();
+            Debug.Log("бьют");
         }
-        else if(distanceToTarget > chaseRange)
+        else if (distanceToTarget > chaseRange)
         {
-            state = EnemyState.Idle;
-            if (agent != null)
-            {
-                agent.isStopped = true;
-                agent.ResetPath();
-            }
+            _currentState = EnemyState.Idle;
+            StopMovement();
         }
         else
         {
-            if (agent != null && !agent.isStopped)
-            {
-                //Debug.Log("иду");
-                agent.SetDestination(target.position);
-            }
-            else if (agent != null && agent.isStopped)
-            {
-                //Debug.Log("тоже иду");
-                agent.isStopped = false;
-                agent.SetDestination(target.position);
-            }
+            ResumeMovement();
+            _agent.SetDestination(target.position);
         }
-        
-        return state;
     }
 
-    public EnemyState UpdateAttack(float distanceToTarget,float attackRange, EnemyState state, NavMeshAgent agent)
+    protected void UpdateAttack(float distanceToTarget, float attackRange)
     {
-       // Debug.Log("бьют");
         if (distanceToTarget > attackRange)
         {
-            state = EnemyState.Chase;
-            if (agent != null)
-            {
-               //Debug.Log("снова иду");
-                agent.isStopped = false;
-            }
+            _currentState = EnemyState.Chase;
+            ResumeMovement();
         }
-        return state;
     }
-    
+
+    protected void StopMovement()
+    {
+        if (_agent != null)
+        {
+            _agent.isStopped = true;
+            _agent.ResetPath();
+        }
+    }
+
+    protected void ResumeMovement()
+    {
+        if (_agent != null)
+            _agent.isStopped = false;
+    }
+
     public void SetPatrolPoints(List<Vector3> points)
     {
-        _enemyPatrol.SetPoints(points);
+        if (_enemyPatrol != null)
+            _enemyPatrol.SetPoints(points);
     }
 }

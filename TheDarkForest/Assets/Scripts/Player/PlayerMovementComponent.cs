@@ -6,13 +6,16 @@ namespace Player
 {
     public class PlayerMovementComponent : MonoBehaviour
     {
-        [SerializeField] internal NavMeshAgent agent;
-        internal EnemyState statePlayer;
+        private NavMeshAgent agent;
         [SerializeField] private Camera mainCamera;
-        [SerializeField] private PlayerDamageComponent playerDamageComponent;
+        
+        private PlayerDamageComponent playerDamageComponent;
 
+        [SerializeField] private LayerMask groundLayer;
+        
         private void Awake()
         {
+            agent = GetComponent<NavMeshAgent>();
             playerDamageComponent = GetComponent<PlayerDamageComponent>();
         }
 
@@ -27,10 +30,24 @@ namespace Player
             if (Input.GetMouseButtonDown(0))
             {
                 Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-                //RaycastHit hit;
-                RaycastHit[] hits = Physics.RaycastAll(ray, 100f);
+                RaycastHit hit;
+                //RaycastHit[] hits = Physics.RaycastAll(ray, 100f);
 
-                foreach (RaycastHit hit in hits)
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayer))
+                {
+                    // Проверяем, не нажали ли на врага
+                    if (hit.collider.CompareTag("Enemy"))
+                    {
+                        // Если нажали на врага - атакуем его
+                        Debug.Log("enemy");
+                        playerDamageComponent.AttackEnemy(hit.collider.gameObject);
+                        return;
+                    }
+                
+                    // Иначе двигаемся в точку
+                    agent.SetDestination(hit.point);
+                }
+                /*foreach (RaycastHit hit in hits)
                 {
                     // Опционально: проверка тега или слоя, чтобы не кликать по стенам/врагам
                     if (hits[0].collider.CompareTag("Ground") ||  hits[0].collider.CompareTag("Agro"))
@@ -47,7 +64,7 @@ namespace Player
                         playerDamageComponent.AttackEnemy(hit.collider.gameObject);
                     }
                     Debug.Log(hits[0].collider.name);
-                }
+                }*/
                 
             }
         }

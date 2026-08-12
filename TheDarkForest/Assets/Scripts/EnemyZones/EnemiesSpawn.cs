@@ -47,7 +47,7 @@ public class EnemiesSpawn : MonoBehaviour
       _activeEnemies.AddRange(enemies);
       
       // Получаем точки патрулирования
-      List<Vector3> patrolPoints = _waypoints.GetPatrolPoints();
+      Queue<Vector3> patrolPoints = _waypoints.GetPatrolPoints();
         
       ConfigureEnemies(enemies, near, patrolPoints);
       
@@ -64,7 +64,7 @@ public class EnemiesSpawn : MonoBehaviour
       return null;
    }
 
-   private void ConfigureEnemies(List<GameObject> enemies, int nearCount, List<Vector3> patrolPoints)
+   private void ConfigureEnemies(List<GameObject> enemies, int nearCount, Queue<Vector3> patrolPoints)
    {
       for (int i = 0; i < enemies.Count; i++)
       {

@@ -11,7 +11,8 @@ public class RandomPointInZone : MonoBehaviour
     private float _radius;
     private Vector3 _center;
     
-    public List<Vector3> _coordinates =  new List<Vector3>();
+    //public List<Vector3> _coordinates =  new List<Vector3>();
+    public Queue<Vector3> _coordinates =  new Queue<Vector3>();
     
     private void Awake()
     {
@@ -56,7 +57,7 @@ public class RandomPointInZone : MonoBehaviour
                 if (tooClose)
                     continue;
                 
-                _coordinates.Add(hit.position);
+                _coordinates.Enqueue(hit.position);
                 spawnedCount++;
             }
         }
@@ -64,7 +65,7 @@ public class RandomPointInZone : MonoBehaviour
         //Debug.Log($"Спавнено {spawnedCount} точек с минимальной дистанцией {minDistanceBetweenPoints}.");
     }
     
-    public List<Vector3> GetPatrolPoints()
+    public Queue<Vector3> GetPatrolPoints()
     {
         return _coordinates;
     }

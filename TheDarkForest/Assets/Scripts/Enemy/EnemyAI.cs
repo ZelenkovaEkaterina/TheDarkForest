@@ -106,7 +106,7 @@ public class EnemyAI : MonoBehaviour
             _agent.isStopped = false;
     }
 
-    public void SetPatrolPoints(List<Vector3> points)
+    public void SetPatrolPoints(Queue<Vector3> points)
     {
         if (_enemyPatrol != null)
             _enemyPatrol.SetPoints(points);

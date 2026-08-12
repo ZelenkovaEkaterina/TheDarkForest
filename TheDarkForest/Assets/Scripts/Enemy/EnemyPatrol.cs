@@ -27,7 +27,7 @@ public class EnemyPatrol : MonoBehaviour
         if (!IsActive) return;
         
         if (_sharedWaypoints == null || _sharedWaypoints.Count == 0)
-        {
+        {  
             if (_originalPoints.Count > 0)
             {
                 RestoreWaypoints();

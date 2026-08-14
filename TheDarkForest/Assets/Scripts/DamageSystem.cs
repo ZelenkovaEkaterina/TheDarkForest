@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public interface IDamageble
+public interface IDamageable
 {
     void TakeDamage(int damage, GameObject source);
     bool IsDead();
@@ -11,11 +11,11 @@ public interface IDamageble
 
 public interface IDamageDiller
 {
-    void DealDamage(IDamageble target, int damage);
+    void DealDamage(IDamageable target, int damage);
     int DamageAmount { get; }
 }
 
-public class DamageSystem : MonoBehaviour, IDamageble
+/*public class DamageSystem : MonoBehaviour, IDamageable
 {
     public delegate void DamageHandler(int damage, GameObject source);
 
@@ -48,4 +48,4 @@ public class DamageSystem : MonoBehaviour, IDamageble
     {
         return currentHealth <= 0;
     }
-}
+}*/

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class EnemyDamageableComponent : MonoBehaviour, IDamageble
+public class EnemyDamageableComponent : MonoBehaviour, IDamageable
 {
     private GameObject EnemyDamageable;
     public delegate void DamageHandler(int damage, GameObject source);

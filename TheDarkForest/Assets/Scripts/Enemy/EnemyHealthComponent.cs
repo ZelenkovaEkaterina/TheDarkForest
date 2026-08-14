@@ -1,70 +1,44 @@
 using System;
+using Mono.Cecil;
 using UnityEngine;
 
 
-public class EnemyHealthComponent : MonoBehaviour
+public class EnemyHealthComponent : MonoBehaviour, IDamageable
 {
-    public IDamageble _damagebleEnemy;
-    [SerializeField] private LayerMask _enemyLayerMask;
-    [SerializeField] private float _enemyDistance = .3f;
+    public event Action<int, GameObject> OnDamageTaken;
+    public event Action OnDeath;
+    
+    [SerializeField] private int maxHealth = 100;
+    private int currentHealth;
+    
+    public int MaxHealth => maxHealth;
+    public int CurrentHealth => currentHealth;
 
     private void Awake()
     {
-        _damagebleEnemy = GetComponent<IDamageble>();
+        currentHealth = maxHealth;
     }
 
-    private void Start()
+    public void TakeDamage(int damage, GameObject source)
     {
-        if (_damagebleEnemy is DamageSystem handler)
-        {
-            handler.OnDamageTaken += (damage, source) =>
-            {
-                Debug.Log($"Получен урон {damage}. Текущее здоровье {handler.CurrentHealth}");
-            };
-
-            handler.OnDamageTaken += (damage, source) =>
-            {
-                if (handler.IsDead())
-                {
-                    Debug.Log("Умер");
-                    Destroy(this.gameObject);
-                }
-            };
-        }
+        if (IsDead()) return;
+        
+        currentHealth = Mathf.Max(0, currentHealth - damage);
+        
+        OnDamageTaken?.Invoke(damage, source);
+        
+        if(IsDead()) 
+            OnDeath?.Invoke();
     }
 
-    /*private void Update()
+    public bool IsDead()
     {
-        if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.T) ||
-             Input.GetKeyDown(KeyCode.Y)) && IsPlayer())
-        {
-            //IsEnemy();
-            //_weapon.Attack(null);
-            //Debug.Log(null);
-            _damagebleEnemy?.TakeDamage(10, null);
-        }
-    }*/
-    
-    /*private bool IsPlayer()
+        return currentHealth <= 0;
+    }
+
+    public void Heal(int amount)
     {
-        RaycastHit2D hitRight = Physics2D.Raycast(
-            transform.position,
-            Vector2.right,
-            _enemyDistance,
-            _enemyLayerMask);
-        
-        RaycastHit2D hitLeft = Physics2D.Raycast(
-            transform.position,
-            Vector2.left,
-            _enemyDistance,
-            _enemyLayerMask);
-        //Debug.DrawLine(transform.position, hitLeft.point);
-        if (hitRight.collider || hitLeft.collider)
-        {
-            //Destroy(hit.collider.gameObject, .7f);
-            return true;
-        }
-        
-        return false;
-    }*/
+        if (IsDead()) return;
+        currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
+    }
 }

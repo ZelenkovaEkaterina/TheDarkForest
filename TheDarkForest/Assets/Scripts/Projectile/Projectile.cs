@@ -1,0 +1,94 @@
+using System;
+using UnityEngine;
+
+[RequireComponent(typeof(Rigidbody))]
+public class Projectile : MonoBehaviour, IPoolable
+{
+    [SerializeField] private float _speed = 20f;
+        [SerializeField] private float _lifetime = 3f;
+
+        private Rigidbody _rb;
+        private float _spawnTime = 3f;
+        private bool _returned;
+
+        private Collider _collider;
+        private Collider _ignoreCollider;
+
+        private GameObject _owner;
+        
+
+        public event Action<Projectile> ReturnToPool;
+
+        public float Speed => _speed;
+        public float Lifetime => _lifetime;
+        public GameObject Owner => _owner;
+
+        private void Start()
+        {
+            
+        }
+
+        private void Awake()
+        {
+            _rb = GetComponent<Rigidbody>();
+            _collider = GetComponent<Collider>();
+        }
+
+        private void Update()
+        {
+            if (Time.time - _spawnTime > _lifetime)
+            {
+                ReturnSelf();
+            }
+                
+        }
+
+        public void Initialize(Action<Projectile> returnCallback)
+        {
+            ReturnToPool = returnCallback;
+        }
+
+        public void SetOwner(GameObject owner)
+        {
+            _owner = owner;
+        }
+
+        public void ReturnSelf()
+        {
+            if(_returned) return;
+            
+            ReturnToPool?.Invoke(this);
+            _returned = true;
+        }
+
+        public void OnSpawn()
+        {
+            _returned = false;
+            _spawnTime = Time.time;
+            _rb.linearVelocity = transform.forward * _speed;
+        }
+
+        public void OnDespawn()
+        {
+            _rb.linearVelocity = Vector3.zero;
+            if (_ignoreCollider)
+            {
+                Physics.IgnoreCollision(_ignoreCollider,  _collider, false);
+                _ignoreCollider = null;
+            }
+        }
+
+        /*private void OnTriggerExit(Collider other)
+        {
+            if(other.CompareTag("Boundary"))
+            {
+                ReturnSelf();
+            }
+        }*/
+
+        public void IgnoreOwnerCollision(Collider owner)
+        {
+            _ignoreCollider = owner;
+            Physics.IgnoreCollision(owner, _collider, false);
+        }
+}

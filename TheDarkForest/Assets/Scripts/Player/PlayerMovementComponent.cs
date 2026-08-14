@@ -6,12 +6,19 @@ namespace Player
 {
     public class PlayerMovementComponent : MonoBehaviour
     {
+        internal event Action<bool> OnFire;
+        
         private NavMeshAgent agent;
         [SerializeField] private Camera mainCamera;
         
         private PlayerDamageComponent playerDamageComponent;
+        [SerializeField] private Transform _spawnPoint;
 
         [SerializeField] private LayerMask groundLayer;
+        
+        private ProjectilePool<Projectile> _shotPool;
+        [SerializeField] private float _fireRate = 0.5f;
+        private float _nextFireTime;
         
         private void Awake()
         {
@@ -24,6 +31,11 @@ namespace Player
             if (agent == null) agent = GetComponent<NavMeshAgent>();
             if (mainCamera == null) mainCamera = Camera.main;
         }
+        
+        public void Init (ProjectilePool<Projectile> shotPool)
+        {
+            _shotPool = shotPool;
+        }
 
         private void Update()
         {
@@ -31,42 +43,39 @@ namespace Player
             {
                 Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
-                //RaycastHit[] hits = Physics.RaycastAll(ray, 100f);
 
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayer))
                 {
-                    // Проверяем, не нажали ли на врага
                     if (hit.collider.CompareTag("Enemy"))
                     {
-                        // Если нажали на врага - атакуем его
-                        Debug.Log("enemy");
-                        playerDamageComponent.AttackEnemy(hit.collider.gameObject);
+                        HandleFire(true);
+                        //playerDamageComponent.AttackEnemy(hit.collider.gameObject);
                         return;
                     }
                 
                     // Иначе двигаемся в точку
                     agent.SetDestination(hit.point);
                 }
-                /*foreach (RaycastHit hit in hits)
-                {
-                    // Опционально: проверка тега или слоя, чтобы не кликать по стенам/врагам
-                    if (hits[0].collider.CompareTag("Ground") ||  hits[0].collider.CompareTag("Agro"))
-                    {
-                        //statePlayer = PlayerState.Idle;
-                        agent.isStopped = false;
-                        agent.SetDestination(hit.point);
-                    }
-
-                    if (hits[0].collider.CompareTag("Enemy"))
-                    {
-                        //statePlayer = PlayerState.Attack;
-                        agent.isStopped = true;
-                        playerDamageComponent.AttackEnemy(hit.collider.gameObject);
-                    }
-                    Debug.Log(hits[0].collider.name);
-                }*/
-                
             }
+        }
+        
+        private void HandleFire(bool ctx)
+        {
+            if(Time.time < _nextFireTime) return;
+
+            _nextFireTime = Time.time + _fireRate;
+
+            Projectile shot = _shotPool.Get();
+            shot.ReturnToPool += OnDespawn;
+            shot.transform.SetPositionAndRotation(_spawnPoint.position, _spawnPoint.rotation);
+            shot.OnSpawn();
+        }
+
+        private void OnDespawn(Projectile obj)
+        {
+            obj.OnDespawn();
+            obj.ReturnToPool -= OnDespawn;
+            _shotPool.Return(obj);
         }
     }
 }

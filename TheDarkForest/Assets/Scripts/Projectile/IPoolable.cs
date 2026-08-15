@@ -2,6 +2,6 @@ using UnityEngine;
 
 public interface IPoolable
 {
-    void OnSpawn();
+    void OnSpawn(Vector3 target);
     void OnDespawn();
 }

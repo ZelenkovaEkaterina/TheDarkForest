@@ -19,6 +19,7 @@ namespace Player
         private ProjectilePool<Projectile> _shotPool;
         [SerializeField] private float _fireRate = 0.5f;
         private float _nextFireTime;
+        [SerializeField]private float _attackRange = 5f;
         
         private void Awake()
         {
@@ -46,9 +47,12 @@ namespace Player
 
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayer))
                 {
-                    if (hit.collider.CompareTag("Enemy"))
+                    float distanceToTarget = Vector3.Distance(transform.position, hit.transform.position);
+                    
+                    if (hit.collider.CompareTag("Enemy") && distanceToTarget <= _attackRange)
                     {
-                        HandleFire(true);
+                        Debug.Log("выстрел");
+                        HandleFire(hit.transform.position);
                         //playerDamageComponent.AttackEnemy(hit.collider.gameObject);
                         return;
                     }
@@ -59,7 +63,7 @@ namespace Player
             }
         }
         
-        private void HandleFire(bool ctx)
+        private void HandleFire(Vector3 target)
         {
             if(Time.time < _nextFireTime) return;
 
@@ -68,7 +72,7 @@ namespace Player
             Projectile shot = _shotPool.Get();
             shot.ReturnToPool += OnDespawn;
             shot.transform.SetPositionAndRotation(_spawnPoint.position, _spawnPoint.rotation);
-            shot.OnSpawn();
+            shot.OnSpawn(target);
         }
 
         private void OnDespawn(Projectile obj)

@@ -1,10 +1,9 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class Projectile : MonoBehaviour, IPoolable
 {
-    [SerializeField] private float _speed = 20f;
+    [SerializeField] private float _speed = 50f;
         [SerializeField] private float _lifetime = 3f;
 
         private Rigidbody _rb;
@@ -61,11 +60,11 @@ public class Projectile : MonoBehaviour, IPoolable
             _returned = true;
         }
 
-        public void OnSpawn()
+        public void OnSpawn(Vector3 target)
         {
             _returned = false;
             _spawnTime = Time.time;
-            _rb.linearVelocity = transform.forward * _speed;
+            _rb.linearVelocity = (target - transform.position).normalized * _speed;
         }
 
         public void OnDespawn()
@@ -78,13 +77,13 @@ public class Projectile : MonoBehaviour, IPoolable
             }
         }
 
-        /*private void OnTriggerExit(Collider other)
+        private void OnTriggerExit(Collider other)
         {
-            if(other.CompareTag("Boundary"))
+            if(other.CompareTag("Enemy"))
             {
                 ReturnSelf();
             }
-        }*/
+        }
 
         public void IgnoreOwnerCollision(Collider owner)
         {

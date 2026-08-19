@@ -15,12 +15,15 @@ public class Projectile : MonoBehaviour, IPoolable
 
         private GameObject _owner;
         
+        private int _damage = 10;
+        
 
         public event Action<Projectile> ReturnToPool;
 
         public float Speed => _speed;
         public float Lifetime => _lifetime;
         public GameObject Owner => _owner;
+        public int  Damage => _damage;
 
         private void Start()
         {

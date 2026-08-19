@@ -15,7 +15,7 @@ MonoBehaviour:
   Settings:
     Items:
     - Id: 0
-      NearEnemiesCount: 3
+      NearEnemiesCount: 1
       RangeEnemiesCount: 0
     - Id: 1
       NearEnemiesCount: 2

@@ -11,7 +11,7 @@ namespace Player
         private NavMeshAgent agent;
         [SerializeField] private Camera mainCamera;
         
-        private PlayerDamageComponent playerDamageComponent;
+        //private PlayerDamageComponent playerDamageComponent;
         [SerializeField] private Transform _spawnPoint;
 
         [SerializeField] private LayerMask groundLayer;
@@ -24,7 +24,7 @@ namespace Player
         private void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
-            playerDamageComponent = GetComponent<PlayerDamageComponent>();
+            //playerDamageComponent = GetComponent<PlayerDamageComponent>();
         }
 
         private void Start()
@@ -44,17 +44,40 @@ namespace Player
             {
                 Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
-
+                
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayer))
                 {
+                    Debug.Log(hit.collider.name);
+                    Debug.Log($"Layer: {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
+                    Debug.Log($"Tag: {hit.collider.gameObject.tag}");
                     float distanceToTarget = Vector3.Distance(transform.position, hit.transform.position);
-                    
-                    if (hit.collider.CompareTag("Enemy") && distanceToTarget <= _attackRange)
+                    /*if (hit.collider.CompareTag("Enemy"))
                     {
-                        Debug.Log("выстрел");
-                        HandleFire(hit.transform.position);
+                        Debug.Log(distanceToTarget);
+                    }*/
+                    //Debug.Log(hit.collider.name);
+                    
+                    if (hit.collider.gameObject.activeInHierarchy && hit.collider.CompareTag("Enemy"))
+                    //if (hit.collider.TryGetComponent<EnemyHealthComponent>(out var enemyHealth))
+                    {
+                        if (hit.collider == null || !hit.collider.gameObject.activeInHierarchy)
+                            return;
+                        if (distanceToTarget > _attackRange)
+                        {
+                            agent.SetDestination(hit.transform.position);
+                            agent.stoppingDistance = _attackRange;
+                        }
+                        else
+                        {
+                            agent.isStopped = true;
+                            agent.ResetPath();
+                            Debug.Log("выстрел");
+                            HandleFire(hit.transform.position);
+                        }
+                        
                         //playerDamageComponent.AttackEnemy(hit.collider.gameObject);
                         return;
+                        
                     }
                 
                     // Иначе двигаемся в точку

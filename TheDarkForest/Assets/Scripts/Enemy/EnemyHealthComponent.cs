@@ -1,5 +1,4 @@
 using System;
-using Mono.Cecil;
 using UnityEngine;
 
 
@@ -27,8 +26,10 @@ public class EnemyHealthComponent : MonoBehaviour, IDamageable
         
         OnDamageTaken?.Invoke(damage, source);
         
-        if(IsDead()) 
-            OnDeath?.Invoke();
+        /*if(IsDead()) 
+            gameObject.SetActive(false);*/
+            //OnDeath?.Invoke();
+        
     }
 
     public bool IsDead()
@@ -36,9 +37,19 @@ public class EnemyHealthComponent : MonoBehaviour, IDamageable
         return currentHealth <= 0;
     }
 
-    public void Heal(int amount)
+    private void OnTriggerEnter(Collider other)
     {
-        if (IsDead()) return;
-        currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
+        if (other.gameObject.TryGetComponent<Projectile>(out Projectile projectile))
+        {
+            if (projectile.Owner == gameObject) return;
+            
+            //TakeDamage(projectile.Damage, projectile.Owner);
+        }
     }
+    
+    /*private void OnDestroy()
+    {
+        OnDamageTaken = null;
+        OnDeath = null;
+    }*/
 }

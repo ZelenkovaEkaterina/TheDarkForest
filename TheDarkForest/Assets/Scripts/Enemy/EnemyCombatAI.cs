@@ -1,18 +1,14 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
-namespace Enemy
+public class EnemyCombatAI : EnemyAI
 {
-    [RequireComponent(typeof(EnemyController))]
-   
-    public class MiliEnemyAI : EnemyAI
-    {
-       [Header("Settings")]
-        [SerializeField] private float chaseRange = 10f;
-        [SerializeField] private float attackRange = 2f;
+    [Header("Settings")]
+        [SerializeField] protected float chaseRange = 10f;
+        [SerializeField] protected float attackRange = 2f;
+        
+        [SerializeField] private float attackCooldown = 1.5f;
+        private bool _canAttack = true;
 
         private Transform _target;
         private bool _hasTarget = false;
@@ -65,6 +61,11 @@ namespace Enemy
 
                 case EnemyState.Attack:
                     UpdateAttack(distanceToTarget, attackRange);
+                    if (_canAttack)
+                    {
+                        PerformAttack();
+                        StartCoroutine(AttackCooldownRoutine());
+                    }
                     break;
             }
         }
@@ -75,6 +76,16 @@ namespace Enemy
             _hasTarget = true;
             _currentState = EnemyState.Chase;
             ResumeMovement();
+            _canAttack =  true;
+            StopAllCoroutines();
         }
-    }
+
+        protected virtual void PerformAttack(){}
+
+        private IEnumerator AttackCooldownRoutine()
+        {
+            _canAttack = false;
+            yield return new WaitForSeconds(attackCooldown);
+            _canAttack = true;
+        }
 }

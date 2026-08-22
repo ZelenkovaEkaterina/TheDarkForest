@@ -19,7 +19,7 @@ namespace Player
         private ProjectilePool<Projectile> _shotPool;
         [SerializeField] private float _fireRate = 0.5f;
         private float _nextFireTime;
-        [SerializeField]private float _attackRange = 5f;
+        [SerializeField]private float _attackRange = 10f;
         
         private void Awake()
         {
@@ -47,9 +47,6 @@ namespace Player
                 
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayer))
                 {
-                    Debug.Log(hit.collider.name);
-                    Debug.Log($"Layer: {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
-                    Debug.Log($"Tag: {hit.collider.gameObject.tag}");
                     float distanceToTarget = Vector3.Distance(transform.position, hit.transform.position);
                     /*if (hit.collider.CompareTag("Enemy"))
                     {
@@ -71,7 +68,6 @@ namespace Player
                         {
                             agent.isStopped = true;
                             agent.ResetPath();
-                            Debug.Log("выстрел");
                             HandleFire(hit.transform.position);
                         }
                         

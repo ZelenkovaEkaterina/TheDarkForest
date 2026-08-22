@@ -25,11 +25,12 @@ public class EnemyHealthComponent : MonoBehaviour, IDamageable
         currentHealth = Mathf.Max(0, currentHealth - damage);
         
         OnDamageTaken?.Invoke(damage, source);
-        
-        /*if(IsDead()) 
-            gameObject.SetActive(false);*/
-            //OnDeath?.Invoke();
-        
+Debug.Log(currentHealth);
+        if (IsDead())
+        {
+            //gameObject.SetActive(false);
+            OnDeath?.Invoke();
+        }
     }
 
     public bool IsDead()
@@ -43,13 +44,13 @@ public class EnemyHealthComponent : MonoBehaviour, IDamageable
         {
             if (projectile.Owner == gameObject) return;
             
-            //TakeDamage(projectile.Damage, projectile.Owner);
+            TakeDamage(projectile.Damage, projectile.Owner);
         }
     }
     
-    /*private void OnDestroy()
+    private void OnDestroy()
     {
         OnDamageTaken = null;
         OnDeath = null;
-    }*/
+    }
 }

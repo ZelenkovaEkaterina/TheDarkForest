@@ -20,7 +20,7 @@ public class EnemyPatrol : MonoBehaviour
     private bool _isWaiting = false;
     private NavMeshAgent _agent;
 
-    public bool IsActive { get; private set; }
+    public bool IsActive;
 
     private void FixedUpdate()
     {

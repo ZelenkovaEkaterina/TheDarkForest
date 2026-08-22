@@ -79,9 +79,10 @@ public class EnemiesSpawn : MonoBehaviour
          if (miliCounter <= nearCount-1 && nearCount != 0)
          {
             GameObject enemy = enemies[i];
-            MiliEnemyAI miliEnemyScript = enemy.AddComponent<MiliEnemyAI>();
+            MeleeEnemyAI meleeEnemyScript = enemy.AddComponent<MeleeEnemyAI>();
             EnemyAI enemyAI = enemy.AddComponent<EnemyAI>();
-            if (miliEnemyScript != null && patrolPoints.Count > 0)
+            EnemyCombatAI enemyCombatAI = enemy.AddComponent<EnemyCombatAI>();
+            if (meleeEnemyScript != null && patrolPoints.Count > 0)
             {
                enemyAI.SetPatrolPoints(patrolPoints);
             }

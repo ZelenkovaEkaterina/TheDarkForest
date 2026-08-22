@@ -8,16 +8,16 @@ namespace Enemy
 {
     [RequireComponent(typeof(EnemyController))]
    
-    public class RangeEnemyAI : EnemyCombatAI
+    public class MeleeEnemyAI : EnemyCombatAI
     {
         protected override void Awake()
         {
             base.Awake();
-            attackRange = 6f;
+            attackRange = 2f;
         }
         protected override void PerformAttack()
         {
-            Debug.Log("стреляют");
+            Debug.Log("бьют");
             // Здесь вызывается настоящая атака (например, через EnemyController)
         }
     }

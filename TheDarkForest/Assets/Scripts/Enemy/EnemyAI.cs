@@ -13,36 +13,47 @@ public enum EnemyState
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(EnemyPatrol))]
+[RequireComponent(typeof(EnemyHealthComponent))]
 public class EnemyAI : MonoBehaviour
 {
+    private EnemyHealthComponent _enemyHealthComponent;
     private EnemyPatrol _enemyPatrol;
     private NavMeshAgent _agent;
     protected EnemyState _currentState = EnemyState.Idle;
     protected bool _isInitialized = false;
 
-    /*public NavMeshAgent Agent => _agent;
-    public EnemyState CurrentState => _currentState;*/
-
     protected virtual void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _enemyPatrol = GetComponent<EnemyPatrol>();
+        _enemyHealthComponent = GetComponent<EnemyHealthComponent>();
         
         if (_enemyPatrol != null)
             _enemyPatrol.SetAgent(_agent);
             
         _isInitialized = true;
     }
-
+    
     protected void Update()
     {
         if (!_isInitialized) return;
-        
-        // Если мы в состоянии Idle, обновляем патрулирование
-        if (_currentState == EnemyState.Idle && _enemyPatrol != null)
-        {
-            // _enemyPatrol.UpdatePatrol();
-        }
+    }
+
+    private void OnEnable()
+    {
+        _enemyHealthComponent.OnDeath += Death;
+    }
+
+    private void OnDisable()
+    {
+        _enemyHealthComponent.OnDeath -= Death;
+    }
+
+    private void Death()
+    {
+        //_currentState = EnemyState.Dead;
+        gameObject.SetActive(false);
+        StopAllCoroutines();
     }
 
     protected void UpdateIdle(float distanceToTarget, float chaseRange)
@@ -50,6 +61,7 @@ public class EnemyAI : MonoBehaviour
         if (distanceToTarget <= chaseRange)
         {
             _currentState = EnemyState.Chase;
+            _enemyPatrol.IsActive = false;
             ResumeMovement();
         }
     }
@@ -60,6 +72,7 @@ public class EnemyAI : MonoBehaviour
         if (target == null)
         {
             _currentState = EnemyState.Idle;
+            _enemyPatrol.IsActive = true;
             StopMovement();
             return;
         }
@@ -67,12 +80,14 @@ public class EnemyAI : MonoBehaviour
         if (distanceToTarget <= attackRange)
         {
             _currentState = EnemyState.Attack;
+            _enemyPatrol.IsActive = false;
             StopMovement();
-            Debug.Log("бьют");
+            
         }
         else if (distanceToTarget > chaseRange)
         {
             _currentState = EnemyState.Idle;
+            _enemyPatrol.IsActive = true;
             StopMovement();
         }
         else
@@ -87,6 +102,7 @@ public class EnemyAI : MonoBehaviour
         if (distanceToTarget > attackRange)
         {
             _currentState = EnemyState.Chase;
+            _enemyPatrol.IsActive = false;
             ResumeMovement();
         }
     }

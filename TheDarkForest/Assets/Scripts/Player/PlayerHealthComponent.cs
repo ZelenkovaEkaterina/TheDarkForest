@@ -1,19 +1,17 @@
-/*
 using UnityEngine;
 
-public class PlayerHealthComponent : MonoBehaviour, IDamageable
+public class PlayerHealthComponent : HealthSystem
 {
-    public void TakeDamage(int damage, GameObject source)
+    protected override void Die()
     {
-        
+        Debug.Log("ты сдох");
     }
-
-    public bool IsDead()
+    private void OnCollisionStay(Collision other)
     {
-        return currentHealth <= 0;
+        if (other.gameObject.tag == "Enemy")
+        {
+            TakeDamage(5, other.gameObject);
+            Debug.Log(currentHealth);
+        }
     }
-
-    public int CurrentHealth { get; }
-    public int MaxHealth { get; }
 }
-*/

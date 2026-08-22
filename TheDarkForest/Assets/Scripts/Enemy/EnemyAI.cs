@@ -52,7 +52,7 @@ public class EnemyAI : MonoBehaviour
     private void Death()
     {
         //_currentState = EnemyState.Dead;
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
         StopAllCoroutines();
     }
 

@@ -301,9 +301,8 @@ GameObject:
   - component: {fileID: 409476928}
   - component: {fileID: 409476931}
   - component: {fileID: 409476933}
-  - component: {fileID: 409476936}
+  - component: {fileID: 409476934}
   - component: {fileID: 409476932}
-  - component: {fileID: 409476935}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -475,7 +474,7 @@ MonoBehaviour:
     m_Bits: 72
   _fireRate: 0.5
   _attackRange: 10
---- !u!114 &409476935
+--- !u!114 &409476934
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -484,21 +483,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 409476926}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8b458cdae77f064f80badca3c23c90e, type: 3}
+  m_Script: {fileID: 11500000, guid: 3c56ee69631affb4eb26f4b3a2724124, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerDamageComponent
---- !u!114 &409476936
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 409476926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8b458cdae77f064f80badca3c23c90e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerDamageComponent
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthComponent
+  maxHealth: 100
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0

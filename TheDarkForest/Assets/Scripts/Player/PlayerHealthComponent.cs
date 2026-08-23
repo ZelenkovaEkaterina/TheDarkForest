@@ -18,9 +18,11 @@ public class PlayerHealthComponent : HealthSystem
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.TryGetComponent<Projectile>(out var projectile)) return;
-        if (projectile.Owner == gameObject) return; // не раним себя
+        if (other.TryGetComponent<Projectile>(out var projectile))
+        {
+            if (projectile.Owner == gameObject) return; // не раним себя
 
-        TakeDamage(projectile.Damage, projectile.Owner);
+            TakeDamage(projectile.Damage, projectile.Owner);
+        }
     }
 }

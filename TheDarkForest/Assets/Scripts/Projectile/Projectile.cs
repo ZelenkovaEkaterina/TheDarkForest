@@ -82,11 +82,7 @@ public class Projectile : MonoBehaviour, IPoolable
 
         private void OnTriggerExit(Collider other)
         {
-            /*if(other.CompareTag("Enemy"))
-            {
                 ReturnSelf();
-            }*/
-            
         }
         
 

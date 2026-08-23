@@ -474,6 +474,7 @@ MonoBehaviour:
     m_Bits: 72
   _fireRate: 0.5
   _attackRange: 10
+  _gameController: {fileID: 0}
 --- !u!114 &409476934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -722,7 +723,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameController
   _playerShotPrefab: {fileID: 5437011746929177416, guid: ef9be7333082ba340aca5bc357e34bf9, type: 3}
-  _enemyShotPrefab: {fileID: 5437011746929177416, guid: ef9be7333082ba340aca5bc357e34bf9, type: 3}
+  _enemyShotPrefab: {fileID: 5437011746929177416, guid: 94866dbfd3d27cb49b9a7e731abd7c45, type: 3}
   _player: {fileID: 409476933}
   _playerShotParent: {fileID: 120123315}
   _enemyShotParent: {fileID: 1202201489}
@@ -841,6 +842,10 @@ PrefabInstance:
       propertyPath: _poolManager
       value: 
       objectReference: {fileID: 1118336975}
+    - target: {fileID: 5234137993107540166, guid: 1b21ff14cda357c4386053b542dc032a, type: 3}
+      propertyPath: _projectileController
+      value: 
+      objectReference: {fileID: 1070096602}
     - target: {fileID: 5955433176970313456, guid: 1b21ff14cda357c4386053b542dc032a, type: 3}
       propertyPath: m_Radius
       value: 12.145555

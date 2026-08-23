@@ -82,15 +82,19 @@ public class Projectile : MonoBehaviour, IPoolable
 
         private void OnTriggerExit(Collider other)
         {
-            if(other.CompareTag("Enemy"))
+            /*if(other.CompareTag("Enemy"))
             {
                 ReturnSelf();
-            }
+            }*/
+            
         }
+        
 
         public void IgnoreOwnerCollision(Collider owner)
         {
+            if (owner == null) return;
+            
             _ignoreCollider = owner;
-            Physics.IgnoreCollision(owner, _collider, false);
+            Physics.IgnoreCollision(owner, _collider, true);
         }
 }

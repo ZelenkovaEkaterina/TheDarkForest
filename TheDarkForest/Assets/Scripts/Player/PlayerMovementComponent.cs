@@ -20,10 +20,13 @@ namespace Player
         [SerializeField] private float _fireRate = 0.5f;
         private float _nextFireTime;
         [SerializeField]private float _attackRange = 10f;
-        
+
+        [SerializeField]private GameObject _gameController;
+        private DamageSystem  _damageSystem;
         private void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
+            //_damageSystem =_gameController.GetComponent<DamageSystem>();
             //playerDamageComponent = GetComponent<PlayerDamageComponent>();
         }
 
@@ -68,6 +71,7 @@ namespace Player
                         {
                             agent.isStopped = true;
                             agent.ResetPath();
+                            
                             HandleFire(hit.transform.position);
                         }
                         
@@ -89,6 +93,8 @@ namespace Player
             _nextFireTime = Time.time + _fireRate;
 
             Projectile shot = _shotPool.Get();
+            shot.SetOwner(gameObject);
+            shot.IgnoreOwnerCollision(GetComponent<Collider>());
             shot.ReturnToPool += OnDespawn;
             shot.transform.SetPositionAndRotation(_spawnPoint.position, _spawnPoint.rotation);
             shot.OnSpawn(target);

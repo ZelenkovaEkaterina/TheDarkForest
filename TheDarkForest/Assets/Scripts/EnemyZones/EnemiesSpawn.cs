@@ -13,6 +13,8 @@ public class EnemiesSpawn : MonoBehaviour
    [SerializeField] private PoolManager _poolManager;
    private GameObjectPool _pool;
    private RandomPointInZone _waypoints;
+   
+   [SerializeField] private ProjectileController _projectileController; 
 
    private float _radius;
    private Vector3 _center;
@@ -72,22 +74,23 @@ public class EnemiesSpawn : MonoBehaviour
          enemy.transform.position = transform.position + GetRandomPointInSphere(_center, _radius);
       }
 
-      int miliCounter = 0;
+      int meleeCounter = 0;
 
       for (int i = 0; i < enemies.Count; i++)
       {
-         if (miliCounter <= nearCount-1 && nearCount != 0)
+         if (meleeCounter <= nearCount-1 && nearCount != 0)
          {
             GameObject enemy = enemies[i];
             MeleeEnemyAI meleeEnemyScript = enemy.AddComponent<MeleeEnemyAI>();
             EnemyAI enemyAI = enemy.AddComponent<EnemyAI>();
             EnemyCombatAI enemyCombatAI = enemy.AddComponent<EnemyCombatAI>();
+            EnemyWeapon enemyWeapon = enemy.AddComponent<EnemyWeapon>();
             if (meleeEnemyScript != null && patrolPoints.Count > 0)
             {
                enemyAI.SetPatrolPoints(patrolPoints);
             }
 
-            miliCounter++;
+            meleeCounter++;
          }
          else
          {
@@ -98,9 +101,12 @@ public class EnemiesSpawn : MonoBehaviour
             {
                enemyAI.SetPatrolPoints(patrolPoints);
             }
+            
+            if (rangeEnemyScript != null && _projectileController != null)
+            {
+               rangeEnemyScript.InitializeProjectilePool(_projectileController.EnemyShotPool);
+            }
          }
-
-         
       }
 
       /*for (int i = 0; i < nearCount; i++) //добавляем скрипт ближних врагов

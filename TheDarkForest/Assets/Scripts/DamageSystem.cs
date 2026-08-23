@@ -9,43 +9,31 @@ public interface IDamageable
     int MaxHealth {get;}
 }
 
-public interface IDamageDiller
+public interface IDamageDealer
 {
     void DealDamage(IDamageable target, int damage);
     int DamageAmount { get; }
 }
 
-/*public class DamageSystem : MonoBehaviour, IDamageable
+public class DamageSystem : MonoBehaviour
 {
-    public delegate void DamageHandler(int damage, GameObject source);
-
-    public DamageHandler OnDamageTaken;
-    public DamageHandler OnDamageDealt;
-
-    [SerializeField] private int maxHealth = 100;
-    private int currentHealth;
-
-    public int MaxHealth => maxHealth;
-    public int CurrentHealth => currentHealth;
-
-    //public int health = 100;
-
-    private void Awake()
+    /*private ProjectilePool<Projectile> _shotPool;
+    public ProjectilePool<Projectile> ShotPool => _shotPool;
+    [SerializeField] private Transform _spawnPoint;
+    public Transform SpawnPoint => _spawnPoint;
+    
+    public void HandleFire(Vector3 target)
     {
-        currentHealth = maxHealth;
+        Projectile shot = _shotPool.Get();
+        shot.ReturnToPool += OnDespawn;
+        shot.transform.SetPositionAndRotation(_spawnPoint.position, _spawnPoint.rotation);
+        shot.OnSpawn(target);
     }
-
-    public void TakeDamage(int damage, GameObject source)
+    
+    private void OnDespawn(Projectile obj)
     {
-        if (IsDead()) return;
-             
-        //currentHealth -= Mathf.Max(0,currentHealth - damage);
-        currentHealth -= damage;
-        OnDamageTaken?.Invoke(damage, source); 
-    }
-
-    public bool IsDead()
-    {
-        return currentHealth <= 0;
-    }
-}*/
+        obj.OnDespawn();
+        obj.ReturnToPool -= OnDespawn;
+        _shotPool.Return(obj);
+    }*/
+}

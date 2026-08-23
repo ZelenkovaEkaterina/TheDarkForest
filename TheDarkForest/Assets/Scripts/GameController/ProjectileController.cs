@@ -22,6 +22,8 @@ using UnityEngine.SceneManagement;
 
         private ProjectilePool<Projectile> _playerShotPool;
         private ProjectilePool<Projectile> _enemyShotPool;
+        
+        public ProjectilePool<Projectile> EnemyShotPool => _enemyShotPool;
 
         private Coroutine _gameLoop;
 

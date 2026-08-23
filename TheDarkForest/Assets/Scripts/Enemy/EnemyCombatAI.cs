@@ -11,6 +11,7 @@ public class EnemyCombatAI : EnemyAI
         private bool _canAttack = true;
 
         private Transform _target;
+        protected Transform Target => _target;
         private bool _hasTarget = false;
         private EnemyController _enemyController;
 

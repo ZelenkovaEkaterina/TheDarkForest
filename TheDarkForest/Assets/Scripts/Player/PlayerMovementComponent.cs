@@ -101,6 +101,13 @@ namespace Player
             
             _currentPlayerState = PlayerState.Attack;
             _hasAttacked = true;
+            
+            Vector3 directionToTarget = (target - transform.position).normalized;
+            directionToTarget.y = 0; // игнорируем вертикаль
+            if (directionToTarget != Vector3.zero)
+            {
+                transform.rotation = Quaternion.LookRotation(directionToTarget);
+            }
         }
 
         private void OnDespawn(Projectile obj)

@@ -6,8 +6,6 @@ namespace Player
 {
     public class PlayerMovementComponent : MonoBehaviour
     {
-
-        
         private PlayerController _playerController;
         private PlayerState _currentPlayerState;
         public PlayerState State => _currentPlayerState;

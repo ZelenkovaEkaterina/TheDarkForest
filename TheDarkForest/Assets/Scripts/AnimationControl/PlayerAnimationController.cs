@@ -17,18 +17,25 @@ public class PlayerAnimationController : MonoBehaviour
     {
         _playerController.OnRun += HandleRun;
         _playerController.OnFire += HandleFire;
+        _playerController.OnDeath += HandleDeath;
     }
 
     private void OnDisable()
     {
         _playerController.OnRun -= HandleRun;
         _playerController.OnFire -= HandleFire;
+        _playerController.OnDeath -= HandleDeath;
+    }
+
+    private void HandleDeath(bool obj)
+    {
+        _animator.SetBool("Dead", obj);
+        Debug.Log("ded");
     }
 
     private void HandleFire(bool obj)
     {
         _animator.SetBool("Fire", obj);
-        Debug.Log("Fire");
     }
 
     private void HandleRun(bool obj)

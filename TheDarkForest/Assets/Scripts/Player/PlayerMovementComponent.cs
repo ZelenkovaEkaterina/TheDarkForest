@@ -6,12 +6,15 @@ namespace Player
 {
     public class PlayerMovementComponent : MonoBehaviour
     {
-        internal event Action<bool> OnFire;
+
+        
+        private PlayerController _playerController;
+        private PlayerState _currentPlayerState;
+        public PlayerState State => _currentPlayerState;
         
         private NavMeshAgent agent;
         [SerializeField] private Camera mainCamera;
         
-        //private PlayerDamageComponent playerDamageComponent;
         [SerializeField] private Transform _spawnPoint;
 
         [SerializeField] private LayerMask groundLayer;
@@ -23,17 +26,21 @@ namespace Player
 
         [SerializeField]private GameObject _gameController;
         private DamageSystem  _damageSystem;
+        
+        private bool _hasAttacked;
+        
         private void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
-            //_damageSystem =_gameController.GetComponent<DamageSystem>();
-            //playerDamageComponent = GetComponent<PlayerDamageComponent>();
+            _playerController = GetComponent<PlayerController>();
+            _currentPlayerState = PlayerState.Idle;
         }
 
         private void Start()
         {
             if (agent == null) agent = GetComponent<NavMeshAgent>();
             if (mainCamera == null) mainCamera = Camera.main;
+            
         }
         
         public void Init (ProjectilePool<Projectile> shotPool)
@@ -43,6 +50,7 @@ namespace Player
 
         private void Update()
         {
+            UpdateState();
             if (Input.GetMouseButtonDown(0))
             {
                 Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -51,14 +59,9 @@ namespace Player
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayer))
                 {
                     float distanceToTarget = Vector3.Distance(transform.position, hit.transform.position);
-                    /*if (hit.collider.CompareTag("Enemy"))
-                    {
-                        Debug.Log(distanceToTarget);
-                    }*/
-                    //Debug.Log(hit.collider.name);
+
                     
                     if (hit.collider.gameObject.activeInHierarchy && hit.collider.CompareTag("Enemy"))
-                    //if (hit.collider.TryGetComponent<EnemyHealthComponent>(out var enemyHealth))
                     {
                         if (hit.collider == null || !hit.collider.gameObject.activeInHierarchy)
                             return;
@@ -71,16 +74,13 @@ namespace Player
                         {
                             agent.isStopped = true;
                             agent.ResetPath();
-                            
+                            _currentPlayerState = PlayerState.Attack;
                             HandleFire(hit.transform.position);
                         }
-                        
-                        //playerDamageComponent.AttackEnemy(hit.collider.gameObject);
                         return;
-                        
                     }
-                
-                    // Иначе двигаемся в точку
+                    
+                    agent.isStopped = false;
                     agent.SetDestination(hit.point);
                 }
             }
@@ -98,6 +98,9 @@ namespace Player
             shot.ReturnToPool += OnDespawn;
             shot.transform.SetPositionAndRotation(_spawnPoint.position, _spawnPoint.rotation);
             shot.OnSpawn(target);
+            
+            _currentPlayerState = PlayerState.Attack;
+            _hasAttacked = true;
         }
 
         private void OnDespawn(Projectile obj)
@@ -105,6 +108,27 @@ namespace Player
             obj.OnDespawn();
             obj.ReturnToPool -= OnDespawn;
             _shotPool.Return(obj);
+        }
+
+        private void UpdateState()
+        {
+            if (_currentPlayerState == PlayerState.Attack)
+            {
+                if (_hasAttacked)
+                {
+                    _hasAttacked = false;
+                    bool isMoving = agent.hasPath && agent.remainingDistance > agent.stoppingDistance && !agent.pathPending;
+                    _currentPlayerState = isMoving ? PlayerState.Run : PlayerState.Idle;
+                }
+                else
+                {
+                    _currentPlayerState = PlayerState.Idle;
+                }
+                return;
+            }
+            
+            bool isMovingNow = agent.hasPath && agent.remainingDistance > agent.stoppingDistance && !agent.pathPending;
+            _currentPlayerState = isMovingNow ? PlayerState.Run : PlayerState.Idle;
         }
     }
 }

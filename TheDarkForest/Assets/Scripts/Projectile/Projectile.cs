@@ -82,7 +82,7 @@ public class Projectile : MonoBehaviour, IPoolable
 
         private void OnTriggerExit(Collider other)
         {
-                ReturnSelf();
+            //ReturnSelf();
         }
         
 

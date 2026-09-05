@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class EnemyCombatAI : EnemyAI
 {
-    [Header("Settings")]
+    public event Action<EnemyState> OnState; 
         [SerializeField] protected float chaseRange = 10f;
         [SerializeField] protected float attackRange = 2f;
         
@@ -14,6 +15,8 @@ public class EnemyCombatAI : EnemyAI
         protected Transform Target => _target;
         private bool _hasTarget = false;
         private EnemyController _enemyController;
+        
+        public EnemyState CurrentState => _currentState;
 
         protected override void Awake()
         {
@@ -35,6 +38,7 @@ public class EnemyCombatAI : EnemyAI
 
         private void FixedUpdate()
         {
+            
             if (!_isInitialized) return;
             
             if (!_hasTarget || _target == null || !_target.gameObject.activeSelf)
@@ -48,20 +52,23 @@ public class EnemyCombatAI : EnemyAI
             }
 
             float distanceToTarget = Vector3.Distance(transform.position, _target.position);
-            Debug.DrawLine(transform.position, _target.position, Color.red);
-            
+            //Debug.DrawLine(transform.position, _target.position, Color.red);
+            //Debug.Log(_currentState);
             switch (_currentState)
             {
                 case EnemyState.Idle:
                     UpdateIdle(distanceToTarget, chaseRange);
+                    GetState(_currentState);
                     break;
 
                 case EnemyState.Chase:
                     UpdateChase(distanceToTarget, attackRange, chaseRange, _target);
+                    GetState(_currentState);
                     break;
 
                 case EnemyState.Attack:
                     UpdateAttack(distanceToTarget, attackRange);
+                    GetState(_currentState);
                     if (_canAttack)
                     {
                         PerformAttack();
@@ -69,6 +76,7 @@ public class EnemyCombatAI : EnemyAI
                     }
                     break;
             }
+            
         }
 
         private void HandleChase(Transform target)
@@ -88,5 +96,11 @@ public class EnemyCombatAI : EnemyAI
             _canAttack = false;
             yield return new WaitForSeconds(attackCooldown);
             _canAttack = true;
+        }
+
+        public void GetState(EnemyState ss)
+        {
+            //Debug.Log(ss);
+            OnState?.Invoke(ss);
         }
 }

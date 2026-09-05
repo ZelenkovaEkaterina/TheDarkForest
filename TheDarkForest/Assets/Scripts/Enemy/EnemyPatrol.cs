@@ -19,6 +19,8 @@ public class EnemyPatrol : MonoBehaviour
     private float _waitTimer = 0f;
     private bool _isWaiting = false;
     private NavMeshAgent _agent;
+    
+    public NavMeshAgent Agent => _agent;
 
     public bool IsActive;
 

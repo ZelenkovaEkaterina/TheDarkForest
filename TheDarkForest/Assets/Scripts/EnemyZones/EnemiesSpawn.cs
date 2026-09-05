@@ -15,6 +15,12 @@ public class EnemiesSpawn : MonoBehaviour
    private RandomPointInZone _waypoints;
    
    [SerializeField] private ProjectileController _projectileController; 
+   
+   [SerializeField] private GameObject _meleeModel;
+   [SerializeField] private GameObject _rangeModel;
+   
+   [SerializeField] private RuntimeAnimatorController _meleeAnimator;
+   [SerializeField] private RuntimeAnimatorController _rangeAnimator;
 
    private float _radius;
    private Vector3 _center;
@@ -82,12 +88,15 @@ public class EnemiesSpawn : MonoBehaviour
          {
             GameObject enemy = enemies[i];
             MeleeEnemyAI meleeEnemyScript = enemy.AddComponent<MeleeEnemyAI>();
-            EnemyAI enemyAI = enemy.AddComponent<EnemyAI>();
-            EnemyCombatAI enemyCombatAI = enemy.AddComponent<EnemyCombatAI>();
+            //EnemyAI enemyAI = enemy.AddComponent<EnemyAI>();
+           // EnemyCombatAI enemyCombatAI = enemy.AddComponent<EnemyCombatAI>();
             EnemyWeapon enemyWeapon = enemy.AddComponent<EnemyWeapon>();
+            Animator anim = enemy.GetComponent<Animator>();
+            anim.runtimeAnimatorController = _meleeAnimator;
+            //GameObject model = Instantiate(_meleeModel, enemy.transform);
             if (meleeEnemyScript != null && patrolPoints.Count > 0)
             {
-               enemyAI.SetPatrolPoints(patrolPoints);
+               meleeEnemyScript.SetPatrolPoints(patrolPoints);
             }
 
             meleeCounter++;
@@ -97,6 +106,8 @@ public class EnemiesSpawn : MonoBehaviour
             GameObject enemy = enemies[i];
             RangeEnemyAI rangeEnemyScript = enemy.AddComponent<RangeEnemyAI>();
             EnemyAI enemyAI = enemy.AddComponent<EnemyAI>();
+            Animator anim = enemy.GetComponent<Animator>();
+            //anim.runtimeAnimatorController = _rangeAnimator;
             if (rangeEnemyScript != null && patrolPoints.Count > 0)
             {
                enemyAI.SetPatrolPoints(patrolPoints);

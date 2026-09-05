@@ -6,6 +6,8 @@ namespace Player
 {
     public class PlayerMovementComponent : MonoBehaviour
     {
+        public event Action<Type> OnLoot; 
+        
         private PlayerController _playerController;
         private PlayerState _currentPlayerState;
         public PlayerState State => _currentPlayerState;
@@ -21,6 +23,8 @@ namespace Player
         [SerializeField] private float _fireRate = 0.5f;
         private float _nextFireTime;
         [SerializeField]private float _attackRange = 10f;
+
+        [SerializeField] private float _lootRange = 1f;
 
         [SerializeField]private GameObject _gameController;
         private DamageSystem  _damageSystem;
@@ -76,6 +80,17 @@ namespace Player
                             HandleFire(hit.transform.position);
                         }
                         return;
+                    }
+
+                    if (hit.collider.gameObject.activeInHierarchy && hit.collider.CompareTag("Loot"))
+                    {
+                        if (hit.collider == null || !hit.collider.gameObject.activeInHierarchy)
+                            return;
+                        if (distanceToTarget <= _lootRange)
+                        {
+                            hit.collider.gameObject.SetActive(false);
+                            OnLoot?.Invoke(hit.collider.gameObject.GetComponent<LootItem>().LootType);
+                        }
                     }
                     
                     agent.isStopped = false;
@@ -134,6 +149,11 @@ namespace Player
             
             bool isMovingNow = agent.hasPath && agent.remainingDistance > agent.stoppingDistance && !agent.pathPending;
             _currentPlayerState = isMovingNow ? PlayerState.Run : PlayerState.Idle;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            
         }
     }
 }

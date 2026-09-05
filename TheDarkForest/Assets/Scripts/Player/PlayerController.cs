@@ -17,6 +17,7 @@ namespace Player
         private PlayerHealthComponent _healthComponent;
         private PlayerState _currentState;
         private PlayerState _previousState;
+
         
         public event Action<bool> OnFire;
         public event Action<bool> OnRun;

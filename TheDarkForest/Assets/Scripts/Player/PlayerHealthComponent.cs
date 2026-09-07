@@ -1,11 +1,12 @@
 using System;
 using Player;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerHealthComponent : HealthSystem
 {
     public event Action<bool> OnDeathEvent;
-    public event Action OnTakeDamageEvent;
+    //public UnityEvent OnHealthChanged;
     private PlayerState _stateDeath;
     public PlayerState StateDeath => _stateDeath;
 
@@ -21,7 +22,6 @@ public class PlayerHealthComponent : HealthSystem
         if (other.gameObject.tag == "Enemy")
         {
             TakeDamage(_damage, other.gameObject);
-            OnTakeDamageEvent?.Invoke();
         }
     }
 
@@ -32,7 +32,9 @@ public class PlayerHealthComponent : HealthSystem
             if (projectile.Owner == gameObject) return; // не раним себя
 
             TakeDamage(projectile.Damage, projectile.Owner);
-            OnTakeDamageEvent?.Invoke();
+            
         }
     }
+
+   
 }

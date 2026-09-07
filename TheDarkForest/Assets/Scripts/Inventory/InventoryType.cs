@@ -22,4 +22,5 @@ public class SlotsSettings
 {
     public GameObject Loot;
     public Type Type;
+    public int Cost;
 }

@@ -16,7 +16,10 @@ MonoBehaviour:
     InvSlots:
     - Loot: {fileID: 1000012970591572, guid: 17f4510bacb19ac468bf1b770be8c48f, type: 3}
       Type: 0
+      Cost: 10
     - Loot: {fileID: 1000013317980782, guid: 5f0076010b0e54a41af91e0ef9114396, type: 3}
       Type: 1
+      Cost: 10
     - Loot: {fileID: 1000011365394840, guid: b24b2d7a6cb3c4c4e84278706dfd9f10, type: 3}
       Type: 2
+      Cost: 1

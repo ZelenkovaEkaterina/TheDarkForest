@@ -1,38 +1,46 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class UIHandler : MonoBehaviour
 {
     [SerializeField] private GameObject _player;
+    private PlayerHealthComponent _healthComponent;
     
     [SerializeField] private Slider _healthSlider;
+    [SerializeField] private Button _healButton;
 
     private void Awake()
     {
-        //_healthSlider.value = _player.GetComponent<PlayerHealthComponent>().MaxHealth;
-    }
+        if (_player == null)
+            return;
 
-    private void Update()
-    {
-     
+        _healthComponent = _player.GetComponent<PlayerHealthComponent>();
+        if (_healthComponent == null)
+            return;
+        
+        _healthSlider.maxValue = _healthComponent.MaxHealth;
+        _healthSlider.value = _healthComponent.CurrentHealth;
     }
 
     private void OnEnable()
     {
-        Debug.Log("UIHandler OnEnable - subscribing");
-        _player.GetComponent<PlayerHealthComponent>().OnTakeDamageEvent += HandleHealthSlider;
-    }
-    private void OnDisable()
-    {
-        _player.GetComponent<PlayerHealthComponent>().OnTakeDamageEvent -= HandleHealthSlider;
+        _healthComponent.OnHealthChanged += UpdateHealthSlider;
     }
 
-    private void HandleHealthSlider()
+    private void OnDisable()
     {
-        
-        var health = _player.GetComponent<PlayerHealthComponent>();
-        Debug.Log(health.CurrentHealth);
-        _healthSlider.value = health.CurrentHealth; 
+        _healthComponent.OnHealthChanged -= UpdateHealthSlider;
+    }
+
+    // Этот метод будет вызываться из инспектора через UnityEvent
+    public void UpdateHealthSlider()
+    {
+        Debug.Log("1");
+        if (_healthComponent != null && _player != null)
+        {
+            _healthSlider.value = _healthComponent.CurrentHealth;
+        }
     }
 }

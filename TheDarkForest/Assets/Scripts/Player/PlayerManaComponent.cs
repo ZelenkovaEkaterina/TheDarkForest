@@ -48,7 +48,6 @@ public class PlayerManaComponent : MonoBehaviour
     {
         _currentMana -= cast;
         OnManaChanged?.Invoke();
-       
     }
 
     public void RegenerateMana()
@@ -60,7 +59,6 @@ public class PlayerManaComponent : MonoBehaviour
             OnManaChanged?.Invoke();
             OnManaBottleUse?.Invoke(Type.Mana);
         }
-        return;
     }
 
     private IEnumerator RegenMana()

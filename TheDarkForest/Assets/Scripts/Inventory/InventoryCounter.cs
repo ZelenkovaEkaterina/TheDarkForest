@@ -64,7 +64,7 @@ public class InventoryCounter : MonoBehaviour
                _manaCountText.text = _inventoryDatabase.IDB.InvDB[1].Count.ToString();
                break;
            case Type.Coin:
-               _inventoryDatabase.IDB.InvDB[3].Count++;
+               _inventoryDatabase.IDB.InvDB[2].Count++;
                _coinCountText.text = _inventoryDatabase.IDB.InvDB[2].Count.ToString();
                break;
        }
@@ -81,6 +81,10 @@ public class InventoryCounter : MonoBehaviour
            case Type.Mana:
                _inventoryDatabase.IDB.InvDB[1].Count--;
                _manaCountText.text = _inventoryDatabase.IDB.InvDB[1].Count.ToString();
+               break;
+           case Type.Coin:
+               _inventoryDatabase.IDB.InvDB[2].Count--;
+               _manaCountText.text = _inventoryDatabase.IDB.InvDB[2].Count.ToString();
                break;
        }
    }

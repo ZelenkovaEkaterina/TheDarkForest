@@ -7,6 +7,7 @@ public abstract class HealthSystem : MonoBehaviour, IDamageable
     public event Action<int, GameObject> OnDamageTaken;
     public event Action OnDeath; 
     public event Action OnHealthChanged;
+    public event Action<Type> OnHealthBottleUse;
     
     [SerializeField] protected int maxHealth = 100;
     protected int currentHealth;
@@ -16,6 +17,7 @@ public abstract class HealthSystem : MonoBehaviour, IDamageable
     public int CurrentHealth => currentHealth;
 
     [SerializeField] private InventoryType _inventoryType;
+    [SerializeField] private InventoryDatabase _inventory;
     
     protected virtual void Awake()
     {
@@ -47,9 +49,12 @@ public abstract class HealthSystem : MonoBehaviour, IDamageable
     }
     public void Heal()
     {
-        currentHealth += _inventoryType.Slot.InvSlots[0].Cost;
-        OnHealthChanged?.Invoke();
-        Debug.Log("heal");
+        if (_inventory.IDB.InvDB[0].Count > 0)
+        {
+            currentHealth += _inventoryType.Slot.InvSlots[0].Cost;
+            OnHealthChanged?.Invoke();
+            OnHealthBottleUse?.Invoke(Type.Heal);
+        }
     }
     
 }

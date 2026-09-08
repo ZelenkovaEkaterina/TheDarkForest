@@ -7,8 +7,10 @@ namespace Player
     public class PlayerMovementComponent : MonoBehaviour
     {
         public event Action<Type> OnLoot; 
+        public event Action<int> OnCast;
         
         private PlayerController _playerController;
+        
         private PlayerState _currentPlayerState;
         public PlayerState State => _currentPlayerState;
         
@@ -111,6 +113,7 @@ namespace Player
             shot.ReturnToPool += OnDespawn;
             shot.transform.SetPositionAndRotation(_spawnPoint.position, _spawnPoint.rotation);
             shot.OnSpawn(target);
+            OnCast?.Invoke(7);
             
             _currentPlayerState = PlayerState.Attack;
             _hasAttacked = true;

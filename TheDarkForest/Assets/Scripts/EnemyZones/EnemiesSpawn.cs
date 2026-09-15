@@ -92,6 +92,7 @@ public class EnemiesSpawn : MonoBehaviour
            // EnemyCombatAI enemyCombatAI = enemy.AddComponent<EnemyCombatAI>();
             EnemyWeapon enemyWeapon = enemy.AddComponent<EnemyWeapon>();
             Animator anim = enemy.GetComponent<Animator>();
+            MeleeEnemyAnimationsController animControl = enemy.AddComponent<MeleeEnemyAnimationsController>();
             anim.runtimeAnimatorController = _meleeAnimator;
             //GameObject model = Instantiate(_meleeModel, enemy.transform);
             if (meleeEnemyScript != null && patrolPoints.Count > 0)
@@ -107,7 +108,8 @@ public class EnemiesSpawn : MonoBehaviour
             RangeEnemyAI rangeEnemyScript = enemy.AddComponent<RangeEnemyAI>();
             EnemyAI enemyAI = enemy.AddComponent<EnemyAI>();
             Animator anim = enemy.GetComponent<Animator>();
-            //anim.runtimeAnimatorController = _rangeAnimator;
+            RangeAnimationsController animControl = enemy.AddComponent<RangeAnimationsController>();
+            anim.runtimeAnimatorController = _rangeAnimator;
             if (rangeEnemyScript != null && patrolPoints.Count > 0)
             {
                enemyAI.SetPatrolPoints(patrolPoints);

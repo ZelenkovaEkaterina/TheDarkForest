@@ -2564,7 +2564,7 @@ PrefabInstance:
     - target: {fileID: 5234137993107540166, guid: 1b21ff14cda357c4386053b542dc032a, type: 3}
       propertyPath: _rangeAnimator
       value: 
-      objectReference: {fileID: 9100000, guid: 5291be6ff936f824c8a20cda19e5948a, type: 2}
+      objectReference: {fileID: 9100000, guid: 89b39b039c4c9eb409ab94cd44448ff2, type: 2}
     - target: {fileID: 5234137993107540166, guid: 1b21ff14cda357c4386053b542dc032a, type: 3}
       propertyPath: _projectileController
       value: 
@@ -3131,6 +3131,7 @@ GameObject:
   - component: {fileID: 1801768901}
   - component: {fileID: 1801768900}
   - component: {fileID: 1801768904}
+  - component: {fileID: 1801768905}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3240,6 +3241,19 @@ MonoBehaviour:
   _healButton: {fileID: 1944680614}
   _manaSlider: {fileID: 660769880}
   _manaButton: {fileID: 930901585}
+--- !u!114 &1801768905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1801768899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ffd0fb2b8356294a983fb16a06ea3b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIComponents
+  _uiSkills: {fileID: 2006815094}
 --- !u!1 &1857284677
 GameObject:
   m_ObjectHideFlags: 0

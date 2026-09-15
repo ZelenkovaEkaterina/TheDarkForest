@@ -22,7 +22,7 @@ public class EnemyAI : MonoBehaviour
     protected EnemyState _currentState;
     protected bool _isInitialized = false;
 
-    
+    public EnemyState CurrentState => _currentState;
 
     protected virtual void Awake()
     {

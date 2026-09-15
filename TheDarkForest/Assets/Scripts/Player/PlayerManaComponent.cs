@@ -35,12 +35,12 @@ public class PlayerManaComponent : MonoBehaviour
 
     private void OnEnable()
     {
-        _player.OnCast += UseMana;
+        //_player.OnCast += UseMana;
     }
 
     private void OnDisable()
     {
-        _player.OnCast -= UseMana;
+        //_player.OnCast -= UseMana;
         StopAllCoroutines();
     }
 

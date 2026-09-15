@@ -34,7 +34,7 @@ using UnityEngine.SceneManagement;
 
         private void Start()
         {
-            _player.Init(_playerShotPool);
+            _player.GetComponent<PlayerCombat>().Init(_playerShotPool);
         }
         
 

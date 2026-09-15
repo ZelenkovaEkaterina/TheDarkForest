@@ -46,7 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52e4dd4fad89fe0449349a2e05cb4cf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LootItem
-  LootType: 2
+  _interactRange: 1.5
+  _lootType: 2
+  _amount: 1
 --- !u!136 &511538916374332710
 CapsuleCollider:
   m_ObjectHideFlags: 0

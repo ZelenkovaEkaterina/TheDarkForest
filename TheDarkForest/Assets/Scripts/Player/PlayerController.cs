@@ -7,6 +7,7 @@ namespace Player
     public enum PlayerState
     {
         Idle,
+        Interact,
         Attack,
         Run,
         Dead

@@ -1,163 +1,81 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 namespace Player
 {
     public class PlayerMovementComponent : MonoBehaviour
     {
-        public event Action<Type> OnLoot; 
-        public event Action<int> OnCast;
-        
-        private PlayerController _playerController;
-        
-        private PlayerState _currentPlayerState;
-        public PlayerState State => _currentPlayerState;
-        
-        private NavMeshAgent agent;
-        [SerializeField] private Camera mainCamera;
-        
-        [SerializeField] private Transform _spawnPoint;
+        [SerializeField] private float _rotateSpeed = 12f;
+        [SerializeField] private float _arriveTolerance = 0.15f;
 
-        [SerializeField] private LayerMask groundLayer;
-        
-        private ProjectilePool<Projectile> _shotPool;
-        [SerializeField] private float _fireRate = 0.5f;
-        private float _nextFireTime;
-        [SerializeField]private float _attackRange = 10f;
+        private NavMeshAgent _agent;
+        private Transform _moveTarget;
 
-        [SerializeField] private float _lootRange = 1f;
+        public PlayerState State => _state;
+        private PlayerState _state = PlayerState.Idle;
 
-        [SerializeField]private GameObject _gameController;
-        private DamageSystem  _damageSystem;
-        
-        private bool _hasAttacked;
-        
         private void Awake()
         {
-            agent = GetComponent<NavMeshAgent>();
-            _playerController = GetComponent<PlayerController>();
-            _currentPlayerState = PlayerState.Idle;
-        }
-
-        private void Start()
-        {
-            if (agent == null) agent = GetComponent<NavMeshAgent>();
-            if (mainCamera == null) mainCamera = Camera.main;
-            
-        }
-        
-        public void Init (ProjectilePool<Projectile> shotPool)
-        {
-            _shotPool = shotPool;
+            _agent = GetComponent<NavMeshAgent>();
         }
 
         private void Update()
         {
+            UpdateRotation();
             UpdateState();
-            if (Input.GetMouseButtonDown(0))
-            {
-                Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayer))
-                {
-                    float distanceToTarget = Vector3.Distance(transform.position, hit.transform.position);
-
-                    
-                    if (hit.collider.gameObject.activeInHierarchy && hit.collider.CompareTag("Enemy"))
-                    {
-                        if (hit.collider == null || !hit.collider.gameObject.activeInHierarchy)
-                            return;
-                        if (distanceToTarget > _attackRange)
-                        {
-                            agent.SetDestination(hit.transform.position);
-                            agent.stoppingDistance = _attackRange;
-                        }
-                        else
-                        {
-                            agent.isStopped = true;
-                            agent.ResetPath();
-                            _currentPlayerState = PlayerState.Attack;
-                            HandleFire(hit.transform.position);
-                        }
-                        return;
-                    }
-
-                    if (hit.collider.gameObject.activeInHierarchy && hit.collider.CompareTag("Loot"))
-                    {
-                        if (hit.collider == null || !hit.collider.gameObject.activeInHierarchy)
-                            return;
-                        if (distanceToTarget <= _lootRange)
-                        {
-                            hit.collider.gameObject.SetActive(false);
-                            OnLoot?.Invoke(hit.collider.gameObject.GetComponent<LootItem>().LootType);
-                        }
-                    }
-                    
-                    agent.isStopped = false;
-                    agent.SetDestination(hit.point);
-                }
-            }
-        }
-        
-        private void HandleFire(Vector3 target)
-        {
-            if(Time.time < _nextFireTime) return;
-
-            _nextFireTime = Time.time + _fireRate;
-
-            Projectile shot = _shotPool.Get();
-            shot.SetOwner(gameObject);
-            shot.IgnoreOwnerCollision(GetComponent<Collider>());
-            shot.ReturnToPool += OnDespawn;
-            shot.transform.SetPositionAndRotation(_spawnPoint.position, _spawnPoint.rotation);
-            shot.OnSpawn(target);
-            OnCast?.Invoke(7);
             
-            _currentPlayerState = PlayerState.Attack;
-            _hasAttacked = true;
-            
-            Vector3 directionToTarget = (target - transform.position).normalized;
-            directionToTarget.y = 0; // игнорируем вертикаль
-            if (directionToTarget != Vector3.zero)
-            {
-                transform.rotation = Quaternion.LookRotation(directionToTarget);
-            }
+            if (_moveTarget != null && !IsMoving)
+                _moveTarget = null;
         }
 
-        private void OnDespawn(Projectile obj)
+        public bool IsMoving =>
+            _agent.hasPath && !_agent.pathPending &&
+            _agent.remainingDistance > _agent.stoppingDistance + _arriveTolerance;
+
+        public void MoveTo(Vector3 point)
         {
-            obj.OnDespawn();
-            obj.ReturnToPool -= OnDespawn;
-            _shotPool.Return(obj);
+            _moveTarget = null;
+            _agent.stoppingDistance = 0f;
+            _agent.isStopped = false;
+            _agent.SetDestination(point);
+        }
+
+        public void MoveToTarget(Transform target, float stopDistance)
+        {
+            if (target == null) return;
+            _moveTarget = target;
+            _agent.stoppingDistance = stopDistance;
+            _agent.isStopped = false;
+            _agent.SetDestination(target.position);
+        }
+
+        public void Stop()
+        {
+            _moveTarget = null;
+            if (_agent.isOnNavMesh) _agent.ResetPath();
+            _agent.isStopped = true;
+        }
+
+        private void UpdateRotation()
+        {
+            Vector3 dir = _agent.desiredVelocity;
+            dir.y = 0f;
+            if (dir.sqrMagnitude < 0.01f) return;
+
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                Quaternion.LookRotation(dir),
+                _rotateSpeed * Time.deltaTime);
         }
 
         private void UpdateState()
         {
-            if (_currentPlayerState == PlayerState.Attack)
-            {
-                if (_hasAttacked)
-                {
-                    _hasAttacked = false;
-                    bool isMoving = agent.hasPath && agent.remainingDistance > agent.stoppingDistance && !agent.pathPending;
-                    _currentPlayerState = isMoving ? PlayerState.Run : PlayerState.Idle;
-                }
-                else
-                {
-                    _currentPlayerState = PlayerState.Idle;
-                }
-                return;
-            }
-            
-            bool isMovingNow = agent.hasPath && agent.remainingDistance > agent.stoppingDistance && !agent.pathPending;
-            _currentPlayerState = isMovingNow ? PlayerState.Run : PlayerState.Idle;
+            if (_state == PlayerState.Attack || _state == PlayerState.Interact) return;
+            _state = IsMoving ? PlayerState.Run : PlayerState.Idle;
         }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            
-        }
+        
+        public void SetState(PlayerState s) => _state = s;
     }
 }
-

@@ -7,6 +7,8 @@ namespace Player
 {
     public class PlayerMovementComponent : MonoBehaviour
     {
+        public event Action<PlayerState> OnStateChanged;
+        
         [SerializeField] private float _rotateSpeed = 12f;
         [SerializeField] private float _arriveTolerance = 0.15f;
 
@@ -24,18 +26,24 @@ namespace Player
         private void Update()
         {
             UpdateRotation();
-            UpdateState();
             
-            if (_moveTarget != null && !IsMoving)
-                _moveTarget = null;
+            if (_state == PlayerState.Attack ||
+                _state == PlayerState.Interact ||
+                _state == PlayerState.Dead) return;
+
+            SetState(IsMoving ? PlayerState.Run : PlayerState.Idle);
         }
 
         public bool IsMoving =>
             _agent.hasPath && !_agent.pathPending &&
             _agent.remainingDistance > _agent.stoppingDistance + _arriveTolerance;
+        
+        
 
         public void MoveTo(Vector3 point)
         {
+            if (State == PlayerState.Dead) return;
+            
             _moveTarget = null;
             _agent.stoppingDistance = 0f;
             _agent.isStopped = false;
@@ -44,6 +52,8 @@ namespace Player
 
         public void MoveToTarget(Transform target, float stopDistance)
         {
+            if (State == PlayerState.Dead) return;
+            
             if (target == null) return;
             _moveTarget = target;
             _agent.stoppingDistance = stopDistance;
@@ -72,10 +82,20 @@ namespace Player
 
         private void UpdateState()
         {
-            if (_state == PlayerState.Attack || _state == PlayerState.Interact) return;
-            _state = IsMoving ? PlayerState.Run : PlayerState.Idle;
+            if (_state == PlayerState.Attack ||
+                _state == PlayerState.Interact ||
+                _state == PlayerState.Dead) return;
+
+            // ★ key fix: пока путь считается — не сбрасываем в Idle
+            bool moving = IsMoving || _agent.pathPending;
+            SetState(moving ? PlayerState.Run : PlayerState.Idle);
         }
         
-        public void SetState(PlayerState s) => _state = s;
+        public void SetState(PlayerState next)
+        {
+            if (_state == next) return;
+            _state = next;
+            OnStateChanged?.Invoke(_state);
+        }
     }
 }

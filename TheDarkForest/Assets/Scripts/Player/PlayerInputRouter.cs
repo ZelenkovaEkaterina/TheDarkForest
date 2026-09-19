@@ -30,6 +30,8 @@ namespace Player
 
         private void HandleLeftClick()
         {
+            if (_movement.State == PlayerState.Dead) return;
+            
             if (_mainCamera == null) return;
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
                 return;

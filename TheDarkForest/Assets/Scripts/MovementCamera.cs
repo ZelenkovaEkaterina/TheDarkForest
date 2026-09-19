@@ -14,7 +14,7 @@ public class MovementCamera : MonoBehaviour
     public float followLerp = 8f;
     public Vector3 offset = new Vector3(0, 1.5f, 0);
 
-    void FixedUpdate()
+    void Update()
     {
         if (!target) return;
         

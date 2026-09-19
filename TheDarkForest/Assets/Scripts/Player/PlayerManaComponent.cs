@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PlayerManaComponent : MonoBehaviour
 {
-    public event Action OnManaChanged;
+    public event Action<int> OnManaChanged;
     public event Action<Type> OnManaBottleUse;
   
     
@@ -27,7 +27,13 @@ public class PlayerManaComponent : MonoBehaviour
         _currentMana =  _maxMana;
         StartCoroutine(RegenMana());
     }
-
+    public bool TrySpend(int amount)
+    {
+        if (_currentMana < amount) return false;
+        _currentMana -= amount;
+        OnManaChanged?.Invoke(_currentMana);
+        return true;
+    }
     private void Update()
     {
        // Debug.Log(_currentMana);
@@ -47,7 +53,7 @@ public class PlayerManaComponent : MonoBehaviour
     public void UseMana(int cast)
     {
         _currentMana -= cast;
-        OnManaChanged?.Invoke();
+        OnManaChanged?.Invoke(_currentMana);
     }
 
     public void RegenerateMana()
@@ -56,7 +62,7 @@ public class PlayerManaComponent : MonoBehaviour
         {
             Debug.Log(_currentMana);
             _currentMana += _inventoryType.Slot.InvSlots[1].Cost; //добавить переменную
-            OnManaChanged?.Invoke();
+            OnManaChanged?.Invoke(_currentMana);
             OnManaBottleUse?.Invoke(Type.Mana);
         }
     }
@@ -70,8 +76,10 @@ public class PlayerManaComponent : MonoBehaviour
             {
                 Debug.Log(_currentMana);
                 _currentMana += _manaRegenAmount;
-                OnManaChanged?.Invoke();
+                OnManaChanged?.Invoke(_currentMana);
             }
         }
     }
+    
+    
 }

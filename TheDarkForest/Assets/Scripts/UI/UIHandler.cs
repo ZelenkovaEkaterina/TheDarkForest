@@ -45,11 +45,11 @@ public class UIHandler : MonoBehaviour
         _manaComponent.OnManaChanged -= UpdateManaSlider;
     }
 
-    private void UpdateManaSlider()
+    private void UpdateManaSlider(int mana)
     {
         if (_manaComponent != null && _player != null)
         {
-            _manaSlider.value = _manaComponent.CurrentMana;
+            _manaSlider.value = mana;
         }
     }
 

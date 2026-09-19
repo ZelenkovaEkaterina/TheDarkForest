@@ -4,42 +4,60 @@ using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
 {
-    private PlayerController _playerController;
-    private Animator _animator;
-    
+    private static readonly int RunHash      = Animator.StringToHash("Run");
+    private static readonly int FireHash     = Animator.StringToHash("Fire");
+    private static readonly int InteractHash = Animator.StringToHash("Interact");
+    private static readonly int DeadHash     = Animator.StringToHash("Dead");
+
+    [SerializeField] private PlayerMovementComponent _movement;
+    [SerializeField] private Animator _animator;
+
     private void Awake()
     {
-        _playerController =  GetComponent<PlayerController>();
-        _animator = GetComponent<Animator>();
+        if (_movement == null) _movement = GetComponent<PlayerMovementComponent>();
+        if (_animator == null) _animator = GetComponent<Animator>();
     }
 
     private void OnEnable()
     {
-        _playerController.OnRun += HandleRun;
-        _playerController.OnFire += HandleFire;
-        _playerController.OnDeath += HandleDeath;
+        _movement.OnStateChanged += HandleStateChanged;
+        HandleStateChanged(_movement.State);          // синхронизация на старте
     }
 
     private void OnDisable()
     {
-        _playerController.OnRun -= HandleRun;
-        _playerController.OnFire -= HandleFire;
-        _playerController.OnDeath -= HandleDeath;
+        _movement.OnStateChanged -= HandleStateChanged;
     }
 
-    private void HandleDeath(bool obj)
+    private void HandleStateChanged(PlayerState state)
     {
-        _animator.SetBool("Dead", obj);
-        Debug.Log("ded");
-    }
+        // Сначала сбрасываем булы, потом ставим нужный
+        _animator.SetBool(RunHash, false);
+        _animator.SetBool(InteractHash, false);
 
-    private void HandleFire(bool obj)
-    {
-        _animator.SetBool("Fire", obj);
-    }
+        switch (state)
+        {
+            case PlayerState.Idle:
+                // уже сброшено
+                break;
 
-    private void HandleRun(bool obj)
-    {
-        _animator.SetBool("Run", obj);
+            case PlayerState.Run:
+                _animator.SetBool(RunHash, true);
+                break;
+
+            case PlayerState.Attack:
+                _animator.SetTrigger(FireHash);   // trigger — одноразовая анимация
+                break;
+
+            case PlayerState.Interact:
+                _animator.SetBool("Run", true);
+                break;
+
+            case PlayerState.Dead:
+                _animator.SetBool(DeadHash, true);
+                break;
+        }
+        
+        
     }
 }

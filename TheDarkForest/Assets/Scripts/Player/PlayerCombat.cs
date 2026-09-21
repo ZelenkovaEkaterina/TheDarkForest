@@ -1,5 +1,4 @@
 using System;
-using Skills;
 using UnityEngine;
 
 namespace Player
@@ -22,8 +21,6 @@ namespace Player
         private ProjectilePool<Projectile> _shotPool;
         private DamageSystem _damageSystem;
         private PlayerMovementComponent _movement;
-        
-        [SerializeField] private SkillManager _skills;
 
         private Transform _currentTarget;
         private float _nextFireTime;
@@ -104,10 +101,6 @@ namespace Player
                 shot.ReturnToPool += OnDespawn;
                 shot.transform.SetPositionAndRotation(_spawnPoint.position, _spawnPoint.rotation);
                 shot.OnSpawn(target);
-                
-                int dmg = 7 + (_skills != null ? _skills.GetBonusDamage() : 0);
-                // если у Projectile есть SetDamage — передай сюда
-                shot.SetDamage(dmg);
             }
             
             

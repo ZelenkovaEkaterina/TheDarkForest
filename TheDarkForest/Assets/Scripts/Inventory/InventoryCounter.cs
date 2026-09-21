@@ -13,6 +13,8 @@ public class InventoryCounter : MonoBehaviour
    private PlayerManaComponent _playerManaComponent;
    private PlayerHealthComponent _playerHealthComponent;
    
+   [SerializeField] private SkillsManager _skillsManager;
+   
 
    [SerializeField] private TMP_Text _healCountText;
    [SerializeField] private TMP_Text _manaCountText;
@@ -42,6 +44,7 @@ public class InventoryCounter : MonoBehaviour
        _playerInteraction.OnLoot += AddLoot;
        _playerManaComponent.OnManaBottleUse += UseLoot;
        _playerHealthComponent.OnHealthBottleUse += UseLoot;
+       _skillsManager.OnLootUse += UseLoot;
    }
 
    private void OnDisable()
@@ -49,6 +52,7 @@ public class InventoryCounter : MonoBehaviour
        _playerInteraction.OnLoot -= AddLoot;
        _playerManaComponent.OnManaBottleUse -= UseLoot;
        _playerHealthComponent.OnHealthBottleUse -= UseLoot;
+       _skillsManager.OnLootUse -= UseLoot;
    }
 
    private void AddLoot(Type type)
@@ -83,8 +87,7 @@ public class InventoryCounter : MonoBehaviour
                _manaCountText.text = _inventoryDatabase.IDB.InvDB[1].Count.ToString();
                break;
            case Type.Coin:
-               _inventoryDatabase.IDB.InvDB[2].Count--;
-               _manaCountText.text = _inventoryDatabase.IDB.InvDB[2].Count.ToString();
+               _coinCountText.text = _inventoryDatabase.IDB.InvDB[2].Count.ToString();
                break;
        }
    }

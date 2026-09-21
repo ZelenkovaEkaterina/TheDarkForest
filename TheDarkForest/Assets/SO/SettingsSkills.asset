@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce127733ed8464642b4459eac947bb34, type: 3}
+  m_Name: SettingsSkills
+  m_EditorClassIdentifier: Assembly-CSharp::SkillsSettings
+  SkillsSettingsData:
+    SkilItem:
+    - BowId: 0
+      ShotBuff: 2
+      ManaCost: 10
+      CoinCost: 3
+      BIsActiveBuy: 0
+    - BowId: 1
+      ShotBuff: 3
+      ManaCost: 15
+      CoinCost: 3
+      BIsActiveBuy: 0
+    - BowId: 2
+      ShotBuff: 4
+      ManaCost: 20
+      CoinCost: 3
+      BIsActiveBuy: 0

@@ -84,11 +84,7 @@ public class Projectile : MonoBehaviour, IPoolable
         {
             //ReturnSelf();
         }
-
-        public void SetDamage(int dmg)
-        {
-            _damage += dmg;
-        }
+    
 
         public void IgnoreOwnerCollision(Collider owner)
         {

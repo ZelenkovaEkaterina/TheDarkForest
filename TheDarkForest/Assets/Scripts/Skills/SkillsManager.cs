@@ -5,13 +5,15 @@ using UnityEngine.UI;
 public class SkillsManager : MonoBehaviour
 {
     public event Action<Type> OnLootUse;
+    public event Action<int, bool> OnUseSkill;
+    
     [SerializeField] private GameObject _player;
     [SerializeField] private SkillsSettings _settingsSkills;
     [SerializeField] private InventoryDatabase _inventoryBase;
 
     [SerializeField] private Button[] BuyBow;
     
-    [SerializeField] private Button[] UseBow;
+    [SerializeField] private Toggle[] UseBow;
 
     private void Awake()
     {
@@ -25,35 +27,44 @@ public class SkillsManager : MonoBehaviour
             btn.interactable = true;
         }
 
-        foreach (var btn in UseBow)
+        foreach (var t in UseBow)
         {
-            btn.interactable = true;
+            t.interactable = false;
+            t.isOn = false;
         }
+    }
+    
+    public bool CanUse(int skillIndex)
+    {
+        return _settingsSkills.SkillsSettingsData.SkilItem[skillIndex].BIsActiveBuy;
+    }
+    
+    public void OnToggleChanged(int skillIndex, bool isOn)
+    {
+        OnUseSkill?.Invoke(skillIndex,isOn);
     }
 
     public void BuySkills(SkillItem skill)
     {
-        if (_inventoryBase.IDB.InvDB[2].Count >= _settingsSkills.SkillsSettingsData.SkilItem[skill.SkillItemID].CoinCost)
+        int id = skill.SkillItemID;
+        var data = _settingsSkills.SkillsSettingsData.SkilItem[id];
+
+        if (_inventoryBase.IDB.InvDB[2].Count >= data.CoinCost)
         {
-            BuyBow[skill.SkillItemID].interactable = false;
-            _settingsSkills.SkillsSettingsData.SkilItem[skill.SkillItemID].BIsActiveBuy = true;
-            _inventoryBase.IDB.InvDB[2].Count -= _settingsSkills.SkillsSettingsData.SkilItem[skill.SkillItemID].CoinCost;
+            BuyBow[id].interactable = false;
+            data.BIsActiveBuy = true;
+            _inventoryBase.IDB.InvDB[2].Count -= data.CoinCost;
+            
+            UseBow[id].interactable = true;
+
             OnLootUse?.Invoke(Type.Coin);
         }
     }
 
-    public void UseSkill(SkillItem skill)
+    public void OffSkills()
     {
-        if (_settingsSkills.SkillsSettingsData.SkilItem[skill.SkillItemID].BIsActiveBuy)
-        {
-            if (UseBow[skill.SkillItemID].interactable)
-            {
-                UseBow[skill.SkillItemID].interactable = false;
-                return;
-            }
-            Debug.Log("111");
-            UseBow[skill.SkillItemID].interactable = true;
-        }
+        foreach (var t in UseBow) t.SetIsOnWithoutNotify(false);
+        OnUseSkill?.Invoke(-1, false);
     }
 }
 

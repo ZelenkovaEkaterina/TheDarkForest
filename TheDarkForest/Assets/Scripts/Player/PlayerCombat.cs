@@ -21,15 +21,27 @@ namespace Player
         private ProjectilePool<Projectile> _shotPool;
         private DamageSystem _damageSystem;
         private PlayerMovementComponent _movement;
+        private PlayerManaComponent _manaComponent;
+        
+        [SerializeField] private SkillsManager _skillManager;
+        [SerializeField] private SkillsSettings _settingsData;
+        private int _manaCost = 0;
+        private int _buff = 1;
+        private int _activeSkillId = -1; 
+        private bool _hasActiveSkill;
 
         private Transform _currentTarget;
         private float _nextFireTime;
 
         public float AttackRange => _attackRange;
+        
+        public int ManaCost => _manaCost;
+        public int Buff => _buff;
 
         private void Awake()
         {
             _movement = GetComponent<PlayerMovementComponent>();
+            _manaComponent = GetComponent<PlayerManaComponent>();
             if (_gameController != null)
                 _damageSystem = _gameController.GetComponent<DamageSystem>();
         }
@@ -102,10 +114,18 @@ namespace Player
                 shot.transform.SetPositionAndRotation(_spawnPoint.position, _spawnPoint.rotation);
                 shot.OnSpawn(target);
             }
-            
-            
 
-            OnCast?.Invoke(7);
+
+            if (_manaComponent.CurrentMana >= _manaCost)
+            {
+                OnCast?.Invoke(_manaCost);
+                Debug.Log(_manaCost);
+            }
+            else
+            {
+                Debug.Log("не хватает маны");
+            }
+            
             _movement.SetState(PlayerState.Attack);
         }
 
@@ -133,6 +153,48 @@ namespace Player
             }
 
             return best;
+        }
+
+        private void OnEnable()
+        {
+            _skillManager.OnUseSkill += HandlerBuff;
+        }
+
+        private void OnDisable()
+        {
+            _skillManager.OnUseSkill -= HandlerBuff;
+        }
+
+        private void HandlerBuff(int skillId, bool  isOn)
+        {
+            if (skillId == -1 && !isOn)
+            {
+                _manaCost = 0;
+                _buff = 1;
+                _activeSkillId = -1;
+                _hasActiveSkill = false;
+                return;
+            }
+
+            if (isOn)
+            {
+                foreach (var s in _settingsData.SkillsSettingsData.SkilItem)
+                    if (s.BowId == skillId)
+                    {
+                        _manaCost = s.ManaCost;
+                        _buff = s.ShotBuff;
+                        _activeSkillId = skillId;
+                        _hasActiveSkill = true;
+                        return;
+                    }
+            }
+            else if (_activeSkillId == skillId)
+            {
+                _manaCost = 0;
+                _buff = 1;
+                _activeSkillId = -1;
+                _hasActiveSkill = false;
+            }
         }
     }
 }

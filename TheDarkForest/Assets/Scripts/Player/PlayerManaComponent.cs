@@ -9,8 +9,10 @@ public class PlayerManaComponent : MonoBehaviour
     public event Action<int> OnManaChanged;
     public event Action<Type> OnManaBottleUse;
   
+
     
     private PlayerMovementComponent _player;
+    private PlayerCombat _playerCombat;
     [SerializeField] private InventoryDatabase _inventory;
     [SerializeField] private InventoryType _inventoryType;
     
@@ -24,6 +26,7 @@ public class PlayerManaComponent : MonoBehaviour
     private void Awake()
     {
         _player = GetComponent<PlayerMovementComponent>();
+        _playerCombat = GetComponent<PlayerCombat>();
         _currentMana =  _maxMana;
         StartCoroutine(RegenMana());
     }
@@ -41,12 +44,11 @@ public class PlayerManaComponent : MonoBehaviour
 
     private void OnEnable()
     {
-        //_player.OnCast += UseMana;
+        _playerCombat.OnCast += UseMana;
     }
-
     private void OnDisable()
     {
-        //_player.OnCast -= UseMana;
+        _playerCombat.OnCast -= UseMana;
         StopAllCoroutines();
     }
 
@@ -60,7 +62,6 @@ public class PlayerManaComponent : MonoBehaviour
     {
         if (_currentMana != _maxMana && _inventory.IDB.InvDB[1].Count > 0)
         {
-            Debug.Log(_currentMana);
             _currentMana += _inventoryType.Slot.InvSlots[1].Cost; //добавить переменную
             OnManaChanged?.Invoke(_currentMana);
             OnManaBottleUse?.Invoke(Type.Mana);
@@ -74,7 +75,6 @@ public class PlayerManaComponent : MonoBehaviour
             yield return new WaitForSeconds(2f);
             if (_currentMana != _maxMana)
             {
-                Debug.Log(_currentMana);
                 _currentMana += _manaRegenAmount;
                 OnManaChanged?.Invoke(_currentMana);
             }

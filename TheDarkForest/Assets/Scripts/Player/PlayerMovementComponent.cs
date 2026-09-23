@@ -85,8 +85,7 @@ namespace Player
             if (_state == PlayerState.Attack ||
                 _state == PlayerState.Interact ||
                 _state == PlayerState.Dead) return;
-
-            // ★ key fix: пока путь считается — не сбрасываем в Idle
+            
             bool moving = IsMoving || _agent.pathPending;
             SetState(moving ? PlayerState.Run : PlayerState.Idle);
         }

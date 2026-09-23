@@ -23,27 +23,37 @@ namespace Enemy
         private void Update()
         {
             UpdateAnim();
+            Debug.Log(_meleeEnemyAI.CurrentState);
         }
 
         private void UpdateAnim()
         {
-            switch (_enemyCombat.CurrentState)
+            _animator.SetBool("Patrol", false);
+            _animator.SetBool("Attack", false);
+            _animator.SetBool("Chase", false);
+            
+            switch (_meleeEnemyAI.CurrentState)
             {
                 case EnemyState.Idle:
                     if (gameObject.GetComponent<NavMeshAgent>().isStopped == false)
                     {
                         _animator.SetBool("Patrol", true);
-                        return;
+                        //Debug.Log(gameObject.GetComponent<NavMeshAgent>().isStopped);
                     }
-                    _animator.SetBool("Patrol", false);
-                    _animator.SetBool("Chase", false);
-                    _animator.SetBool("Attack", false);
+                    else
+                    {
+                        _animator.SetBool("Patrol", false);
+                        //Debug.Log(gameObject.GetComponent<NavMeshAgent>().isStopped);
+                    }
+                    
+                    
+                    //_animator.SetBool("Attack", false);
                     break;
                 case EnemyState.Chase:
                     _animator.SetBool("Chase", true);
                     break;
                 case EnemyState.Attack:
-                    _animator.SetBool("Attack",true);
+                    _animator.SetBool("Attack", true);
                     break;
             }
             

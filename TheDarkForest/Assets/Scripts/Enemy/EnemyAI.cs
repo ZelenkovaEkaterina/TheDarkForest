@@ -91,6 +91,7 @@ public class EnemyAI : MonoBehaviour
         {
             _currentState = EnemyState.Idle;
             _enemyPatrol.IsActive = true;
+            Debug.Log("stop");
             StopMovement();
         }
         else

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Player
@@ -13,7 +14,7 @@ namespace Player
         [SerializeField] private bool _autoAttack = true;
 
         [Header("Stats")] [SerializeField] private float _attackRange = 10f;
-        [SerializeField] private float _fireRate = 0.5f;
+        [SerializeField] private float _fireRate = 2.5f;
         [SerializeField] private float _autoAggroRange = 8f;
 
         private bool _autoTargetSuppressed;
@@ -93,6 +94,7 @@ namespace Player
                 _movement.Stop();
 
             HandleFire(_currentTarget.position);
+            
         }
 
         private void HandleFire(Vector3 target)
@@ -119,7 +121,6 @@ namespace Player
             if (_manaComponent.CurrentMana >= _manaCost)
             {
                 OnCast?.Invoke(_manaCost);
-                Debug.Log(_manaCost);
             }
             else
             {

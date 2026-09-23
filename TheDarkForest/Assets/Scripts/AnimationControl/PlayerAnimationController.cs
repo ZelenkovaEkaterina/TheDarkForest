@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
 {
-    private static readonly int RunHash      = Animator.StringToHash("Run");
-    private static readonly int FireHash     = Animator.StringToHash("Fire");
-    private static readonly int InteractHash = Animator.StringToHash("Interact");
-    private static readonly int DeadHash     = Animator.StringToHash("Dead");
-
     [SerializeField] private PlayerMovementComponent _movement;
     [SerializeField] private Animator _animator;
 
@@ -21,7 +16,7 @@ public class PlayerAnimationController : MonoBehaviour
     private void OnEnable()
     {
         _movement.OnStateChanged += HandleStateChanged;
-        HandleStateChanged(_movement.State);          // синхронизация на старте
+        HandleStateChanged(_movement.State);          
     }
 
     private void OnDisable()
@@ -31,22 +26,21 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void HandleStateChanged(PlayerState state)
     {
-        // Сначала сбрасываем булы, потом ставим нужный
-        _animator.SetBool(RunHash, false);
-        _animator.SetBool(InteractHash, false);
+        _animator.SetBool("Run", false);
+        _animator.SetBool("Interact", false);
+        _animator.SetBool("Fire", false);
 
         switch (state)
         {
             case PlayerState.Idle:
-                // уже сброшено
                 break;
 
             case PlayerState.Run:
-                _animator.SetBool(RunHash, true);
+                _animator.SetBool("Run", true);
                 break;
 
             case PlayerState.Attack:
-                _animator.SetTrigger(FireHash);   // trigger — одноразовая анимация
+                _animator.SetBool("Fire", true);
                 break;
 
             case PlayerState.Interact:
@@ -54,7 +48,7 @@ public class PlayerAnimationController : MonoBehaviour
                 break;
 
             case PlayerState.Dead:
-                _animator.SetBool(DeadHash, true);
+                _animator.SetTrigger("Death");
                 break;
         }
         

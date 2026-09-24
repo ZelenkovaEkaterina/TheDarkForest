@@ -23,6 +23,7 @@ namespace Player
         private DamageSystem _damageSystem;
         private PlayerMovementComponent _movement;
         private PlayerManaComponent _manaComponent;
+        private PlayerWeapon _playerWeapon;
         
         [SerializeField] private SkillsManager _skillManager;
         [SerializeField] private SkillsSettings _settingsData;
@@ -43,6 +44,7 @@ namespace Player
         {
             _movement = GetComponent<PlayerMovementComponent>();
             _manaComponent = GetComponent<PlayerManaComponent>();
+            _playerWeapon = GetComponent<PlayerWeapon>();
             if (_gameController != null)
                 _damageSystem = _gameController.GetComponent<DamageSystem>();
         }
@@ -76,7 +78,11 @@ namespace Player
             {
                 _currentTarget = null;
                 if (_movement.State == PlayerState.Attack)
+                {
+                    _playerWeapon.EquipToBack();
                     _movement.SetState(PlayerState.Idle);
+                }
+                    
                 return;
             }
 
@@ -86,7 +92,11 @@ namespace Player
             {
                 _movement.MoveToTarget(_currentTarget, _attackRange - 0.2f);
                 if (_movement.State == PlayerState.Attack)
+                {
                     _movement.SetState(PlayerState.Run);
+                    _playerWeapon.EquipToBack();
+                }
+                    
                 return;
             }
             
@@ -99,6 +109,7 @@ namespace Player
 
         private void HandleFire(Vector3 target)
         {
+            _playerWeapon.EquipToHand();
             if (Time.time < _nextFireTime) return;
             _nextFireTime = Time.time + _fireRate;
             
@@ -109,11 +120,22 @@ namespace Player
             
             if (_shotPool != null && _spawnPoint != null)
             {
-                Projectile shot = _shotPool.Get();
+                /*Projectile shot = _shotPool.Get();
                 shot.SetOwner(gameObject);
                 shot.IgnoreOwnerCollision(GetComponent<Collider>());
                 shot.ReturnToPool += OnDespawn;
                 shot.transform.SetPositionAndRotation(_spawnPoint.position, _spawnPoint.rotation);
+                shot.OnSpawn(target);*/
+                
+                Projectile shot = _shotPool.Get();
+                shot.SetOwner(gameObject);
+                shot.IgnoreOwnerCollision(GetComponent<Collider>());
+                shot.ReturnToPool += OnDespawn;
+                
+                Vector3 shootDir = (target - _spawnPoint.position).normalized;
+                Quaternion shootRot = Quaternion.LookRotation(shootDir);
+
+                shot.transform.SetPositionAndRotation(_spawnPoint.position, shootRot);
                 shot.OnSpawn(target);
             }
 

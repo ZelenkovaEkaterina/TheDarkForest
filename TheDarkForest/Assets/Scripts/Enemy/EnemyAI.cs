@@ -112,6 +112,11 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    private void HandlePlayerDead()
+    {
+        
+    }
+
     protected void StopMovement()
     {
         if (_agent != null)

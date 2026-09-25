@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyCombatAI : EnemyAI
 {
-    public event Action<EnemyState> OnState; 
+         public event Action<EnemyState> OnState; 
         [SerializeField] protected float chaseRange = 10f;
         [SerializeField] protected float attackRange = 2f;
         
@@ -15,7 +15,14 @@ public class EnemyCombatAI : EnemyAI
         protected Transform Target => _target;
         private bool _hasTarget = false;
         private EnemyController _enemyController;
-        
+
+        [SerializeField] private EnemyWeapon weapon;
+        public EnemyWeapon Weapon
+        {
+            get => weapon;
+            set => weapon = value;
+        }
+
         public EnemyState CurrentState => _currentState;
 
         protected override void Awake()

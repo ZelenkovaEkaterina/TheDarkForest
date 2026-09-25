@@ -197,6 +197,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthComponent
   maxHealth: 100
+  _inventoryType: {fileID: 0}
+  _inventory: {fileID: 0}
 --- !u!114 &5902887474998461078
 MonoBehaviour:
   m_ObjectHideFlags: 0

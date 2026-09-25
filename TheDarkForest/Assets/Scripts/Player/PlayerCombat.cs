@@ -120,13 +120,6 @@ namespace Player
             
             if (_shotPool != null && _spawnPoint != null)
             {
-                /*Projectile shot = _shotPool.Get();
-                shot.SetOwner(gameObject);
-                shot.IgnoreOwnerCollision(GetComponent<Collider>());
-                shot.ReturnToPool += OnDespawn;
-                shot.transform.SetPositionAndRotation(_spawnPoint.position, _spawnPoint.rotation);
-                shot.OnSpawn(target);*/
-                
                 Projectile shot = _shotPool.Get();
                 shot.SetOwner(gameObject);
                 shot.IgnoreOwnerCollision(GetComponent<Collider>());

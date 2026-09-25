@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 8204914218140769132}
   - component: {fileID: 5234137993107540166}
   - component: {fileID: 5955433176970313456}
+  - component: {fileID: -6116396733347866788}
+  - component: {fileID: -1340889819694596393}
   m_Layer: 0
   m_Name: AreaZone
   m_TagString: Agro
@@ -49,6 +51,11 @@ MonoBehaviour:
   _activeEnemies: []
   settingsAreaZone: {fileID: 11400000, guid: 9c6b19067caadb2408da92296f8d3d87, type: 2}
   _poolManager: {fileID: 0}
+  _projectileController: {fileID: 0}
+  _meleeModel: {fileID: 1571042049591659991, guid: 924f01b2d72975c4a9d39ebc1a121cdd, type: 3}
+  _rangeModel: {fileID: 1571042049591659991, guid: 924f01b2d72975c4a9d39ebc1a121cdd, type: 3}
+  _meleeAnimator: {fileID: 9100000, guid: eaf805c7c7f94f242a5ebe80c6e08479, type: 2}
+  _rangeAnimator: {fileID: 9100000, guid: 89b39b039c4c9eb409ab94cd44448ff2, type: 2}
 --- !u!135 &5955433176970313456
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -70,3 +77,27 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 8.2754
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-6116396733347866788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535773817487809988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d381481a9b3c78d43b16660a1e5deec2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RandomPointInZone
+--- !u!114 &-1340889819694596393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1535773817487809988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0d31c971668b9847a2ca133e832f4f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AgroZone

@@ -48,7 +48,7 @@ public class PlayerAnimationController : MonoBehaviour
                 break;
 
             case PlayerState.Dead:
-                _animator.SetTrigger("Death");
+                _animator.SetTrigger("Dead");
                 break;
         }
         

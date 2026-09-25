@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Enemy;
 using UnityEngine;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 public class EnemiesSpawn : MonoBehaviour
@@ -16,7 +17,7 @@ public class EnemiesSpawn : MonoBehaviour
    
    [SerializeField] private ProjectileController _projectileController; 
    
-   [SerializeField] private GameObject _meleeModel;
+   [SerializeField] private GameObject _meleeWeapon;
    [SerializeField] private GameObject _rangeModel;
    
    [SerializeField] private RuntimeAnimatorController _meleeAnimator;
@@ -51,7 +52,10 @@ public class EnemiesSpawn : MonoBehaviour
       int totalEnemies = near + range;
 
       // Берем объекты из пула
-      List<GameObject> enemies = _pool.GetEnemy(totalEnemies);
+      /*List<GameObject> enemies = _pool.GetEnemy(totalEnemies);
+      _activeEnemies.AddRange(enemies);*/
+      
+      List<GameObject> enemies = _pool.GetEnemy(totalEnemies, GetSpawnPointOnNavMesh);
       _activeEnemies.AddRange(enemies);
       
       // Получаем точки патрулирования
@@ -88,9 +92,9 @@ public class EnemiesSpawn : MonoBehaviour
          {
             GameObject enemy = enemies[i];
             MeleeEnemyAI meleeEnemyScript = enemy.AddComponent<MeleeEnemyAI>();
+            //meleeEnemyScript.Weapon = _meleeModel.GetComponent<EnemyWeapon>();
             //EnemyAI enemyAI = enemy.AddComponent<EnemyAI>();
            // EnemyCombatAI enemyCombatAI = enemy.AddComponent<EnemyCombatAI>();
-            EnemyWeapon enemyWeapon = enemy.AddComponent<EnemyWeapon>();
             Animator anim = enemy.GetComponent<Animator>();
             MeleeEnemyAnimationsController animControl = enemy.AddComponent<MeleeEnemyAnimationsController>();
             anim.runtimeAnimatorController = _meleeAnimator;
@@ -168,5 +172,13 @@ public class EnemiesSpawn : MonoBehaviour
    private void OnDestroy()
    {
       ReturnAllEnemies();
+   }
+   
+   private Vector3 GetSpawnPointOnNavMesh()
+   {
+      Vector3 raw = transform.position + GetRandomPointInSphere(_center, _radius);
+      if (NavMesh.SamplePosition(raw, out NavMeshHit hit, _radius, NavMesh.AllAreas))
+         return hit.position;
+      return raw; // fallback
    }
 }

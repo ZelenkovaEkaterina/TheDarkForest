@@ -21,13 +21,11 @@ namespace Enemy
 
         private void Start()
         {
-            _enemyWeapon = GetComponent<EnemyWeapon>();
+            _enemyWeapon =  Weapon.GetComponent<EnemyWeapon>();
         }
 
         protected override void PerformAttack()
         {
-            Debug.Log("бьют");
-            
             if (Target == null) return;
 
             IDamageable targetComponent = Target.GetComponent<IDamageable>();

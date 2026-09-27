@@ -21,7 +21,8 @@ namespace Enemy
 
         private void Start()
         {
-            _enemyWeapon =  Weapon.GetComponent<EnemyWeapon>();
+            // _enemyWeapon =  GetComponent<EnemyWeapon>();
+            _enemyWeapon = GetComponentInChildren<EnemyWeapon>();
         }
 
         protected override void PerformAttack()

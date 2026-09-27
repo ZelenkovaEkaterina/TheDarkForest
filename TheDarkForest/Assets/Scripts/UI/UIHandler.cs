@@ -22,12 +22,16 @@ public class UIHandler : MonoBehaviour
 
         _healthComponent = _player.GetComponent<PlayerHealthComponent>();
         _manaComponent = _player.GetComponent<PlayerManaComponent>();
-        
+    }
+
+    private void Start()
+    {
         if (_healthComponent == null)
             return;
         
         _healthSlider.maxValue = _healthComponent.MaxHealth;
         _healthSlider.value = _healthComponent.CurrentHealth;
+        Debug.Log(_healthComponent.CurrentHealth);
         
         _manaSlider.maxValue = _manaComponent.MaxMana;
         _manaSlider.value = _manaComponent.CurrentMana;

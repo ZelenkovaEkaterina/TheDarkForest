@@ -10,7 +10,12 @@ public class PlayerHealthComponent : HealthSystem
     private PlayerState _stateDeath;
     public PlayerState StateDeath => _stateDeath;
 
-    private int _damage = 5;
+    private int _damage = 5; 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
     protected override void Die()
     {
         Debug.Log("ты сдох");
@@ -35,6 +40,4 @@ public class PlayerHealthComponent : HealthSystem
             
         }
     }
-
-   
 }

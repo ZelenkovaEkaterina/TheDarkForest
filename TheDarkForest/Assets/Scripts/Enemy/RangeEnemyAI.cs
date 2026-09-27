@@ -15,6 +15,8 @@ namespace Enemy
         private ProjectilePool<Projectile> _shotPool;
         private Transform _spawnPoint;
         
+        private EnemyWeapon _enemyWeapon;
+        
         protected override void Awake()
         {
             base.Awake();
@@ -24,6 +26,9 @@ namespace Enemy
         private void Start()
         {
             _spawnPoint = gameObject.GetComponentInChildren<Transform>();
+            
+            _enemyWeapon = GetComponentInChildren<EnemyWeapon>();
+            _enemyWeapon.gameObject.SetActive(false);
         }
         
         public void InitializeProjectilePool(ProjectilePool<Projectile> pool)

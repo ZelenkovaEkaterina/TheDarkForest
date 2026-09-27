@@ -24,7 +24,7 @@ public class GameController : MonoBehaviour
         OnPlayerDead?.Invoke();
 
         StartCoroutine(Pause());
-        _playerHealthComponent.gameObject.SetActive(false);
+        //_playerHealthComponent.gameObject.SetActive(false);
     }
 
     private IEnumerator Pause()

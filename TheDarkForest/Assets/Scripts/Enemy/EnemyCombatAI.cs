@@ -16,13 +16,6 @@ public class EnemyCombatAI : EnemyAI
         private bool _hasTarget = false;
         private EnemyController _enemyController;
 
-        [SerializeField] private EnemyWeapon weapon;
-        public EnemyWeapon Weapon
-        {
-            get => weapon;
-            set => weapon = value;
-        }
-
         public EnemyState CurrentState => _currentState;
 
         protected override void Awake()

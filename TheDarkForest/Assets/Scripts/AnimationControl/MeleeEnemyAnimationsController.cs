@@ -23,7 +23,6 @@ namespace Enemy
         private void Update()
         {
             UpdateAnim();
-            Debug.Log(_meleeEnemyAI.CurrentState);
         }
 
         private void UpdateAnim()

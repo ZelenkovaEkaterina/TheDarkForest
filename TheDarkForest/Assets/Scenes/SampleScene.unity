@@ -829,6 +829,73 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b21ff14cda357c4386053b542dc032a, type: 3}
+--- !u!1 &321407743
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 321407746}
+  - component: {fileID: 321407745}
+  - component: {fileID: 321407744}
+  m_Layer: 0
+  m_Name: GolemAgroZone
+  m_TagString: GolemAgro
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &321407744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321407743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e6f71aa49ab08144b40620837decd79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GolemAgroZone
+  _golem: {fileID: 370588856}
+--- !u!135 &321407745
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321407743}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 6.0223923
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &321407746
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321407743}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 40.44853, y: 0.02, z: 101.88}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -989,6 +1056,62 @@ MonoBehaviour:
   rotateSpeed: 90
   followLerp: 8
   offset: {x: 0, y: 1.5, z: 0}
+--- !u!1 &370588856 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9137032837993464747, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
+  m_PrefabInstance: {fileID: 1655113442}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &370588859
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 370588856}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2.8755445
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.4645848, z: 0}
+--- !u!114 &370588860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 370588856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71903c2051705304cb66bfc87716c390, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GolemAI
+  _spawnPoint: {fileID: 1938498094}
+  _attackDelay: 2
+  _attackCooldown: 0.3
+  _projectileController: {fileID: 1070096602}
+--- !u!114 &370588861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 370588856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1972dfd20beee74495088a87aa758eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GolemAnimationController
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2775,9 +2898,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameController
   _playerShotPrefab: {fileID: 5437011746929177416, guid: ef9be7333082ba340aca5bc357e34bf9, type: 3}
   _enemyShotPrefab: {fileID: 5437011746929177416, guid: 94866dbfd3d27cb49b9a7e731abd7c45, type: 3}
+  _golemShotPrefab: {fileID: 5437011746929177416, guid: 94866dbfd3d27cb49b9a7e731abd7c45, type: 3}
   _player: {fileID: 6688058285412900925}
   _playerShotParent: {fileID: 120123315}
   _enemyShotParent: {fileID: 1202201489}
+  _golemShotParent: {fileID: 1761347820}
 --- !u!4 &1070096603
 Transform:
   m_ObjectHideFlags: 0
@@ -2794,6 +2919,7 @@ Transform:
   - {fileID: 1118336974}
   - {fileID: 1202201489}
   - {fileID: 120123315}
+  - {fileID: 1761347820}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1070096604
@@ -3790,6 +3916,76 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1655113442
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2550935751187727211, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: dc9c8f25ae358bc42906c67fe5246aff, type: 2}
+    - target: {fileID: 8468617057500289297, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 40.3862
+      objectReference: {fileID: 0}
+    - target: {fileID: 8468617057500289297, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.0000013348413
+      objectReference: {fileID: 0}
+    - target: {fileID: 8468617057500289297, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 98.49857
+      objectReference: {fileID: 0}
+    - target: {fileID: 8468617057500289297, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8468617057500289297, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8468617057500289297, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8468617057500289297, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8468617057500289297, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8468617057500289297, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8468617057500289297, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9137032837993464747, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
+      propertyPath: m_Name
+      value: URP - Giant01 - Golem
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9137032837993464747, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 370588859}
+    - targetCorrespondingSourceObject: {fileID: 9137032837993464747, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 370588860}
+    - targetCorrespondingSourceObject: {fileID: 9137032837993464747, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 370588861}
+  m_SourcePrefab: {fileID: 100100000, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
 --- !u!1 &1666091661
 GameObject:
   m_ObjectHideFlags: 0
@@ -4028,6 +4224,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SkillToggle
   _skillIndex: 1
   _manager: {fileID: 1801768906}
+--- !u!1 &1761347819
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1761347820}
+  m_Layer: 0
+  m_Name: GolemShotPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1761347820
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1761347819}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1070096603}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1801768899
 GameObject:
   m_ObjectHideFlags: 0
@@ -4801,6 +5028,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1934009146}
   m_CullTransparentMesh: 1
+--- !u!4 &1938498094 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2756700190524639599, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
+  m_PrefabInstance: {fileID: 1655113442}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1944680612
 GameObject:
   m_ObjectHideFlags: 0
@@ -5277,7 +5509,7 @@ PrefabInstance:
       objectReference: {fileID: 1070096601}
     - target: {fileID: 8308407562079725068, guid: 4b3968d7de33d6c46a437ac2fed2ae52, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 174.79
+      value: 40.7
       objectReference: {fileID: 0}
     - target: {fileID: 8308407562079725068, guid: 4b3968d7de33d6c46a437ac2fed2ae52, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5285,7 +5517,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8308407562079725068, guid: 4b3968d7de33d6c46a437ac2fed2ae52, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 177.88
+      value: 114.89
       objectReference: {fileID: 0}
     - target: {fileID: 8308407562079725068, guid: 4b3968d7de33d6c46a437ac2fed2ae52, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5426,3 +5658,5 @@ SceneRoots:
   - {fileID: 264284826}
   - {fileID: 2141167717}
   - {fileID: 649234272}
+  - {fileID: 1655113442}
+  - {fileID: 321407746}

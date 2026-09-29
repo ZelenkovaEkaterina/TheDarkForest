@@ -8,6 +8,7 @@ TagManager:
   - Agro
   - Enemy
   - Loot
+  - GolemAgro
   layers:
   - Default
   - TransparentFX

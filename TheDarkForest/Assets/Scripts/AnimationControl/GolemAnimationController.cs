@@ -11,7 +11,7 @@ public class GolemAnimationController : MonoBehaviour
    {
       _golemAI = GetComponent<GolemAI>();
       _animator = GetComponent<Animator>();
-      _animator.speed = 0.5f;
+      //_animator.speed = 0.5f;
    }
 
    private void OnEnable()

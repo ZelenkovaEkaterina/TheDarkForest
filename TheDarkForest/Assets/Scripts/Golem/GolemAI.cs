@@ -85,7 +85,7 @@ public class GolemAI : MonoBehaviour
     private void UpdateAttack()
     {
         _currentState = GolemState.Attack;
-        OnStateChange?.Invoke(_currentState);
+        
         
         if (_playerTransform == null || _shotPool == null) return;
         
@@ -112,15 +112,17 @@ public class GolemAI : MonoBehaviour
     private IEnumerator AttackLoop()
     {
         _currentState = GolemState.Attack;
+        OnStateChange?.Invoke(_currentState);
 
         while (_playerTransform != null)
         {
             yield return new WaitForSeconds(_attackDelay);
+            
             if (_playerTransform == null) break;
 
             UpdateAttack();
 
-            //yield return new WaitForSeconds(_attackCooldown);
+            yield return new WaitForSeconds(_attackCooldown);
         }
 
         _currentState = GolemState.Idle;

@@ -6,6 +6,7 @@ namespace Player
     public class PlayerInteraction : MonoBehaviour
     {
         public event Action<Type> OnLoot;
+        public event Action OnChestLooted;
         
         private PlayerMovementComponent _movement;
         private Interactable _pending;
@@ -22,8 +23,7 @@ namespace Player
         public void RequestInteract(Interactable obj)
         {
             if (obj == null || !obj.IsAvailable) return;
-
-            // ★ на всякий случай отписываемся от предыдущего
+            
             if (_pending is LootItem oldLoot)
                 oldLoot.OnLooted -= HandleLooted;
 
@@ -36,9 +36,9 @@ namespace Player
             if (dir.sqrMagnitude < 0.001f) dir = -transform.forward;
 
             Vector3 approach = obj.transform.position - dir.normalized * _range;
-            approach.y = transform.position.y;               // ★ Y — от игрока, а не от предмета
+            approach.y = transform.position.y;   
 
-            _movement.MoveTo(approach);                      // ★ SetState убран — им займётся Movement
+            _movement.MoveTo(approach);
 
             if (obj is LootItem loot)
                 loot.OnLooted += HandleLooted;
@@ -59,7 +59,6 @@ namespace Player
         {
             if (_pending == null)
             {
-                // если мы в процессе проигрывания Interact — ждём таймер
                 if (_movement.State == PlayerState.Interact)
                 {
                     _interactTimer -= Time.deltaTime;
@@ -76,7 +75,7 @@ namespace Player
                 _movement.SetState(PlayerState.Idle);
                 _interactTimer = _interactDuration;
 
-                _pending.Interact(gameObject);    // лут выключается, OnLooted → OnLoot
+                _pending.Interact(gameObject);
                 _pending = null;
             }
         }
@@ -88,5 +87,6 @@ namespace Player
 
             OnLoot?.Invoke(type);
         }
+        
     }
 }

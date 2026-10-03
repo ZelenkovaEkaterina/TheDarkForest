@@ -4,7 +4,8 @@ public enum Type
 {
     Heal,
     Mana,
-    Coin
+    Coin, 
+    Chest
 }
 [CreateAssetMenu(fileName = "SettingsInventory", menuName = "Scriptable Objects/Inventory")]
 public class InventoryType : ScriptableObject

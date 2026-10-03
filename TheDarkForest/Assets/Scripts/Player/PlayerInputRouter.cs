@@ -13,6 +13,8 @@ namespace Player
         private PlayerCombat _combat;
         private PlayerInteraction _interaction;
 
+        private float _distanseToChase = 1.2f;
+
         private void Awake()
         {
             _movement = GetComponent<PlayerMovementComponent>();

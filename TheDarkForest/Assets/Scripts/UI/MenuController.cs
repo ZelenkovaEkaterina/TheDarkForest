@@ -26,9 +26,7 @@ public class MenuController : MonoBehaviour
         if (_current != MenuScreen.Main)
             return;
         
-        _current = MenuScreen.None;
-        mainMenu.SetActive(false);
-        Time.timeScale = 1f;
+        Open(MenuScreen.None);
     }
 
     public void BackToMenu()
@@ -36,9 +34,7 @@ public class MenuController : MonoBehaviour
         if (_current != MenuScreen.Pause)
             return;
         
-        _current = MenuScreen.Main;
-        mainMenu.SetActive(true);
-        Time.timeScale = 0f;
+        Open(MenuScreen.Main);
     }
 
     public void Open(MenuScreen screen)
@@ -61,6 +57,7 @@ public class MenuController : MonoBehaviour
         {
             case MenuScreen.SkillShop: Open(_shopReturn); break;
             case MenuScreen.Pause:     Open(MenuScreen.None); break;
+            case MenuScreen.None:      Open(MenuScreen.Pause); break;
         }
     }
 
@@ -72,6 +69,8 @@ public class MenuController : MonoBehaviour
     
     public void ToggleShop()
     {
+        if (_current == MenuScreen.Main || _current == MenuScreen.Pause) return;
+        
         if (_current == MenuScreen.SkillShop) Back();
         else Open(MenuScreen.SkillShop);
     }

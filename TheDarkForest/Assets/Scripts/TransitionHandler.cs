@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class TransitionHandler : MonoBehaviour
 {
@@ -7,9 +8,10 @@ public class TransitionHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.CompareTag("Player"))
         {
-            other.transform.position = _transition.position;
+            other.GetComponent<NavMeshAgent>().ResetPath();
+            other.GetComponent<NavMeshAgent>().Warp(_transition.position);
         }
     }
 }

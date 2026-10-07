@@ -14,6 +14,8 @@ namespace Enemy
         
         private ProjectilePool<Projectile> _shotPool;
         private Transform _spawnPoint;
+
+        private float _heightTarget = 2f;
         
         private EnemyWeapon _enemyWeapon;
         
@@ -26,18 +28,18 @@ namespace Enemy
         private void Start()
         {
             _spawnPoint = gameObject.GetComponentInChildren<Transform>();
-            
+
             _enemyWeapon = GetComponentInChildren<EnemyWeapon>();
             _enemyWeapon.gameObject.SetActive(false);
         }
-        
+
         public void InitializeProjectilePool(ProjectilePool<Projectile> pool)
         {
             _shotPool = pool;
         }
         protected override void PerformAttack()
         {
-            Debug.Log("стреляют");
+            base.PerformAttack();
             if (Target == null || _shotPool == null) return;
             
             Projectile shot = _shotPool.Get();
@@ -45,8 +47,11 @@ namespace Enemy
 
             shot.SetOwner(gameObject);
             shot.IgnoreOwnerCollision(GetComponent<Collider>());
+            Debug.Log(GetComponent<Collider>());
             shot.ReturnToPool += OnDespawn;
             shot.transform.SetPositionAndRotation(_spawnPoint.position, _spawnPoint.rotation);
+            Vector3 pos = Target.transform.position;
+            pos.y += _heightTarget;
             shot.OnSpawn(Target.transform.position);
             
         }

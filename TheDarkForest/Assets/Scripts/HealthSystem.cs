@@ -5,7 +5,7 @@ using UnityEngine.Events;
 public abstract class HealthSystem : MonoBehaviour, IDamageable
 {
     public event Action<int, GameObject> OnDamageTaken;
-    public event Action OnDeath; 
+    public event Action<Vector3> OnDeath; 
     public event Action OnHealthChanged;
     public event Action<Type> OnHealthBottleUse;
     
@@ -33,7 +33,7 @@ public abstract class HealthSystem : MonoBehaviour, IDamageable
         OnHealthChanged?.Invoke();
         if (IsDead())
         {
-            OnDeath?.Invoke();
+            OnDeath?.Invoke(gameObject.transform.position);
             Die();            
         }
     }
@@ -55,6 +55,11 @@ public abstract class HealthSystem : MonoBehaviour, IDamageable
             OnHealthChanged?.Invoke();
             OnHealthBottleUse?.Invoke(Type.Heal);
         }
+    }
+
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
     }
     
 }

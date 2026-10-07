@@ -52,10 +52,10 @@ MonoBehaviour:
   settingsAreaZone: {fileID: 11400000, guid: 9c6b19067caadb2408da92296f8d3d87, type: 2}
   _poolManager: {fileID: 0}
   _projectileController: {fileID: 0}
-  _meleeModel: {fileID: 1571042049591659991, guid: 924f01b2d72975c4a9d39ebc1a121cdd, type: 3}
+  _meleeWeapon: {fileID: 0}
   _rangeModel: {fileID: 1571042049591659991, guid: 924f01b2d72975c4a9d39ebc1a121cdd, type: 3}
   _meleeAnimator: {fileID: 9100000, guid: eaf805c7c7f94f242a5ebe80c6e08479, type: 2}
-  _rangeAnimator: {fileID: 9100000, guid: 89b39b039c4c9eb409ab94cd44448ff2, type: 2}
+  _rangeAnimator: {fileID: 9100000, guid: 8a69562d982cb78488aff6041fec5c00, type: 2}
 --- !u!135 &5955433176970313456
 SphereCollider:
   m_ObjectHideFlags: 0

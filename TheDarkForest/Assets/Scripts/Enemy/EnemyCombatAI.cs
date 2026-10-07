@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyCombatAI : EnemyAI
 {
-         public event Action<EnemyState> OnState; 
+        public event Action<EnemyState> OnState; 
         [SerializeField] protected float chaseRange = 10f;
         [SerializeField] protected float attackRange = 2f;
         
@@ -16,8 +16,6 @@ public class EnemyCombatAI : EnemyAI
         private bool _hasTarget = false;
         private EnemyController _enemyController;
 
-        public EnemyState CurrentState => _currentState;
-
         protected override void Awake()
         {
             base.Awake();
@@ -27,13 +25,19 @@ public class EnemyCombatAI : EnemyAI
         private void OnEnable()
         {
             if (_enemyController != null)
+            {
                 _enemyController.OnChase += HandleChase;
+                _enemyController.OnTargetDead += HandleTargetDie;
+            }
         }
 
         private void OnDisable()
         {
             if (_enemyController != null)
+            {
                 _enemyController.OnChase -= HandleChase;
+                _enemyController.OnTargetDead -= HandleTargetDie;
+            }
         }
 
         private void FixedUpdate()
@@ -52,8 +56,7 @@ public class EnemyCombatAI : EnemyAI
             }
 
             float distanceToTarget = Vector3.Distance(transform.position, _target.position);
-            //Debug.DrawLine(transform.position, _target.position, Color.red);
-            //Debug.Log(_currentState);
+            
             switch (_currentState)
             {
                 case EnemyState.Idle:
@@ -76,7 +79,6 @@ public class EnemyCombatAI : EnemyAI
                     }
                     break;
             }
-            
         }
 
         private void HandleChase(Transform target)
@@ -85,11 +87,26 @@ public class EnemyCombatAI : EnemyAI
             _hasTarget = true;
             _currentState = EnemyState.Chase;
             ResumeMovement();
-            _canAttack =  true;
+            _canAttack = true;
             StopAllCoroutines();
         }
 
-        protected virtual void PerformAttack(){}
+        private void HandleTargetDie()
+        {
+            _target = null;
+        }
+
+        protected virtual void PerformAttack()
+        {
+            if (_target == null) return;
+
+            Vector3 direction = (_target.position - transform.position).normalized;
+
+            if (direction.sqrMagnitude > 0.001f)
+            {
+                transform.rotation = Quaternion.LookRotation(direction);
+            }
+        }
 
         private IEnumerator AttackCooldownRoutine()
         {
@@ -100,7 +117,6 @@ public class EnemyCombatAI : EnemyAI
 
         public void GetState(EnemyState ss)
         {
-            //Debug.Log(ss);
             OnState?.Invoke(ss);
         }
 }

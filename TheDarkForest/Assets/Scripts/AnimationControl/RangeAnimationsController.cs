@@ -3,19 +3,14 @@ using UnityEngine.AI;
 
 namespace Enemy
 {
-    public class RangeAnimationsController : MonoBehaviour
+    public class RangeAnimationsController : MeleeEnemyAnimationsController
     {
-        private EnemyPatrol _enemyPatrol;
-        private EnemyCombatAI _enemyCombat;
-        private Animator _animator;
-        private RangeEnemyAI _meleeEnemyAI;
+        private RangeEnemyAI _rangeEnemyAI;
 
-        private void Start()
+        protected override void Start()
         {
-            _animator = GetComponent<Animator>();
-            _enemyPatrol = GetComponent<EnemyPatrol>();
-            _enemyCombat = GetComponent<EnemyCombatAI>();
-            _meleeEnemyAI = GetComponent<RangeEnemyAI>();
+            base.Start();
+            _rangeEnemyAI = GetComponent<RangeEnemyAI>();
         }
 
         private void Update()
@@ -25,18 +20,27 @@ namespace Enemy
 
         private void UpdateAnim()
         {
-            switch (_meleeEnemyAI.CurrentState)
+            _animator.SetBool("Patrol", false);
+            _animator.SetBool("Attack", false);
+            _animator.SetBool("Chase", false);
+            
+            switch (_rangeEnemyAI.CurrentState)
             {
                 case EnemyState.Idle:
+                    Debug.Log(_enemyPatrol.Agent.isStopped);
                     if (gameObject.GetComponent<NavMeshAgent>().isStopped == false)
                     {
                         _animator.SetBool("Patrol", true);
-                        return;
+                        //Debug.Log(gameObject.GetComponent<NavMeshAgent>().isStopped);
                     }
-
-                    _animator.SetBool("Patrol", false);
-                    _animator.SetBool("Chase", false);
-                    _animator.SetBool("Attack", false);
+                    else
+                    {
+                        _animator.SetBool("Patrol", false);
+                        
+                    }
+                    
+                    
+                    //_animator.SetBool("Attack", false);
                     break;
                 case EnemyState.Chase:
                     _animator.SetBool("Chase", true);
@@ -45,7 +49,7 @@ namespace Enemy
                     _animator.SetBool("Attack", true);
                     break;
             }
-
+            
         }
     }
 }

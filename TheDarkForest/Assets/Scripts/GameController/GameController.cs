@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    public event Action OnGameOver;
     public event Action OnPlayerDead;
     [SerializeField] private PlayerHealthComponent _playerHealthComponent;
     [SerializeField] private bool bIsDead = false;
@@ -21,8 +22,8 @@ public class GameController : MonoBehaviour
     private void HandleDead(bool obj)
     {
         bIsDead = obj;
+        
         OnPlayerDead?.Invoke();
-
         StartCoroutine(Pause());
         //_playerHealthComponent.gameObject.SetActive(false);
     }
@@ -31,5 +32,6 @@ public class GameController : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         Time.timeScale = 0f;
+        OnGameOver?.Invoke();
     }
 }

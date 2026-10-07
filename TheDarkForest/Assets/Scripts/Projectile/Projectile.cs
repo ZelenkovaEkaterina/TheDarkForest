@@ -15,7 +15,7 @@ public class Projectile : MonoBehaviour, IPoolable
 
         private GameObject _owner;
         
-        private int _damage = 10;
+        [SerializeField] private int _damage = 10;
         
 
         public event Action<Projectile> ReturnToPool;
@@ -80,8 +80,9 @@ public class Projectile : MonoBehaviour, IPoolable
             }
         }
 
-        private void OnTriggerExit(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
+            //Debug.Log(other);
             //ReturnSelf();
         }
     

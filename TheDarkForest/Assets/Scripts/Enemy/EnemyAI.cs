@@ -41,17 +41,17 @@ public class EnemyAI : MonoBehaviour
         if (!_isInitialized) return;
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         _enemyHealthComponent.OnDeath += Death;
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         _enemyHealthComponent.OnDeath -= Death;
     }
 
-    private void Death()
+    private void Death(Vector3 p)
     {
         //_currentState = EnemyState.Dead;
         //gameObject.SetActive(false);
@@ -110,11 +110,6 @@ public class EnemyAI : MonoBehaviour
             _enemyPatrol.IsActive = false;
             ResumeMovement();
         }
-    }
-
-    private void HandlePlayerDead()
-    {
-        
     }
 
     protected void StopMovement()

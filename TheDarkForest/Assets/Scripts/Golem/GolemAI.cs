@@ -12,7 +12,9 @@ public class GolemAI : MonoBehaviour
 {
     public event Action<GolemState> OnStateChange;
     
+    
     private Transform _playerTransform;
+    private float _heightTarget = 2f;
     private float rotationSpeed = 180f;
     
     [SerializeField] private Transform _spawnPoint;
@@ -98,8 +100,9 @@ public class GolemAI : MonoBehaviour
         shot.IgnoreOwnerCollision(GetComponent<Collider>());
         shot.ReturnToPool += OnDespawn;
         shot.transform.SetPositionAndRotation(_spawnPoint.position, _spawnPoint.rotation);
-        shot.OnSpawn(_playerTransform.transform.position);
-        
+        Vector3 pos = _playerTransform.transform.position;
+        pos.y += _heightTarget; 
+        shot.OnSpawn(pos);
     }
     
     private void OnDespawn(Projectile obj)

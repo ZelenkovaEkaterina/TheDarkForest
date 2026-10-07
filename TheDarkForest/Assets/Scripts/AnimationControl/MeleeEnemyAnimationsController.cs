@@ -7,12 +7,12 @@ namespace Enemy
 {
     public class MeleeEnemyAnimationsController : MonoBehaviour
     {
-        private EnemyPatrol _enemyPatrol;
-        private EnemyCombatAI _enemyCombat;
-        private Animator _animator;
+        protected EnemyPatrol _enemyPatrol;
+        protected EnemyCombatAI _enemyCombat;
+        protected Animator _animator;
         private MeleeEnemyAI _meleeEnemyAI;
 
-        private void Start()
+        protected virtual void Start()
         {
             _animator = GetComponent<Animator>();
             _enemyPatrol = GetComponent<EnemyPatrol>();
@@ -25,7 +25,7 @@ namespace Enemy
             UpdateAnim();
         }
 
-        private void UpdateAnim()
+        protected void UpdateAnim()
         {
             _animator.SetBool("Patrol", false);
             _animator.SetBool("Attack", false);

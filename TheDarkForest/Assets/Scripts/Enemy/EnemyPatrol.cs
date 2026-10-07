@@ -51,7 +51,6 @@ public class EnemyPatrol : MonoBehaviour
                 
                 if (_currentPoint != Vector3.zero)
                 {
-
                         _sharedWaypoints.Enqueue(_currentPoint);
                         _currentPoint = Vector3.zero;
                 }

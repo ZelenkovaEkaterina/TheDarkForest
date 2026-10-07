@@ -3,7 +3,7 @@ using UnityEngine;
 public class PoolManager : MonoBehaviour
 {
     [SerializeField] public GameObject enemyPrefab;
-    [SerializeField] public int poolInitialSize = 20;
+    [SerializeField] public int poolInitialSize = 30;
 
     private GameObjectPool _enemyPool;
     public GameObjectPool EnemyPool => _enemyPool;

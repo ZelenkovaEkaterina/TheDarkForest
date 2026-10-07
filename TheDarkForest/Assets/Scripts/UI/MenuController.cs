@@ -1,18 +1,24 @@
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum MenuScreen 
 { 
     None, 
     Main, 
     Pause, 
-    SkillShop 
+    SkillShop,
+    Restart
 }
 
 public class MenuController : MonoBehaviour
 {
-    [SerializeField] private GameObject mainMenu;
-    [SerializeField] private GameObject pauseMenu;
-    [SerializeField] private GameObject skillShop;
+    [SerializeField] private GameController _gameController;
+    
+    [SerializeField] private GameObject _mainMenu;
+    [SerializeField] private GameObject _pauseMenu;
+    [SerializeField] private GameObject _skillShop;
+    [SerializeField] private GameObject _restartGame;
     
     private MenuScreen _current = MenuScreen.None;
     private MenuScreen _shopReturn = MenuScreen.Pause;
@@ -20,6 +26,16 @@ public class MenuController : MonoBehaviour
     private void Start() => Open(MenuScreen.Main);
 
     public MenuScreen Current => _current;
+
+    private void OnEnable()
+    {
+        _gameController.OnGameOver += GameOver;
+    }
+
+    private void OnDisable()
+    {
+        _gameController.OnGameOver -= GameOver;
+    }
 
     public void StartGame()
     {
@@ -31,7 +47,7 @@ public class MenuController : MonoBehaviour
 
     public void BackToMenu()
     {
-        if (_current != MenuScreen.Pause)
+        if (_current != MenuScreen.Pause && _current != MenuScreen.Restart)
             return;
         
         Open(MenuScreen.Main);
@@ -44,9 +60,10 @@ public class MenuController : MonoBehaviour
 
         _current = screen;
 
-        mainMenu.SetActive(screen == MenuScreen.Main);
-        pauseMenu.SetActive(screen == MenuScreen.Pause);
-        skillShop.SetActive(screen == MenuScreen.SkillShop);
+        _mainMenu.SetActive(screen == MenuScreen.Main);
+        _pauseMenu.SetActive(screen == MenuScreen.Pause);
+        _skillShop.SetActive(screen == MenuScreen.SkillShop);
+        _restartGame.SetActive(screen == MenuScreen.Restart);
 
         Time.timeScale = (screen == MenuScreen.None) ? 1f : 0f;
     }
@@ -73,6 +90,17 @@ public class MenuController : MonoBehaviour
         
         if (_current == MenuScreen.SkillShop) Back();
         else Open(MenuScreen.SkillShop);
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f; 
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void GameOver()
+    {
+        Open(MenuScreen.Restart);
     }
     
     public void QuitGame()

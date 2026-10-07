@@ -17,6 +17,8 @@ namespace Player
         [SerializeField] private float _fireRate = 2.5f;
         [SerializeField] private float _autoAggroRange = 8f;
 
+        private float _heightTarget = 1.5f;
+
         private bool _autoTargetSuppressed;
         
         private ProjectilePool<Projectile> _shotPool;
@@ -129,7 +131,9 @@ namespace Player
                 Quaternion shootRot = Quaternion.LookRotation(shootDir);
 
                 shot.transform.SetPositionAndRotation(_spawnPoint.position, shootRot);
-                shot.OnSpawn(target);
+                Vector3 pos = target;
+                pos.y += _heightTarget; 
+                shot.OnSpawn(pos);
             }
 
 
@@ -142,7 +146,8 @@ namespace Player
                 Debug.Log("не хватает маны");
             }
             
-            _movement.SetState(PlayerState.Attack);
+            if(_movement.State != PlayerState.Dead)
+                _movement.SetState(PlayerState.Attack);
         }
 
         private void OnDespawn(Projectile obj)

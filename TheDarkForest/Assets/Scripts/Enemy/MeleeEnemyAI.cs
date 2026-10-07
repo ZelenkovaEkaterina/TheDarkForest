@@ -21,12 +21,12 @@ namespace Enemy
 
         private void Start()
         {
-            // _enemyWeapon =  GetComponent<EnemyWeapon>();
             _enemyWeapon = GetComponentInChildren<EnemyWeapon>();
         }
 
         protected override void PerformAttack()
         {
+            base.PerformAttack();
             if (Target == null) return;
 
             IDamageable targetComponent = Target.GetComponent<IDamageable>();

@@ -16,14 +16,16 @@ public class Projectile : MonoBehaviour, IPoolable
         private GameObject _owner;
         
         [SerializeField] private int _damage = 10;
-        
+        private int _damageBuff = 1;
+        public int Damage => _damage * _damageBuff;
+
 
         public event Action<Projectile> ReturnToPool;
 
         public float Speed => _speed;
         public float Lifetime => _lifetime;
         public GameObject Owner => _owner;
-        public int  Damage => _damage;
+
 
         private void Start()
         {
@@ -49,6 +51,13 @@ public class Projectile : MonoBehaviour, IPoolable
         {
             ReturnToPool = returnCallback;
         }
+        
+        
+
+        public void SetDamageBuff(int buff)
+        {
+            _damageBuff = buff < 1 ? 1 : buff;
+        }
 
         public void SetOwner(GameObject owner)
         {
@@ -72,18 +81,22 @@ public class Projectile : MonoBehaviour, IPoolable
 
         public void OnDespawn()
         {
+            _damageBuff = 1;
             _rb.linearVelocity = Vector3.zero;
             if (_ignoreCollider)
             {
-                Physics.IgnoreCollision(_ignoreCollider,  _collider, false);
+                Physics.IgnoreCollision(_ignoreCollider, _collider, false);
                 _ignoreCollider = null;
             }
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            //Debug.Log(other);
-            //ReturnSelf();
+            if (other.tag == "Enemy" || other.tag == "Player")
+            {
+                Debug.Log(other);
+                ReturnSelf();
+            }
         }
     
 

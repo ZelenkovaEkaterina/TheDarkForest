@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerWeapon : MonoBehaviour
+public class PlayerWeaponSocket : MonoBehaviour
 {
     [SerializeField] private Transform backSocket;
     [SerializeField] private Transform handSocket;

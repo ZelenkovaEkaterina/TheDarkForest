@@ -66,7 +66,12 @@ public class GolemAI : MonoBehaviour
         if (_attackRoutine == null)
             _attackRoutine = StartCoroutine(AttackLoop());
     }
-    
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
     public void GolemClearTarget(Transform target)
     {
         if (_playerTransform != target) return;
@@ -130,7 +135,5 @@ public class GolemAI : MonoBehaviour
 
         _currentState = GolemState.Idle;
         _attackRoutine = null;
-        
-        
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+//using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class UIHandler : MonoBehaviour
@@ -19,17 +20,23 @@ public class UIHandler : MonoBehaviour
     private EnemyHealthComponent _golemHealthComponent;
     
     [SerializeField] private Slider _golemSlider;
+    [SerializeField] private GameObject _golemZone;
+    private GolemAgroZone _golemZoneComponent;
 
     private void Awake()
     {
-        if (_player == null)
-            return;
+        if (_player != null)
+        {
+            _healthComponent = _player.GetComponent<PlayerHealthComponent>();
+            _manaComponent  = _player.GetComponent<PlayerManaComponent>();
+        }
 
-        _healthComponent = _player.GetComponent<PlayerHealthComponent>();
-        _manaComponent = _player.GetComponent<PlayerManaComponent>();
-
-        if (_golem == null) return;
-        _golemHealthComponent = _golem.GetComponent<EnemyHealthComponent>();
+        if (_golem != null)
+        {
+            _golemHealthComponent = _golem.GetComponent<EnemyHealthComponent>();
+            _golemZoneComponent = _golemZone.GetComponent<GolemAgroZone>();
+            _golemSlider.transform.parent.gameObject.SetActive(false);
+        }
     }
 
     private void Start()
@@ -54,6 +61,8 @@ public class UIHandler : MonoBehaviour
         _manaComponent.OnManaChanged += UpdateManaSlider;
         
         _golemHealthComponent.OnHealthChanged += UpdateHealthSlider;
+        _golemZoneComponent.OnEnterPlayer += ShowPanel;
+        _golemZoneComponent.OnExitPlayer += HidePanel;
     }
 
     private void OnDisable()
@@ -61,7 +70,9 @@ public class UIHandler : MonoBehaviour
         _healthComponent.OnHealthChanged -= UpdateHealthSlider;
         _manaComponent.OnManaChanged -= UpdateManaSlider;
         
-        _golemHealthComponent.OnHealthChanged += UpdateHealthSlider;
+        _golemHealthComponent.OnHealthChanged -= UpdateHealthSlider;
+        _golemZoneComponent.OnEnterPlayer -= ShowPanel;
+        _golemZoneComponent.OnExitPlayer -= HidePanel;
     }
 
     private void UpdateManaSlider(int mana)
@@ -83,5 +94,20 @@ public class UIHandler : MonoBehaviour
         {
             _golemSlider.value = _golemHealthComponent.CurrentHealth;
         }
+
+        if (_golemSlider.value == 0)
+        {
+            HidePanel();
+        }
+    }
+
+    private void HidePanel()
+    {
+        _golemSlider.transform.parent.gameObject.SetActive(false);
+    }
+
+    private void ShowPanel()
+    {
+        _golemSlider.transform.parent.gameObject.SetActive(true);
     }
 }

@@ -1681,7 +1681,7 @@ GameObject:
   - component: {fileID: 321407744}
   m_Layer: 0
   m_Name: GolemAgroZone
-  m_TagString: GolemAgro
+  m_TagString: Agro
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2185,7 +2185,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5234137993107540166, guid: 1b21ff14cda357c4386053b542dc032a, type: 3}
       propertyPath: Id
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5234137993107540166, guid: 1b21ff14cda357c4386053b542dc032a, type: 3}
       propertyPath: _poolManager
@@ -8738,6 +8738,7 @@ MonoBehaviour:
   _manaButton: {fileID: 930901585}
   _golem: {fileID: 370588856}
   _golemSlider: {fileID: 2013434238}
+  _golemZone: {fileID: 321407743}
 --- !u!114 &1801768906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9301,8 +9302,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 580, y: -49.579773}
-  m_SizeDelta: {x: 667.9139, y: 51.76}
+  m_AnchoredPosition: {x: 580, y: -44.755096}
+  m_SizeDelta: {x: 667.9139, y: 42.1107}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1919279825
 MonoBehaviour:
@@ -10473,7 +10474,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3.6459, y: 1.7055}
+  m_AnchoredPosition: {x: 3.6459, y: -0.1}
   m_SizeDelta: {x: 649.7874, y: 55.171}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2013434238
@@ -10815,7 +10816,7 @@ PrefabInstance:
       objectReference: {fileID: 1070096601}
     - target: {fileID: 8308407562079725068, guid: 4b3968d7de33d6c46a437ac2fed2ae52, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -101.5
+      value: -99.6
       objectReference: {fileID: 0}
     - target: {fileID: 8308407562079725068, guid: 4b3968d7de33d6c46a437ac2fed2ae52, type: 3}
       propertyPath: m_LocalPosition.y
@@ -10823,7 +10824,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8308407562079725068, guid: 4b3968d7de33d6c46a437ac2fed2ae52, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 105.11
+      value: 113.1
       objectReference: {fileID: 0}
     - target: {fileID: 8308407562079725068, guid: 4b3968d7de33d6c46a437ac2fed2ae52, type: 3}
       propertyPath: m_LocalRotation.w

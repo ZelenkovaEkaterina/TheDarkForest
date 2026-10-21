@@ -18,14 +18,14 @@ MonoBehaviour:
       ShotBuff: 2
       ManaCost: 10
       CoinCost: 3
-      BIsActiveBuy: 0
+      BIsActiveBuy: 1
     - BowId: 1
       ShotBuff: 3
       ManaCost: 15
       CoinCost: 3
-      BIsActiveBuy: 0
+      BIsActiveBuy: 1
     - BowId: 2
       ShotBuff: 4
       ManaCost: 20
       CoinCost: 3
-      BIsActiveBuy: 0
+      BIsActiveBuy: 1

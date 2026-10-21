@@ -6,7 +6,7 @@ namespace Player
 {
     public class PlayerCombat : MonoBehaviour
     {
-        public event Action<int> OnCast;
+        public event Action<int, int> OnCast;
 
         [Header("Refs")] [SerializeField] private Transform _spawnPoint;
         [SerializeField] private LayerMask _enemyMask;
@@ -25,7 +25,7 @@ namespace Player
         private DamageSystem _damageSystem;
         private PlayerMovementComponent _movement;
         private PlayerManaComponent _manaComponent;
-        private PlayerWeapon _playerWeapon;
+        private PlayerWeaponSocket _playerWeaponSocket;
         
         [SerializeField] private SkillsManager _skillManager;
         [SerializeField] private SkillsSettings _settingsData;
@@ -46,7 +46,7 @@ namespace Player
         {
             _movement = GetComponent<PlayerMovementComponent>();
             _manaComponent = GetComponent<PlayerManaComponent>();
-            _playerWeapon = GetComponent<PlayerWeapon>();
+            _playerWeaponSocket = GetComponent<PlayerWeaponSocket>();
             if (_gameController != null)
                 _damageSystem = _gameController.GetComponent<DamageSystem>();
         }
@@ -81,7 +81,7 @@ namespace Player
                 _currentTarget = null;
                 if (_movement.State == PlayerState.Attack)
                 {
-                    _playerWeapon.EquipToBack();
+                    _playerWeaponSocket.EquipToBack();
                     _movement.SetState(PlayerState.Idle);
                 }
                     
@@ -90,17 +90,18 @@ namespace Player
 
             float dist = Vector3.Distance(transform.position, _currentTarget.position);
             
-            if (dist > _attackRange)
+            /*if (dist > _attackRange)
             {
                 _movement.MoveToTarget(_currentTarget, _attackRange - 0.2f);
                 if (_movement.State == PlayerState.Attack)
                 {
                     _movement.SetState(PlayerState.Run);
                     _playerWeapon.EquipToBack();
+                   
                 }
                     
                 return;
-            }
+            }*/
             
             if (_movement.IsMoving)
                 _movement.Stop();
@@ -111,7 +112,7 @@ namespace Player
 
         private void HandleFire(Vector3 target)
         {
-            _playerWeapon.EquipToHand();
+            _playerWeaponSocket.EquipToHand();
             if (Time.time < _nextFireTime) return;
             _nextFireTime = Time.time + _fireRate;
             
@@ -119,7 +120,7 @@ namespace Player
             dir.y = 0f;
             if (dir.sqrMagnitude > 0.001f)
                 transform.rotation = Quaternion.LookRotation(dir);
-            
+
             if (_shotPool != null && _spawnPoint != null)
             {
                 Projectile shot = _shotPool.Get();
@@ -134,18 +135,24 @@ namespace Player
                 Vector3 pos = target;
                 pos.y += _heightTarget; 
                 shot.OnSpawn(pos);
+                shot.SetDamageBuff(_buff);
+                
+                if (shot.TryGetComponent(out ProjectileVFX vfx))
+                    vfx.ApplyCastVFX(_activeSkillId);
             }
-
 
             if (_manaComponent.CurrentMana >= _manaCost)
             {
-                OnCast?.Invoke(_manaCost);
+                OnCast?.Invoke(_manaCost, _activeSkillId);
             }
             else
             {
                 Debug.Log("не хватает маны");
             }
-            
+
+
+
+
             if(_movement.State != PlayerState.Dead)
                 _movement.SetState(PlayerState.Attack);
         }

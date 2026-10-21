@@ -15,8 +15,8 @@ MonoBehaviour:
   IDB:
     InvDB:
     - Type: 0
-      Count: 2
+      Count: 0
     - Type: 1
-      Count: 1
+      Count: 0
     - Type: 2
       Count: 0

@@ -27,7 +27,6 @@ namespace Enemy
             switch (_rangeEnemyAI.CurrentState)
             {
                 case EnemyState.Idle:
-                    Debug.Log(_enemyPatrol.Agent.isStopped);
                     if (gameObject.GetComponent<NavMeshAgent>().isStopped == false)
                     {
                         _animator.SetBool("Patrol", true);

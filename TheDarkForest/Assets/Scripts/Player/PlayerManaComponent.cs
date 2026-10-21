@@ -52,7 +52,7 @@ public class PlayerManaComponent : MonoBehaviour
         StopAllCoroutines();
     }
 
-    public void UseMana(int cast)
+    public void UseMana(int cast, int id)
     {
         _currentMana -= cast;
         OnManaChanged?.Invoke(_currentMana);

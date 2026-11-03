@@ -8,12 +8,13 @@ namespace Player
         public event Action<Type> OnLoot;
         public event Action OnChestLooted;
         
+        
         private PlayerMovementComponent _movement;
         private Interactable _pending;
         private float _range;
         
         private float _interactTimer;
-        [SerializeField] private float _interactDuration = 0.8f;
+        [SerializeField] private float _interactDuration = 1f;
 
         private void Awake()
         {
@@ -86,6 +87,7 @@ namespace Player
                 loot.OnLooted -= HandleLooted;
 
             OnLoot?.Invoke(type);
+            
         }
         
     }

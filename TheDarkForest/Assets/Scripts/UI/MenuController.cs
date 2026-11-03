@@ -19,6 +19,7 @@ public class MenuController : MonoBehaviour
     [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private GameObject _skillShop;
     [SerializeField] private GameObject _restartGame;
+    [SerializeField] private GameObject _gameOver;
     
     private MenuScreen _current = MenuScreen.None;
     private MenuScreen _shopReturn = MenuScreen.Pause;
@@ -94,8 +95,9 @@ public class MenuController : MonoBehaviour
 
     public void RestartGame()
     {
-        Time.timeScale = 1f; 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1f;
+        Open(MenuScreen.None);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void GameOver()

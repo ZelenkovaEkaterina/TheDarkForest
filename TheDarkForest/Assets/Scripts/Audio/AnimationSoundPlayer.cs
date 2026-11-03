@@ -43,5 +43,13 @@ public class AnimationSoundPlayer : MonoBehaviour
         _source.PlayOneShot(clip, entry.volume);
     }
     
+    public AudioClip PlayDirect(AudioClip clip, float volumeScale = 1f)
+    {
+        if (clip == null) return null;
+        
+        _source.PlayOneShot(clip, volumeScale);
+        return clip; 
+    }
+    
     //public void PlaySound() => PlaySound("default");
 }

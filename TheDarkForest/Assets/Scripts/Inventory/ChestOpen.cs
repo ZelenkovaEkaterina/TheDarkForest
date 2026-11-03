@@ -12,7 +12,7 @@ public class ChestOpen : MonoBehaviour
    [SerializeField] private LootItem[] _lootPrefabs;
    [SerializeField] private float _flightTime = 0.5f;
    [SerializeField] private float _flightHeight = 1.5f;
-   [SerializeField] private float _spread = 1.5f;
+   [SerializeField] private float _spread = 1f;
 
    private void Awake()
    {

@@ -6,6 +6,7 @@ public class TransitionHandler : MonoBehaviour
 {
     [SerializeField] private Transform _startTransform;
     [SerializeField] private CheckpointSettings _checkpointSettings;
+    [SerializeField] private SkillsSettings _skills;
     [SerializeField] private InventoryDatabase _inventoryDatabase;
     [SerializeField] private Transform _transition;
     private AudioSource _audioSource;
@@ -47,6 +48,22 @@ public class TransitionHandler : MonoBehaviour
                         break;
                     case Type.Coin:
                         _checkpointSettings.CheckpointParams.QuantityCoin = item.Count;
+                        break;
+                }
+            }
+
+            foreach (var item in _skills.SkillsSettingsData.SkilItem)
+            {
+                switch (item.BowId)
+                {
+                    case 0:
+                        _checkpointSettings.CheckpointParams.ActiveSkill1 = item.BIsActiveBuy;
+                        break;
+                    case 1:
+                        _checkpointSettings.CheckpointParams.ActiveSkill2 = item.BIsActiveBuy;
+                        break;
+                    case 2:
+                        _checkpointSettings.CheckpointParams.ActiveSkill3 = item.BIsActiveBuy;
                         break;
                 }
             }

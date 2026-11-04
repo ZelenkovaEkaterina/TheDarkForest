@@ -60,6 +60,7 @@ public abstract class HealthSystem : MonoBehaviour, IDamageable
     public void ResetHealth()
     {
         currentHealth = maxHealth;
+        OnHealthChanged?.Invoke();
     }
     
 }

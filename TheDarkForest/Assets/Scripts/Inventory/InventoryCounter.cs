@@ -91,4 +91,11 @@ public class InventoryCounter : MonoBehaviour
                break;
        }
    }
+
+   public void UpdateInventory()
+   {
+       _healCountText.text = _inventoryDatabase.IDB.InvDB[0].Count.ToString();
+       _manaCountText.text = _inventoryDatabase.IDB.InvDB[1].Count.ToString();
+       _coinCountText.text = _inventoryDatabase.IDB.InvDB[2].Count.ToString();
+   }
 }

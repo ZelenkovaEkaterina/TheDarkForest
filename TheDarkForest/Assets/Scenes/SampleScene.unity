@@ -1111,6 +1111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TransitionHandler
   _startTransform: {fileID: 721620516}
   _checkpointSettings: {fileID: 11400000, guid: 6148ac957d63c024d86d159fdeb3ee65, type: 2}
+  _skills: {fileID: 11400000, guid: 35d986ef58c7ae24b911ce7ab7951e67, type: 2}
   _inventoryDatabase: {fileID: 11400000, guid: c549463e148f41c4a84f4c2c1fa54b1e, type: 2}
   _transition: {fileID: 578151129}
 --- !u!1001 &219852176
@@ -6016,9 +6017,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerRespawn
   _player: {fileID: 3515461753429522782}
+  _skills: {fileID: 11400000, guid: 35d986ef58c7ae24b911ce7ab7951e67, type: 2}
   _inventory: {fileID: 11400000, guid: c549463e148f41c4a84f4c2c1fa54b1e, type: 2}
   _checkpointSettings: {fileID: 11400000, guid: 6148ac957d63c024d86d159fdeb3ee65, type: 2}
   _menuController: {fileID: 1070096606}
+  _inventoryController: {fileID: 881462249}
 --- !u!1 &1118336972
 GameObject:
   m_ObjectHideFlags: 0
@@ -8311,6 +8314,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TransitionHandler
   _startTransform: {fileID: 721620516}
   _checkpointSettings: {fileID: 11400000, guid: 6148ac957d63c024d86d159fdeb3ee65, type: 2}
+  _skills: {fileID: 11400000, guid: 35d986ef58c7ae24b911ce7ab7951e67, type: 2}
   _inventoryDatabase: {fileID: 11400000, guid: c549463e148f41c4a84f4c2c1fa54b1e, type: 2}
   _transition: {fileID: 1346066133}
 --- !u!82 &1589255045

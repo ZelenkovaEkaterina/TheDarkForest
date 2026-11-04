@@ -13,6 +13,7 @@ public class CheckpointParams
     public int QuantityHealBottle;
     public int QuantityManaBottle;
     public int QuantityCoin;
-    public int QuantityHealth;
-    public int QuantityMana;
+    public bool ActiveSkill1;
+    public bool ActiveSkill2;
+    public bool ActiveSkill3;
 }

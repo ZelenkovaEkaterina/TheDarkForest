@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8050855e8574c3740874ec7a10238106, type: 3}
   m_Name: CheckpointSettings
   m_EditorClassIdentifier: Assembly-CSharp::CheckpointSettings
-  CheckpointSettingsList:
-    Items:
-    - TransitionPosition: {x: 0, y: 0, z: 0}
-      QuantityHealBottle: 0
-      QuantityManaBottle: 0
-      QuantityCoin: 0
+  CheckpointParams:
+    TransitionPosition: {x: 72.79276, y: 1.8529005, z: 184.38454}
+    QuantityHealBottle: 0
+    QuantityManaBottle: 0
+    QuantityCoin: 0
+    SkillsBuy: 000100

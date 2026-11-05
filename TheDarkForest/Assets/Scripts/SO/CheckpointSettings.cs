@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "CheckpointSettings", menuName = "Scriptable Objects/CheckpointSettings")]
@@ -13,7 +14,5 @@ public class CheckpointParams
     public int QuantityHealBottle;
     public int QuantityManaBottle;
     public int QuantityCoin;
-    public bool ActiveSkill1;
-    public bool ActiveSkill2;
-    public bool ActiveSkill3;
+    public List<bool> SkillsBuy;
 }

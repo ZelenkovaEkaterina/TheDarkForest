@@ -18,6 +18,11 @@ public class TransitionHandler : MonoBehaviour
         _checkpointSettings.CheckpointParams.QuantityHealBottle = 0;
         _checkpointSettings.CheckpointParams.QuantityManaBottle = 0;
         _checkpointSettings.CheckpointParams.QuantityCoin = 0;
+        
+        foreach (var item in _skills.SkillsSettingsData.SkilItem)
+        {
+            _checkpointSettings.CheckpointParams.SkillsBuy[item.BowId] = false;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -54,18 +59,7 @@ public class TransitionHandler : MonoBehaviour
 
             foreach (var item in _skills.SkillsSettingsData.SkilItem)
             {
-                switch (item.BowId)
-                {
-                    case 0:
-                        _checkpointSettings.CheckpointParams.ActiveSkill1 = item.BIsActiveBuy;
-                        break;
-                    case 1:
-                        _checkpointSettings.CheckpointParams.ActiveSkill2 = item.BIsActiveBuy;
-                        break;
-                    case 2:
-                        _checkpointSettings.CheckpointParams.ActiveSkill3 = item.BIsActiveBuy;
-                        break;
-                }
+                _checkpointSettings.CheckpointParams.SkillsBuy[item.BowId] = item.BIsActiveBuy;
             }
             
             /*_checkpointSettings.CheckpointParams.QuantityHealBottle = _inventoryDatabase.IDB.InvDB[0].Count;

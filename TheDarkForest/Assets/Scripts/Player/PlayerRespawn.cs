@@ -14,7 +14,8 @@ public class PlayerRespawn : MonoBehaviour
     
     [SerializeField] private MenuController _menuController;
     [SerializeField] private InventoryCounter _inventoryController;
-
+    [SerializeField] private SkillsManager _skillsManager;
+    
     private void Awake()
     {
         _navMeshAgent = _player.GetComponent<NavMeshAgent>();
@@ -45,21 +46,11 @@ public class PlayerRespawn : MonoBehaviour
 
         foreach (var item in _skills.SkillsSettingsData.SkilItem)
         {
-            switch (item.BowId)
-            {
-                case 0:
-                    item.BIsActiveBuy = _checkpointSettings.CheckpointParams.ActiveSkill1;
-                    break;
-                case 1:
-                    item.BIsActiveBuy = _checkpointSettings.CheckpointParams.ActiveSkill2;
-                    break;
-                case 2:
-                    item.BIsActiveBuy = _checkpointSettings.CheckpointParams.ActiveSkill3;
-                    break;
-            }
+            item.BIsActiveBuy = _checkpointSettings.CheckpointParams.SkillsBuy[item.BowId];
         }
         
         _menuController.RestartGame();
         _inventoryController.UpdateInventory();
+        _skillsManager.OffSkills();
     }
 }

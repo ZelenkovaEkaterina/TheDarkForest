@@ -6022,6 +6022,7 @@ MonoBehaviour:
   _checkpointSettings: {fileID: 11400000, guid: 6148ac957d63c024d86d159fdeb3ee65, type: 2}
   _menuController: {fileID: 1070096606}
   _inventoryController: {fileID: 881462249}
+  _skillsManager: {fileID: 1801768906}
 --- !u!1 &1118336972
 GameObject:
   m_ObjectHideFlags: 0

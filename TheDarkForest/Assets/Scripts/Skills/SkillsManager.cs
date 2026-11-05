@@ -64,6 +64,19 @@ public class SkillsManager : MonoBehaviour
     public void OffSkills()
     {
         foreach (var t in UseBow) t.SetIsOnWithoutNotify(false);
+
+        foreach (var s in _settingsSkills.SkillsSettingsData.SkilItem)
+        {
+            if (s.BIsActiveBuy)
+            {
+                BuyBow[s.BowId].interactable = false;
+            }
+            else
+            {
+                BuyBow[s.BowId].interactable = true;
+            }
+        }
+        
         OnUseSkill?.Invoke(-1, false);
     }
 }

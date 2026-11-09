@@ -51,7 +51,10 @@ public class MenuController : MonoBehaviour
         if (_current != MenuScreen.Pause && _current != MenuScreen.Restart)
             return;
         
-        Open(MenuScreen.Main);
+        
+        
+        //Open(MenuScreen.Main);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void Open(MenuScreen screen)

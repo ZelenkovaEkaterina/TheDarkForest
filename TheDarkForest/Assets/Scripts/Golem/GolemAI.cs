@@ -11,7 +11,8 @@ public enum GolemState
 public class GolemAI : MonoBehaviour
 {
     public event Action<GolemState> OnStateChange;
-    
+
+    [SerializeField] private GameController _gameController;
     
     private Transform _playerTransform;
     private float _heightTarget = 2f;
@@ -67,9 +68,20 @@ public class GolemAI : MonoBehaviour
             _attackRoutine = StartCoroutine(AttackLoop());
     }
 
+    private void OnEnable()
+    {
+        _gameController.OnPlayerDead += HandleTargetDie;
+    }
+
     private void OnDisable()
     {
         StopAllCoroutines();
+        _gameController.OnPlayerDead -= HandleTargetDie;
+    }
+    
+    private void HandleTargetDie()
+    {
+        GolemClearTarget(_playerTransform);
     }
 
     public void GolemClearTarget(Transform target)

@@ -10,6 +10,7 @@ public class GolemAgroZone : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
+        if (_golem == null) return;
         _golem.GetComponent<GolemAI>().GolemSetTarget(other.transform);
         OnEnterPlayer?.Invoke();
     }
@@ -17,6 +18,7 @@ public class GolemAgroZone : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Player")) return;
+        if (_golem == null) return;
         _golem.GetComponent<GolemAI>().GolemClearTarget(other.transform);
         OnExitPlayer?.Invoke();
     }

@@ -108,6 +108,7 @@ public class UIHandler : MonoBehaviour
 
     private void ShowPanel()
     {
+        if (_golemSlider.value == 0) return;
         _golemSlider.transform.parent.gameObject.SetActive(true);
     }
 }

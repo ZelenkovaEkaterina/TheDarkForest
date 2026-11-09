@@ -57,6 +57,7 @@ public class Projectile : MonoBehaviour, IPoolable
         public void SetDamageBuff(int buff)
         {
             _damageBuff = buff < 1 ? 1 : buff;
+           //Debug.Log(Damage);
         }
 
         public void SetOwner(GameObject owner)
@@ -67,9 +68,9 @@ public class Projectile : MonoBehaviour, IPoolable
         public void ReturnSelf()
         {
             if(_returned) return;
-            
-            ReturnToPool?.Invoke(this);
+
             _returned = true;
+            ReturnToPool?.Invoke(this);
         }
 
         public void OnSpawn(Vector3 target)
@@ -94,7 +95,12 @@ public class Projectile : MonoBehaviour, IPoolable
         {
             if (other.tag == "Enemy" || other.tag == "Player")
             {
-                Debug.Log(other);
+                //Debug.Log(other);
+                if (other.gameObject == _owner) return;
+
+                if (other.TryGetComponent<HealthSystem>(out var health))
+                    health.TakeDamage(Damage, _owner);
+                
                 ReturnSelf();
             }
         }

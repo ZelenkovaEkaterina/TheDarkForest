@@ -8,7 +8,8 @@ public enum MenuScreen
     Main, 
     Pause, 
     SkillShop,
-    Restart
+    Restart,
+    GameOver
 }
 
 public class MenuController : MonoBehaviour
@@ -31,11 +32,18 @@ public class MenuController : MonoBehaviour
     private void OnEnable()
     {
         _gameController.OnGameOver += GameOver;
+        _gameController.OnExit += GameEnd;
     }
 
     private void OnDisable()
     {
         _gameController.OnGameOver -= GameOver;
+        _gameController.OnExit -= GameEnd;
+    }
+
+    private void GameEnd()
+    {
+        Open(MenuScreen.GameOver);
     }
 
     public void StartGame()
@@ -48,7 +56,7 @@ public class MenuController : MonoBehaviour
 
     public void BackToMenu()
     {
-        if (_current != MenuScreen.Pause && _current != MenuScreen.Restart)
+        if (_current != MenuScreen.Pause && _current != MenuScreen.Restart && _current != MenuScreen.GameOver)
             return;
         
         
@@ -68,6 +76,7 @@ public class MenuController : MonoBehaviour
         _pauseMenu.SetActive(screen == MenuScreen.Pause);
         _skillShop.SetActive(screen == MenuScreen.SkillShop);
         _restartGame.SetActive(screen == MenuScreen.Restart);
+        _gameOver.SetActive(screen == MenuScreen.GameOver);
 
         Time.timeScale = (screen == MenuScreen.None) ? 1f : 0f;
     }

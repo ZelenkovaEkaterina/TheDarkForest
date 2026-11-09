@@ -214,7 +214,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
   _speed: 20
   _lifetime: 3
-  _damage: 10
+  _damage: 15
 --- !u!114 &7332914284071903688
 MonoBehaviour:
   m_ObjectHideFlags: 0

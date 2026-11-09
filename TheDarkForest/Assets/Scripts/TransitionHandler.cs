@@ -35,11 +35,6 @@ public class TransitionHandler : MonoBehaviour
 
             if (_checkpointSettings == null || _inventoryDatabase == null) return;
             _checkpointSettings.CheckpointParams.TransitionPosition = _transition.position;
-            
-            /*_checkpointSettings.CheckpointParams.QuantityHealth =
-                other.GetComponent<PlayerHealthComponent>().CurrentHealth;
-            _checkpointSettings.CheckpointParams.QuantityMana = 
-                other.GetComponent<PlayerManaComponent>().CurrentMana;*/
 
             foreach (var item in _inventoryDatabase.IDB.InvDB)
             {
@@ -61,10 +56,6 @@ public class TransitionHandler : MonoBehaviour
             {
                 _checkpointSettings.CheckpointParams.SkillsBuy[item.BowId] = item.BIsActiveBuy;
             }
-            
-            /*_checkpointSettings.CheckpointParams.QuantityHealBottle = _inventoryDatabase.IDB.InvDB[0].Count;
-            _checkpointSettings.CheckpointParams.QuantityManaBottle = _inventoryDatabase.IDB.InvDB[1].Count;
-            _checkpointSettings.CheckpointParams.QuantityCoin = _inventoryDatabase.IDB.InvDB[2].Count;*/
         }
     }
 }

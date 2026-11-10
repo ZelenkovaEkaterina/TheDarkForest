@@ -9,12 +9,14 @@ public class PlayerRespawn : MonoBehaviour
     [SerializeField] private SkillsSettings _skills;
     [SerializeField] private InventoryDatabase _inventory;
     [SerializeField] private CheckpointSettings _checkpointSettings;
+    [SerializeField] private Transform _chests;
     private NavMeshAgent _navMeshAgent;
     
     
     [SerializeField] private MenuController _menuController;
     [SerializeField] private InventoryCounter _inventoryController;
     [SerializeField] private SkillsManager _skillsManager;
+    [SerializeField] private EnemyHealthComponent _golemHealth;
     
     private void Awake()
     {
@@ -49,8 +51,16 @@ public class PlayerRespawn : MonoBehaviour
             item.BIsActiveBuy = _checkpointSettings.CheckpointParams.SkillsBuy[item.BowId];
         }
         
+        foreach (Transform chest in _chests)
+        {
+            int id = chest.GetComponent<LootItem>().Id;
+            
+            chest.GetComponent<LootItem>().Looting = _checkpointSettings.CheckpointParams.ChestUse[id];
+        }
+        
         _menuController.RestartGame();
         _inventoryController.UpdateInventory();
         _skillsManager.OffSkills();
+        _golemHealth.ResetHealth();
     }
 }

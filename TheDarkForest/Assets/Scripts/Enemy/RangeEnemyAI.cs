@@ -10,7 +10,7 @@ namespace Enemy
    
     public class RangeEnemyAI : EnemyCombatAI
     {
-        private float _waitAttack = 3f;
+        [SerializeField]private float _waitAttack = 3f;
         
         private ProjectilePool<Projectile> _shotPool;
         private Transform _spawnPoint;
@@ -18,19 +18,27 @@ namespace Enemy
         private float _heightTarget = 2f;
         
         private EnemyWeapon _enemyWeapon;
+        private Collider _selfCollider;
         
         protected override void Awake()
         {
             base.Awake();
             attackRange = 6f;
+            _selfCollider = GetComponent<Collider>();
         }
 
         private void Start()
         {
-            _spawnPoint = gameObject.GetComponentInChildren<Transform>();
-
             _enemyWeapon = GetComponentInChildren<EnemyWeapon>();
-            _enemyWeapon.gameObject.SetActive(false);
+            if (_enemyWeapon != null)
+            {
+                _enemyWeapon.GetComponent<Renderer>().enabled = false;
+                _spawnPoint = _enemyWeapon.transform;
+            }
+            else
+            {
+                _spawnPoint = transform;
+            }
         }
 
         public void InitializeProjectilePool(ProjectilePool<Projectile> pool)
@@ -39,7 +47,7 @@ namespace Enemy
         }
         protected override void PerformAttack()
         {
-            base.PerformAttack();
+            /*base.PerformAttack();
             if (Target == null || _shotPool == null) return;
             
             Projectile shot = _shotPool.Get();
@@ -52,7 +60,26 @@ namespace Enemy
             shot.transform.SetPositionAndRotation(_spawnPoint.position, _spawnPoint.rotation);
             Vector3 pos = Target.transform.position;
             pos.y += _heightTarget;
-            shot.OnSpawn(Target.transform.position);
+            shot.OnSpawn(Target.transform.position);*/
+            
+            base.PerformAttack();
+            if (Target == null || _shotPool == null || _spawnPoint == null) return;
+
+            Projectile shot = _shotPool.Get();
+            if (shot == null) return;
+
+            shot.SetOwner(gameObject);
+            shot.IgnoreOwnerCollision(_selfCollider);
+            
+            shot.ReturnToPool -= OnDespawn;
+            shot.ReturnToPool += OnDespawn;
+
+            shot.transform.SetPositionAndRotation(_spawnPoint.position, _spawnPoint.rotation);
+
+            Vector3 pos = Target.position;
+            pos.y += _heightTarget;
+            Debug.Log(attackRange);
+            shot.OnSpawn(pos);
             
         }
         private void OnDespawn(Projectile obj)
@@ -61,9 +88,9 @@ namespace Enemy
             obj.ReturnToPool -= OnDespawn;
             _shotPool.Return(obj);
         }
-        private IEnumerator WaitAttack()
+
+        public void SpawnAttack()
         {
-            yield return new WaitForSeconds(_waitAttack);
             PerformAttack();
         }
     }

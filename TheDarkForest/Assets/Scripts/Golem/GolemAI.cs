@@ -63,19 +63,27 @@ public class GolemAI : MonoBehaviour
     public void GolemSetTarget(Transform target)
     {
         _playerTransform = target;
-        
-        if (_attackRoutine == null)
-            _attackRoutine = StartCoroutine(AttackLoop());
+        TryStartAttackLoop();
+    }
+    
+    private void TryStartAttackLoop()
+    {
+        if (_attackRoutine != null) return;
+        if (_playerTransform == null) return;
+        if (!isActiveAndEnabled) return;
+        _attackRoutine = StartCoroutine(AttackLoop());
     }
 
     private void OnEnable()
     {
         _gameController.OnPlayerDead += HandleTargetDie;
+        TryStartAttackLoop();
     }
 
     private void OnDisable()
     {
         StopAllCoroutines();
+        _attackRoutine = null;
         _gameController.OnPlayerDead -= HandleTargetDie;
     }
     
@@ -103,7 +111,7 @@ public class GolemAI : MonoBehaviour
 
     private void UpdateAttack()
     {
-        _currentState = GolemState.Attack;
+        //_currentState = GolemState.Attack;
         
         
         if (_playerTransform == null || _shotPool == null) return;

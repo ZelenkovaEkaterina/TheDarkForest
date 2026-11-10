@@ -36,9 +36,8 @@ namespace Enemy
             }
         }
 
-        private IEnumerator WaitAttack()
+        public void SpawnAttack()
         {
-            yield return new WaitForSeconds(_waitAttack);
             PerformAttack();
         }
     }

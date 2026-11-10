@@ -25,7 +25,9 @@ public class MenuController : MonoBehaviour
     private MenuScreen _current = MenuScreen.None;
     private MenuScreen _shopReturn = MenuScreen.Pause;
 
-    private void Start() => Open(MenuScreen.Main);
+    private void Start(){
+        Open(MenuScreen.Main);
+    }
 
     public MenuScreen Current => _current;
 

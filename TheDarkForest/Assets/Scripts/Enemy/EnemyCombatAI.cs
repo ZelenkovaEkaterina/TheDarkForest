@@ -6,7 +6,7 @@ public class EnemyCombatAI : EnemyAI
 {
         public event Action<EnemyState> OnState; 
         [SerializeField] protected float chaseRange = 10f;
-        [SerializeField] protected float attackRange = 2f;
+        protected float attackRange = 2f;
         
         [SerializeField] private float attackCooldown = 1.5f;
         private bool _canAttack = true;
@@ -66,6 +66,7 @@ public class EnemyCombatAI : EnemyAI
 
                 case EnemyState.Chase:
                     UpdateChase(distanceToTarget, attackRange, chaseRange, _target);
+                    Debug.Log(attackRange);
                     GetState(_currentState);
                     break;
 
@@ -74,8 +75,8 @@ public class EnemyCombatAI : EnemyAI
                     GetState(_currentState);
                     if (_canAttack)
                     {
-                        PerformAttack();
-                        StartCoroutine(AttackCooldownRoutine());
+                        //PerformAttack();
+                        //StartCoroutine(AttackCooldownRoutine());
                     }
                     break;
             }
@@ -83,12 +84,19 @@ public class EnemyCombatAI : EnemyAI
 
         private void HandleChase(Transform target)
         {
-            _target = target;
+            /*_target = target;
             _hasTarget = true;
             _currentState = EnemyState.Chase;
             ResumeMovement();
             _canAttack = true;
-            StopAllCoroutines();
+            StopAllCoroutines();*/
+            
+            if (_target == target) return;
+
+            _target = target;
+            _hasTarget = true;
+            _currentState = EnemyState.Chase;
+            ResumeMovement();
         }
 
         private void HandleTargetDie()

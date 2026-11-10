@@ -9,6 +9,7 @@ public class TransitionHandler : MonoBehaviour
     [SerializeField] private SkillsSettings _skills;
     [SerializeField] private InventoryDatabase _inventoryDatabase;
     [SerializeField] private Transform _transition;
+    [SerializeField] private Transform _chests;
     private AudioSource _audioSource;
 
     private void Awake()
@@ -22,6 +23,12 @@ public class TransitionHandler : MonoBehaviour
         foreach (var item in _skills.SkillsSettingsData.SkilItem)
         {
             _checkpointSettings.CheckpointParams.SkillsBuy[item.BowId] = false;
+        }
+        
+        foreach (Transform chest in _chests)
+        {
+            int id = chest.GetComponent<LootItem>().Id;
+            _checkpointSettings.CheckpointParams.ChestUse[id] = false;
         }
     }
 
@@ -55,6 +62,13 @@ public class TransitionHandler : MonoBehaviour
             foreach (var item in _skills.SkillsSettingsData.SkilItem)
             {
                 _checkpointSettings.CheckpointParams.SkillsBuy[item.BowId] = item.BIsActiveBuy;
+            }
+            
+            foreach (Transform chest in _chests)
+            {
+                int id = chest.GetComponent<LootItem>().Id;
+                bool l = chest.GetComponent<LootItem>().Looting;
+                _checkpointSettings.CheckpointParams.ChestUse[id] = l;
             }
         }
     }

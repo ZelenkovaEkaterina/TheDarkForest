@@ -81,27 +81,13 @@ namespace Player
                 _currentTarget = null;
                 if (_movement.State == PlayerState.Attack)
                 {
-                    _playerWeaponSocket.EquipToBack();
                     _movement.SetState(PlayerState.Idle);
                 }
-                    
+                _playerWeaponSocket.EquipToBack();    
                 return;
             }
 
             float dist = Vector3.Distance(transform.position, _currentTarget.position);
-            
-            /*if (dist > _attackRange)
-            {
-                _movement.MoveToTarget(_currentTarget, _attackRange - 0.2f);
-                if (_movement.State == PlayerState.Attack)
-                {
-                    _movement.SetState(PlayerState.Run);
-                    _playerWeapon.EquipToBack();
-                   
-                }
-                    
-                return;
-            }*/
             
             if (_movement.IsMoving)
                 _movement.Stop();
@@ -112,6 +98,25 @@ namespace Player
 
         private void HandleFire(Vector3 target)
         {
+            if (_manaComponent.CurrentMana >= _manaCost)
+            {
+                Debug.Log(_manaComponent.CurrentMana);
+                OnCast?.Invoke(_manaCost, _activeSkillId);
+            }
+            else
+            {
+                //Debug.Log("не хватает маны");
+                CancelCombat();
+                _movement.SetState(PlayerState.Idle);
+                return;
+            }
+            
+            if(_movement.State != PlayerState.Dead)
+                _movement.SetState(PlayerState.Attack);
+
+            if (_movement.State == PlayerState.Dead)
+                CancelCombat();
+            
             _playerWeaponSocket.EquipToHand();
             if (Time.time < _nextFireTime) return;
             _nextFireTime = Time.time + _fireRate;
@@ -141,20 +146,7 @@ namespace Player
                     vfx.ApplyCastVFX(_activeSkillId);
             }
 
-            if (_manaComponent.CurrentMana >= _manaCost)
-            {
-                OnCast?.Invoke(_manaCost, _activeSkillId);
-            }
-            else
-            {
-                Debug.Log("не хватает маны");
-            }
-
-
-
-
-            if(_movement.State != PlayerState.Dead)
-                _movement.SetState(PlayerState.Attack);
+            
         }
 
         private void OnDespawn(Projectile obj)

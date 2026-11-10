@@ -57,7 +57,6 @@ public class Projectile : MonoBehaviour, IPoolable
         public void SetDamageBuff(int buff)
         {
             _damageBuff = buff < 1 ? 1 : buff;
-           //Debug.Log(Damage);
         }
 
         public void SetOwner(GameObject owner)

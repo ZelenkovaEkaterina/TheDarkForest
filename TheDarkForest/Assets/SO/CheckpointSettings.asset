@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: CheckpointSettings
   m_EditorClassIdentifier: Assembly-CSharp::CheckpointSettings
   CheckpointParams:
-    TransitionPosition: {x: 72.79276, y: 1.8529005, z: 184.38454}
+    TransitionPosition: {x: 173.92374, y: 2.4682798, z: 183.30478}
     QuantityHealBottle: 0
     QuantityManaBottle: 0
     QuantityCoin: 0
-    SkillsBuy: 000100
+    SkillsBuy: 000000
+    ChestUse: 00000000000000000000

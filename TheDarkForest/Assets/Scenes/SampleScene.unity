@@ -17,7 +17,7 @@ RenderSettings:
   m_Fog: 1
   m_FogColor: {r: 0.09002058, g: 0.0055624777, b: 0.23584908, a: 1}
   m_FogMode: 2
-  m_FogDensity: 0.131
+  m_FogDensity: 0.045
   m_LinearFogStart: 21.78
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -551,6 +551,10 @@ PrefabInstance:
       propertyPath: '_lootPrefabs.Array.data[2]'
       value: 
       objectReference: {fileID: 4659244436439769941, guid: b24b2d7a6cb3c4c4e84278706dfd9f10, type: 3}
+    - target: {fileID: 4652611943204389798, guid: 1d081bf6f9bd2314d94108d0154942ae, type: 3}
+      propertyPath: _id
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1114,6 +1118,7 @@ MonoBehaviour:
   _skills: {fileID: 11400000, guid: 35d986ef58c7ae24b911ce7ab7951e67, type: 2}
   _inventoryDatabase: {fileID: 11400000, guid: c549463e148f41c4a84f4c2c1fa54b1e, type: 2}
   _transition: {fileID: 578151129}
+  _chests: {fileID: 2075416365}
 --- !u!1001 &219852176
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2205,10 +2210,10 @@ RectTransform:
   - {fileID: 321311394}
   m_Father: {fileID: 710014268}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 15, y: 12}
-  m_SizeDelta: {x: -505.69702, y: -279.3365}
+  m_SizeDelta: {x: 648.303, y: 244.66351}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &356503685
 MonoBehaviour:
@@ -2317,7 +2322,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 370588856}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e05abdb8cd510204a8a8ab4a4b09da5e, type: 3}
   m_Name: 
@@ -2837,6 +2842,10 @@ PrefabInstance:
       propertyPath: '_lootPrefabs.Array.data[2]'
       value: 
       objectReference: {fileID: 418318973362896749, guid: 17f4510bacb19ac468bf1b770be8c48f, type: 3}
+    - target: {fileID: 4652611943204389798, guid: 1d081bf6f9bd2314d94108d0154942ae, type: 3}
+      propertyPath: _id
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3713,10 +3722,10 @@ RectTransform:
   - {fileID: 2004979058}
   m_Father: {fileID: 710014268}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 15, y: 12}
-  m_SizeDelta: {x: -505.69702, y: -279.3365}
+  m_SizeDelta: {x: 648.303, y: 244.66351}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &703366658
 MonoBehaviour:
@@ -5294,6 +5303,10 @@ PrefabInstance:
       propertyPath: '_lootPrefabs.Array.data[2]'
       value: 
       objectReference: {fileID: 4659244436439769941, guid: b24b2d7a6cb3c4c4e84278706dfd9f10, type: 3}
+    - target: {fileID: 4652611943204389798, guid: 1d081bf6f9bd2314d94108d0154942ae, type: 3}
+      propertyPath: _id
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5849,6 +5862,10 @@ PrefabInstance:
       propertyPath: '_lootPrefabs.Array.data[3]'
       value: 
       objectReference: {fileID: 2593464472064037441, guid: 5f0076010b0e54a41af91e0ef9114396, type: 3}
+    - target: {fileID: 4652611943204389798, guid: 1d081bf6f9bd2314d94108d0154942ae, type: 3}
+      propertyPath: _id
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5888,10 +5905,10 @@ RectTransform:
   - {fileID: 970091868}
   m_Father: {fileID: 710014268}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -369, y: -13}
-  m_SizeDelta: {x: -847.1323, y: -274.1675}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 208, y: -13}
+  m_SizeDelta: {x: 306.86768, y: 249.83249}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1049957684
 MonoBehaviour:
@@ -6127,9 +6144,11 @@ MonoBehaviour:
   _skills: {fileID: 11400000, guid: 35d986ef58c7ae24b911ce7ab7951e67, type: 2}
   _inventory: {fileID: 11400000, guid: c549463e148f41c4a84f4c2c1fa54b1e, type: 2}
   _checkpointSettings: {fileID: 11400000, guid: 6148ac957d63c024d86d159fdeb3ee65, type: 2}
+  _chests: {fileID: 2075416365}
   _menuController: {fileID: 1070096606}
   _inventoryController: {fileID: 881462249}
   _skillsManager: {fileID: 1801768906}
+  _golemHealth: {fileID: 370588864}
 --- !u!1 &1118336972
 GameObject:
   m_ObjectHideFlags: 0
@@ -6244,6 +6263,10 @@ PrefabInstance:
       propertyPath: '_lootPrefabs.Array.data[2]'
       value: 
       objectReference: {fileID: 4659244436439769941, guid: b24b2d7a6cb3c4c4e84278706dfd9f10, type: 3}
+    - target: {fileID: 4652611943204389798, guid: 1d081bf6f9bd2314d94108d0154942ae, type: 3}
+      propertyPath: _id
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6494,6 +6517,10 @@ PrefabInstance:
       propertyPath: '_lootPrefabs.Array.data[3]'
       value: 
       objectReference: {fileID: 4659244436439769941, guid: b24b2d7a6cb3c4c4e84278706dfd9f10, type: 3}
+    - target: {fileID: 4652611943204389798, guid: 1d081bf6f9bd2314d94108d0154942ae, type: 3}
+      propertyPath: _id
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7178,6 +7205,10 @@ PrefabInstance:
       propertyPath: '_lootPrefabs.Array.data[3]'
       value: 
       objectReference: {fileID: 4659244436439769941, guid: b24b2d7a6cb3c4c4e84278706dfd9f10, type: 3}
+    - target: {fileID: 4652611943204389798, guid: 1d081bf6f9bd2314d94108d0154942ae, type: 3}
+      propertyPath: _id
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7824,10 +7855,10 @@ RectTransform:
   - {fileID: 622130484}
   m_Father: {fileID: 710014268}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0.000030517578}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 577, y: 0}
+  m_SizeDelta: {x: 1154, y: 524}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1382876931
 MonoBehaviour:
@@ -7842,7 +7873,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.11764707, g: 0.10588236, b: 0.10980393, a: 1}
+  m_Color: {r: 0.11764707, g: 0.10588236, b: 0.10980393, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -8084,6 +8115,10 @@ PrefabInstance:
       propertyPath: '_lootPrefabs.Array.data[3]'
       value: 
       objectReference: {fileID: 4659244436439769941, guid: b24b2d7a6cb3c4c4e84278706dfd9f10, type: 3}
+    - target: {fileID: 4652611943204389798, guid: 1d081bf6f9bd2314d94108d0154942ae, type: 3}
+      propertyPath: _id
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8638,6 +8673,7 @@ MonoBehaviour:
   _skills: {fileID: 11400000, guid: 35d986ef58c7ae24b911ce7ab7951e67, type: 2}
   _inventoryDatabase: {fileID: 11400000, guid: c549463e148f41c4a84f4c2c1fa54b1e, type: 2}
   _transition: {fileID: 1346066133}
+  _chests: {fileID: 2075416365}
 --- !u!82 &1589255045
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9912,6 +9948,10 @@ PrefabInstance:
       propertyPath: '_lootPrefabs.Array.data[3]'
       value: 
       objectReference: {fileID: 2593464472064037441, guid: 5f0076010b0e54a41af91e0ef9114396, type: 3}
+    - target: {fileID: 4652611943204389798, guid: 1d081bf6f9bd2314d94108d0154942ae, type: 3}
+      propertyPath: _id
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11608,10 +11648,10 @@ RectTransform:
   - {fileID: 831614295}
   m_Father: {fileID: 1801768903}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 15, y: 12}
-  m_SizeDelta: {x: -505.697, y: -279.3365}
+  m_SizeDelta: {x: 648.303, y: 244.66351}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2006815096
 MonoBehaviour:
@@ -12036,7 +12076,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8308407562079725068, guid: 4b3968d7de33d6c46a437ac2fed2ae52, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 167.97
+      value: 168.3
       objectReference: {fileID: 0}
     - target: {fileID: 8308407562079725068, guid: 4b3968d7de33d6c46a437ac2fed2ae52, type: 3}
       propertyPath: m_LocalPosition.y
@@ -12044,7 +12084,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8308407562079725068, guid: 4b3968d7de33d6c46a437ac2fed2ae52, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 177.84
+      value: 179.4
       objectReference: {fileID: 0}
     - target: {fileID: 8308407562079725068, guid: 4b3968d7de33d6c46a437ac2fed2ae52, type: 3}
       propertyPath: m_LocalRotation.w

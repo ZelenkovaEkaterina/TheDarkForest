@@ -32,16 +32,19 @@ public class ChestOpen : MonoBehaviour
 
    private void OpenChest(Type obj, int amount)
    {
+      if (_item.Looting) return;
+      
       Debug.Log("Opening Chest");
       if (obj == Type.Chest && !_item.Looting)
       {
          _animator.SetTrigger("Open");
-         _item.Looting = true;
       }
    }
    
    public void SpawnLoot()
    {
+      if (_item.Looting) return;
+      
       foreach (var prefab in _lootPrefabs)
       {
          Vector3 start = transform.position + Vector3.up;
@@ -50,6 +53,7 @@ public class ChestOpen : MonoBehaviour
 
          var item = Instantiate(prefab, start, Quaternion.identity);
          StartCoroutine(Fly(item.transform, start, end));
+         _item.Looting = true;
       }
    }
 

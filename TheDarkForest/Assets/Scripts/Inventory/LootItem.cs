@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LootItem : Interactable
 {
+   [SerializeField] private int _id;
    [SerializeField] private Type _lootType;
    [SerializeField] private int _amount = 1;
 
@@ -12,6 +13,7 @@ public class LootItem : Interactable
    public event Action<Type, int> OnLooted;
 
    public Type LootType => _lootType;
+   public int Id => _id;
    public bool Looting = false;
 
    protected override void OnInteract(GameObject actor)

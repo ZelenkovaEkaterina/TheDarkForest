@@ -15,4 +15,5 @@ public class CheckpointParams
     public int QuantityManaBottle;
     public int QuantityCoin;
     public List<bool> SkillsBuy;
+    public List<bool> ChestUse;
 }

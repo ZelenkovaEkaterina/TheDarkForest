@@ -13,32 +13,33 @@ namespace Player
         [SerializeField] private GameObject _gameController;
         [SerializeField] private bool _autoAttack = true;
 
-        [Header("Stats")] [SerializeField] private float _attackRange = 10f;
+        [Header("Stats")] [SerializeField] private float _attackRange = 7f;
         [SerializeField] private float _fireRate = 2.5f;
-        [SerializeField] private float _autoAggroRange = 8f;
+        [SerializeField] private float _autoAggroRange = 7f;
+
+        [Header("Movement")] [SerializeField] private float _chaseHysteresis = 0.9f; // % от _attackRange
 
         private float _heightTarget = 1.5f;
-
         private bool _autoTargetSuppressed;
-        
+        private bool _isChasing;
+
         private ProjectilePool<Projectile> _shotPool;
         private DamageSystem _damageSystem;
         private PlayerMovementComponent _movement;
         private PlayerManaComponent _manaComponent;
         private PlayerWeaponSocket _playerWeaponSocket;
-        
+        private Collider _selfCollider;
+
         [SerializeField] private SkillsManager _skillManager;
         [SerializeField] private SkillsSettings _settingsData;
         private int _manaCost = 0;
         private int _buff = 1;
-        private int _activeSkillId = -1; 
-        private bool _hasActiveSkill;
+        private int _activeSkillId = -1;
 
         private Transform _currentTarget;
         private float _nextFireTime;
 
         public float AttackRange => _attackRange;
-        
         public int ManaCost => _manaCost;
         public int Buff => _buff;
 
@@ -47,106 +48,125 @@ namespace Player
             _movement = GetComponent<PlayerMovementComponent>();
             _manaComponent = GetComponent<PlayerManaComponent>();
             _playerWeaponSocket = GetComponent<PlayerWeaponSocket>();
+            _selfCollider = GetComponent<Collider>();
             if (_gameController != null)
                 _damageSystem = _gameController.GetComponent<DamageSystem>();
         }
 
-        public void Init(ProjectilePool<Projectile> shotPool)
-        {
-            _shotPool = shotPool;
-        }
+        public void Init(ProjectilePool<Projectile> shotPool) => _shotPool = shotPool;
 
         public void SetTarget(Transform enemy)
         {
             _currentTarget = enemy;
             _autoTargetSuppressed = false;
+            _isChasing = false;
         }
+
         public void ClearTarget() => _currentTarget = null;
-        
+
         public void CancelCombat()
         {
             _currentTarget = null;
             _autoTargetSuppressed = true;
+            _isChasing = false;
         }
 
         private void Update()
         {
-            if (_movement.State == PlayerState.Interact) return;
-            
+            if (_movement.State == PlayerState.Interact || _movement.State == PlayerState.Dead)
+                return;
+
             if (_currentTarget == null && _autoAttack && !_autoTargetSuppressed)
                 _currentTarget = FindClosestEnemy(_autoAggroRange);
-            
+
             if (_currentTarget == null || !_currentTarget.gameObject.activeInHierarchy)
             {
                 _currentTarget = null;
+                _isChasing = false;
                 if (_movement.State == PlayerState.Attack)
-                {
                     _movement.SetState(PlayerState.Idle);
-                }
-                _playerWeaponSocket.EquipToBack();    
+                _playerWeaponSocket.EquipToBack();
                 return;
             }
+            
+            Vector3 toTarget = _currentTarget.position - transform.position;
+            toTarget.y = 0f;
+            float dist = toTarget.magnitude;
+            
+            float stopDist = _attackRange * _chaseHysteresis;
 
-            float dist = Vector3.Distance(transform.position, _currentTarget.position);
+            if (_isChasing)
+            {
+                if (dist <= stopDist)
+                    _isChasing = false;
+            }
+            else
+            {
+                if (dist > _attackRange)
+                {
+                    _isChasing = true;
+                    Vector3 stopPos = _currentTarget.position - toTarget.normalized * (_attackRange - 0.2f);
+                    _movement.MoveTo(stopPos);
+                }
+            }
+
+            if (_isChasing)
+            {
+                if (_movement.State == PlayerState.Attack)
+                    _movement.SetState(PlayerState.Idle);
+                _playerWeaponSocket.EquipToBack();
+                return;
+            }
             
             if (_movement.IsMoving)
                 _movement.Stop();
 
             HandleFire(_currentTarget.position);
-            
         }
 
         private void HandleFire(Vector3 target)
         {
-            if (_manaComponent.CurrentMana >= _manaCost)
+            if (Time.time < _nextFireTime)
+                return;
+            
+            if (_manaComponent.CurrentMana < _manaCost)
             {
-                Debug.Log(_manaComponent.CurrentMana);
-                OnCast?.Invoke(_manaCost, _activeSkillId);
-            }
-            else
-            {
-                //Debug.Log("не хватает маны");
                 CancelCombat();
                 _movement.SetState(PlayerState.Idle);
                 return;
             }
-            
-            if(_movement.State != PlayerState.Dead)
-                _movement.SetState(PlayerState.Attack);
 
-            if (_movement.State == PlayerState.Dead)
-                CancelCombat();
-            
-            _playerWeaponSocket.EquipToHand();
-            if (Time.time < _nextFireTime) return;
             _nextFireTime = Time.time + _fireRate;
             
+            _movement.SetState(PlayerState.Attack);
+            _playerWeaponSocket.EquipToHand();
+
             Vector3 dir = target - transform.position;
             dir.y = 0f;
             if (dir.sqrMagnitude > 0.001f)
                 transform.rotation = Quaternion.LookRotation(dir);
-
+            
+            OnCast?.Invoke(_manaCost, _activeSkillId);
+            
             if (_shotPool != null && _spawnPoint != null)
             {
                 Projectile shot = _shotPool.Get();
                 shot.SetOwner(gameObject);
-                shot.IgnoreOwnerCollision(GetComponent<Collider>());
+                shot.IgnoreOwnerCollision(_selfCollider);
                 shot.ReturnToPool += OnDespawn;
-                
+
                 Vector3 shootDir = (target - _spawnPoint.position).normalized;
                 Quaternion shootRot = Quaternion.LookRotation(shootDir);
 
                 shot.transform.SetPositionAndRotation(_spawnPoint.position, shootRot);
                 Vector3 pos = target;
-                pos.y += _heightTarget; 
+                pos.y += _heightTarget;
                 shot.OnSpawn(pos);
                 shot.SetDamageBuff(_buff);
-                
+
                 if (shot.TryGetComponent(out ProjectileVFX vfx))
                     vfx.ApplyCastVFX(_activeSkillId);
             }
-
-            
         }
 
         private void OnDespawn(Projectile obj)
@@ -175,24 +195,16 @@ namespace Player
             return best;
         }
 
-        private void OnEnable()
-        {
-            _skillManager.OnUseSkill += HandlerBuff;
-        }
+        private void OnEnable() => _skillManager.OnUseSkill += HandlerBuff;
+        private void OnDisable() => _skillManager.OnUseSkill -= HandlerBuff;
 
-        private void OnDisable()
-        {
-            _skillManager.OnUseSkill -= HandlerBuff;
-        }
-
-        private void HandlerBuff(int skillId, bool  isOn)
+        private void HandlerBuff(int skillId, bool isOn)
         {
             if (skillId == -1 && !isOn)
             {
                 _manaCost = 0;
                 _buff = 1;
                 _activeSkillId = -1;
-                _hasActiveSkill = false;
                 return;
             }
 
@@ -204,7 +216,6 @@ namespace Player
                         _manaCost = s.ManaCost;
                         _buff = s.ShotBuff;
                         _activeSkillId = skillId;
-                        _hasActiveSkill = true;
                         return;
                     }
             }
@@ -213,7 +224,6 @@ namespace Player
                 _manaCost = 0;
                 _buff = 1;
                 _activeSkillId = -1;
-                _hasActiveSkill = false;
             }
         }
     }

@@ -6,7 +6,7 @@ public class EnemyCombatAI : EnemyAI
 {
         public event Action<EnemyState> OnState; 
         [SerializeField] protected float chaseRange = 10f;
-        protected float attackRange = 2f;
+        protected float attackRange = 1f;
         
         [SerializeField] private float attackCooldown = 1.5f;
         private bool _canAttack = true;
@@ -66,7 +66,6 @@ public class EnemyCombatAI : EnemyAI
 
                 case EnemyState.Chase:
                     UpdateChase(distanceToTarget, attackRange, chaseRange, _target);
-                    Debug.Log(attackRange);
                     GetState(_currentState);
                     break;
 

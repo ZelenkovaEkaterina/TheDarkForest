@@ -49,7 +49,7 @@ public abstract class HealthSystem : MonoBehaviour, IDamageable
     }
     public void Heal()
     {
-        if (_inventory.IDB.InvDB[0].Count > 0)
+        if (_inventory.IDB.InvDB[0].Count > 0 && currentHealth < maxHealth)
         {
             currentHealth += _inventoryType.Slot.InvSlots[0].Cost;
             OnHealthChanged?.Invoke();

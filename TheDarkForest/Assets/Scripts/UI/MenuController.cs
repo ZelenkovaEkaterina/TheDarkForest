@@ -21,12 +21,15 @@ public class MenuController : MonoBehaviour
     [SerializeField] private GameObject _skillShop;
     [SerializeField] private GameObject _restartGame;
     [SerializeField] private GameObject _gameOver;
+
+    [SerializeField] private GameObject _playerPanel;
     
     private MenuScreen _current = MenuScreen.None;
     private MenuScreen _shopReturn = MenuScreen.Pause;
 
     private void Start(){
         Open(MenuScreen.Main);
+        _playerPanel.SetActive(false);
     }
 
     public MenuScreen Current => _current;
@@ -54,6 +57,7 @@ public class MenuController : MonoBehaviour
             return;
         
         Open(MenuScreen.None);
+        _playerPanel.SetActive(true);
     }
 
     public void BackToMenu()

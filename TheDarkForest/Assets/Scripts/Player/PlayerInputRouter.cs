@@ -47,7 +47,7 @@ namespace Player
                 if (go.CompareTag("Enemy"))
                 {
                     _combat.SetTarget(hitTarget.collider.transform);
-                    _movement.MoveToTarget(hitTarget.collider.transform, _combat.AttackRange - 0.2f);
+                    //_movement.MoveToTarget(hitTarget.collider.transform, _combat.AttackRange - 0.2f);
                     return;
                 }
 

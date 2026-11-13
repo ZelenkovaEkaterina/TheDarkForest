@@ -227,9 +227,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba9dbdc5767c52a42a0fbf10a1d8f966, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileVFX
-  _vfx1: {fileID: 730303729720148149}
-  _vfx2: {fileID: 7090633173100989183}
-  _vfx3: {fileID: 4976686620459116296}
+  _vfxPrefabs:
+  - {fileID: 730303729720148149}
+  - {fileID: 7090633173100989183}
+  - {fileID: 4976686620459116296}
 --- !u!1 &7964297077836841216
 GameObject:
   m_ObjectHideFlags: 0

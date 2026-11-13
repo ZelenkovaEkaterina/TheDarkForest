@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EnemyHealthComponent : HealthSystem
 {
-    public event Action<Transform> OnDieEvent;
+    //public event Action<Transform> OnDieEvent;
 
     private EnemyController _enemyController;
 
@@ -14,11 +14,11 @@ public class EnemyHealthComponent : HealthSystem
         _enemyController = GetComponent<EnemyController>();
     }
 
-    protected override void Die()
+    /*protected override void Die()
     {
-        OnDieEvent?.Invoke(transform);
-        gameObject.SetActive(false);
-    }
+        //OnDieEvent?.Invoke(transform);
+        //gameObject.SetActive(false);
+    }*/
     
     private void OnTriggerEnter(Collider other)
     {

@@ -5,7 +5,7 @@ using UnityEngine.Events;
 public abstract class HealthSystem : MonoBehaviour, IDamageable
 {
     public event Action<int, GameObject> OnDamageTaken;
-    public event Action<Vector3> OnDeath; 
+    public event Action<HealthSystem> OnDeath; 
     public event Action OnHealthChanged;
     public event Action<Type> OnHealthBottleUse;
     
@@ -33,14 +33,14 @@ public abstract class HealthSystem : MonoBehaviour, IDamageable
         OnHealthChanged?.Invoke();
         if (IsDead())
         {
-            OnDeath?.Invoke(gameObject.transform.position);
-            Die();            
+            OnDeath?.Invoke(this);
+            //Die();            
         }
     }
 
     public bool IsDead() => currentHealth <= 0;
     
-    protected abstract void Die();
+    //protected abstract void Die(); //абстрактный потому что без тела
 
     protected virtual void OnDestroy()
     {

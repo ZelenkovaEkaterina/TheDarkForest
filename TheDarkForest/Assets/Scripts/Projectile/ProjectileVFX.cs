@@ -1,24 +1,19 @@
 using System;
+using System.Collections.Generic;
 using Player;
 using UnityEngine;
 
 public class ProjectileVFX : MonoBehaviour
 {
-    [SerializeField] private GameObject _vfx1;
-    [SerializeField] private GameObject _vfx2;
-    [SerializeField] private GameObject _vfx3;
+    [SerializeField] private List<GameObject> _vfxPrefabs;
 
     public void ApplyCastVFX(int skillId)
     {
-        _vfx1.SetActive(false);
-        _vfx2.SetActive(false);
-        _vfx3.SetActive(false);
-
-        switch (skillId)
+        foreach (var vfx in _vfxPrefabs)
         {
-            case 0: _vfx1.SetActive(true); break;
-            case 1: _vfx2.SetActive(true); break;
-            case 2: _vfx3.SetActive(true); break;
+            vfx.SetActive(false);
         }
+        if (skillId != -1)
+            _vfxPrefabs[skillId].SetActive(true);
     }
 }

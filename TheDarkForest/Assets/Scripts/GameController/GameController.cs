@@ -14,14 +14,20 @@ public class GameController : MonoBehaviour
     
     private void OnEnable()
     {
-        _playerHealthComponent.OnDeathEvent += HandleDead;
-        _gameOver.OnGameOver += SetOver;
+        if (_playerHealthComponent != null)
+            _playerHealthComponent.OnDeath += HandlePlayerDeath;
+
+        if (_gameOver != null)
+            _gameOver.OnGameOver += SetOver;
     }
 
     private void OnDisable()
     {
-        _playerHealthComponent.OnDeathEvent -= HandleDead;
-        _gameOver.OnGameOver -= SetOver;
+        if (_playerHealthComponent != null)
+            _playerHealthComponent.OnDeath -= HandlePlayerDeath;
+
+        if (_gameOver != null)
+            _gameOver.OnGameOver -= SetOver;
     }
 
     private void SetOver()
@@ -29,18 +35,21 @@ public class GameController : MonoBehaviour
         OnExit?.Invoke();
     }
 
-    private void HandleDead(bool obj)
+    private void HandlePlayerDeath(HealthSystem system)
     {
-        bIsDead = obj;
-        
+        if (system is not PlayerHealthComponent) return;
+
+        if (bIsDead) return;
+        bIsDead = true;
+
         OnPlayerDead?.Invoke();
-        StartCoroutine(Pause());
-        //_playerHealthComponent.gameObject.SetActive(false);
+        StartCoroutine(GameOverAfterDelay(3f));
     }
 
-    private IEnumerator Pause()
+    private IEnumerator GameOverAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSecondsRealtime(delay);
+
         Time.timeScale = 0f;
         OnGameOver?.Invoke();
     }

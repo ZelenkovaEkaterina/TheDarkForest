@@ -51,7 +51,7 @@ public class EnemyAI : MonoBehaviour
         _enemyHealthComponent.OnDeath -= Death;
     }
 
-    private void Death(Vector3 p)
+    private void Death(HealthSystem s)
     {
         StopAllCoroutines();
     }

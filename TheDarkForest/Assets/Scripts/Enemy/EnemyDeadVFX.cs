@@ -13,22 +13,22 @@ public class EnemyDeadVFX : MonoBehaviour
         _enemyHealth = GetComponent<EnemyHealthComponent>();
         
         if (_enemyHealth == null) return;
-        _enemyHealth.OnDieEvent += DeadEffect;
+        _enemyHealth.OnDeath += DeadEffect;
     }
 
     private void OnDisable()
     {
         if (_enemyHealth == null) return;
-        _enemyHealth.OnDieEvent -= DeadEffect;
+        _enemyHealth.OnDeath -= DeadEffect;
     }
 
-    private void DeadEffect(Transform enemyTransform)
+    private void DeadEffect(HealthSystem system)
     {
         if (_deathVfxPrefab == null) return;
 
         GameObject vfx = Instantiate(
             _deathVfxPrefab,
-            enemyTransform.position,
+            system.transform.position,
             Quaternion.identity
         );
 

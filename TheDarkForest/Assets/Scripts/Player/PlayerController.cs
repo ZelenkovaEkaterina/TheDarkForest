@@ -25,15 +25,15 @@ namespace Player
 
         private void OnEnable()
         {
-            _health.OnDeathEvent += HandleDeath;
+            _health.OnDeath += HandleDeath;
         }
 
         private void OnDisable()
         {
-            _health.OnDeathEvent -= HandleDeath;
+            _health.OnDeath -= HandleDeath;
         }
 
-        private void HandleDeath(bool _)
+        private void HandleDeath(HealthSystem s)
         {
             _movement.SetState(PlayerState.Dead);
         }

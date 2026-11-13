@@ -23,6 +23,8 @@ public class EnemiesSpawn : MonoBehaviour
    [SerializeField] private RuntimeAnimatorController _meleeAnimator;
    [SerializeField] private RuntimeAnimatorController _rangeAnimator;
 
+   private EnemyHealthComponent _enemyHealthComponent;
+   
    private float _radius;
    private Vector3 _center;
 
@@ -60,7 +62,9 @@ public class EnemiesSpawn : MonoBehaviour
       
       // Получаем точки патрулирования
       Queue<Vector3> patrolPoints = _waypoints.GetPatrolPoints();
-        
+
+      
+      
       ConfigureEnemies(enemies, near, patrolPoints);
       
       //Debug.Log($"Зона {Id}: Спавнено {totalEnemies} врагов (Ближних: {near}, Дальних: {range})");
@@ -82,6 +86,9 @@ public class EnemiesSpawn : MonoBehaviour
       {
          GameObject enemy = enemies[i];
          enemy.transform.position = transform.position + GetRandomPointInSphere(_center, _radius);
+         
+         _enemyHealthComponent = enemy.GetComponent<EnemyHealthComponent>();
+         _enemyHealthComponent.OnDeath += BackToPool;
       }
 
       int meleeCounter = 0;
@@ -171,9 +178,15 @@ public class EnemiesSpawn : MonoBehaviour
 
    private void OnDestroy()
    {
+      _enemyHealthComponent.OnDeath -= BackToPool;
       ReturnAllEnemies();
    }
-   
+
+   private void BackToPool(HealthSystem obj)
+   {
+      _pool.Return(obj.gameObject);
+   }
+
    private Vector3 GetSpawnPointOnNavMesh()
    {
       Vector3 raw = transform.position + GetRandomPointInSphere(_center, _radius);

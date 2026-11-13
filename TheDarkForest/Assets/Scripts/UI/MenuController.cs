@@ -97,11 +97,11 @@ public class MenuController : MonoBehaviour
         }
     }
 
-    public void TogglePause()
+    /*public void TogglePause()
     {
         if (_current == MenuScreen.Pause) Open(MenuScreen.None);
         else if (_current == MenuScreen.None) Open(MenuScreen.Pause);
-    }
+    }*/
     
     public void ToggleShop()
     {
